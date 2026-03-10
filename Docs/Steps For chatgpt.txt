@@ -1,0 +1,5 @@
+• a complete GDD for Witch’s Pantry Automation
+• a Unity architecture for building it cleanly
+• Steam marketing strategy for incremental games
+• 20 potion recipes and automation machines
+• a vertical slice you can build in 7 days
