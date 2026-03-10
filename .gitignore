@@ -30,6 +30,9 @@
 /[Aa]ssets/Plugins/Editor/JetBrains*
 # Jetbrains Rider personal-layer settings
 *.DotSettings.user
+*.sln.iml
+.idea/
+.fleet/
 
 # Visual Studio cache directory
 .vs/
@@ -97,3 +100,4 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
