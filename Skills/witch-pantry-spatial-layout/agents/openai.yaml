@@ -1,0 +1,4 @@
+interface:
+  display_name: "Witch Pantry Spatial Layout"
+  short_description: "Room, layout, adjacency, and readability rules."
+  default_prompt: "Use $witch-pantry-spatial-layout to design or review pantry rooms, machine placement, and room progression."

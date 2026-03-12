@@ -1,0 +1,4 @@
+interface:
+  display_name: "Witch Pantry Backlog"
+  short_description: "Issue and board workflow for Witch Pantry."
+  default_prompt: "Use $witch-pantry-backlog to create or update Witch Pantry GitHub issues and project fields consistently."

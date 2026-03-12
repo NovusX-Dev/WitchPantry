@@ -1,0 +1,4 @@
+interface:
+  display_name: "Witch Pantry Design"
+  short_description: "Design rules for feature and direction decisions."
+  default_prompt: "Use $witch-pantry-design to evaluate or refine a Witch Pantry feature against the current product direction."

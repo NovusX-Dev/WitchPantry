@@ -1,0 +1,4 @@
+interface:
+  display_name: "Witch Pantry Content"
+  short_description: "Content rules for machines, potions, demand, and rooms."
+  default_prompt: "Use $witch-pantry-content to plan or update Witch Pantry ingredients, machines, potions, factions, and room roles."
