@@ -1,6 +1,6 @@
 # Witch's Pantry Design Overview
 
-- Version: 2.0
+- Version: 2.1
 - Engine: Unity 6000.3
 - Platform: Steam (Windows)
 - Genre: Cozy Automation / Incremental / Desktop Idle
@@ -96,6 +96,7 @@ return later to review outcomes
 - Machines occupy visible room space.
 - Placement should create local synergies and readability.
 - The player should be able to build a pantry that looks efficient and charming.
+- The game starts in one main pantry room, then expands into a small number of connected specialty rooms later.
 
 ### Shared Inventory With Spatial Fiction
 
@@ -107,6 +108,7 @@ return later to review outcomes
 
 - The game should support a compact mode suitable for a second monitor or edge-of-screen usage.
 - The compact mode surfaces the most important stats, alerts, and actions without full-screen management friction.
+- Compact mode summarizes the whole pantry and calls out the room that needs attention instead of forcing room-by-room micromanagement.
 
 ## 6. Progression Structure
 
@@ -124,7 +126,14 @@ Near-term progression should focus on:
 - first visible bottleneck and fix
 - first contract streak
 - first major room optimization
+- first justified second-room unlock
 - first prestige
+
+Room progression should follow this structure:
+
+- Prototype and demo: one main pantry room
+- Early Access core: two to three connected rooms
+- 1.0 normal end-state: three strongly themed rooms, with a fourth only if it clearly adds value
 
 ## 7. Economy and Demand
 
@@ -195,6 +204,7 @@ The early public version should prove the product thesis:
 - readable magical pantry factory
 - satisfying visible production
 - layout-driven optimization
+- one complete chain readable in one room view
 - customer demand and contracts
 - compact desktop-idler support
 - save and offline progression
@@ -225,7 +235,7 @@ Export-route pricing and broad market simulation are not core near-term pillars.
 
 ### Early Access Core
 
-- multiple pantry zones
+- connected pantry rooms with clear room roles
 - several customer and faction demand loops
 - soft-friction event system
 - broader recipe and machine variety
@@ -245,6 +255,7 @@ The player should be able to:
 - identify why production is stalled without opening multiple panels
 - enjoy watching the factory while idle
 - use a compact mode without losing important information
+- understand which room is currently helping or blocking featured demand
 
 ## 14. Risks to Control
 
@@ -263,3 +274,4 @@ The game direction is working if:
 - players can explain their bottleneck and fix strategy
 - desktop-idler mode remains useful instead of feeling like a gimmick
 - demand and contract loops create meaningful goals without spreadsheet fatigue
+- room expansion feels earned and readable instead of like menu sprawl

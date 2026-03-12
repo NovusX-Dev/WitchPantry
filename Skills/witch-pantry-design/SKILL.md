@@ -22,7 +22,7 @@ Current north star:
 1. Read the current design docs before proposing changes:
    - `Docs/Product-Strategy.md`
    - `Docs/Experience-Pillars.md`
-   - `Docs/GDD-01.md`
+   - `Docs/GDD`
 2. Restate the feature or idea in one sentence.
 3. Test it against the product direction:
    - does it strengthen spatial pantry play
