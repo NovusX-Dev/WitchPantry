@@ -1,348 +1,265 @@
-﻿# Witch's Pantry Automation GDD
+# Witch's Pantry Design Overview
 
-- Version: 1.0
+- Version: 2.0
 - Engine: Unity 6000.3
 - Platform: Steam (Windows)
-- Genre: Incremental / Idle / Automation
-- Art Style: Cozy Pixel Art
-- Target Development Time: 3 months (solo dev MVP)
+- Genre: Cozy Automation / Incremental / Desktop Idle
+- Release Framing: Demo-first, Early Access-friendly premium PC game
 
-## 1. Game Overview
+## 1. High Concept
 
-### High Concept
+*Witch's Pantry* is a cozy magical pantry factory game where players arrange enchanted kitchen machinery, optimize visible production lines, and leave a living potion workshop running in the background.
 
-*Witch's Pantry Automation* is a cozy incremental automation game where the player runs a magical potion pantry. The player gathers mystical ingredients, processes them using enchanted kitchen devices, and builds an automated potion factory.
+The game should feel:
 
-The core gameplay focuses on creating efficient potion production pipelines.
+- readable at a glance
+- satisfying to watch
+- easy to check in on throughout the day
+- deep enough to reward optimization
 
-The game evolves from simple manual crafting into a fully automated magical factory.
+Short pitch:
 
-Reference fantasy:
+`Build a magical pantry factory you can watch, optimize, and leave running.`
 
-- Factorio x Potion Craft x Idle Game
+Reference frame:
+
+- cozy factory layout game
+- potion fantasy management game
+- incremental progression with desktop-idler support
 
 ## 2. Core Pillars
 
-1. Cozy Automation: Players build relaxing production systems.
-2. Satisfying Progression: Numbers go up constantly with meaningful unlocks.
-3. Visual Factory Growth: The pantry physically expands with machines and creatures.
-4. Relaxed Idle Gameplay: Production continues while the player is away.
+1. Spatial Cozy Automation  
+   The pantry is a compact physical space. Layout, adjacency, and room organization matter.
+2. Readable Factory Satisfaction  
+   Players should understand production flow, bottlenecks, and wins at a glance.
+3. Relaxed Progression With Light Tension  
+   Progress should feel safe and rewarding, with soft friction rather than harsh punishment.
+4. Persistent Idle and Desktop Presence  
+   The game should work as both a primary play session and an always-glanceable side-screen experience.
 
-## 3. Target Audience
+## 3. Product Positioning
 
 Primary audience:
 
-- Idle / incremental players
+- players who enjoy cozy management and optimization
+- incremental and idle players on Steam
 
 Secondary audience:
 
-- Cozy simulation players
-- Automation / factory game fans
+- factory and automation fans who want a softer aesthetic
+- desktop-idler players who like passive progress with occasional intervention
 
-Comparable games:
+The product competes on:
 
-- Cookie Clicker
-- Rusty's Retirement
-- Factory Town Idle
-- Melvor Idle
+- strong visual identity
+- easy-to-read screenshots and GIFs
+- satisfying production motion
+- a fantasy that feels domestic and magical rather than industrial
 
-## 4. Gameplay Loop
+## 4. Core Gameplay Loop
 
-### Early Game Loop
-
-```text
-Collect ingredients manually
-  ->
-Process ingredients
-  ->
-Brew potion
-  ->
-Bottle potion
-  ->
-Sell potion
-  ->
-Buy upgrades
-```
-
-### Mid Game Loop
+### Primary Loop
 
 ```text
-Ingredients harvested automatically
+harvest ingredients
   ->
-Machines process ingredients
+route them through pantry machines
   ->
-Potion lines operate automatically
+brew and bottle potions
   ->
-Player optimizes throughput
+fulfill customer and faction demand
   ->
-Unlocks new ingredients
+buy machines, upgrades, and room improvements
+  ->
+unlock new pantry layouts, ingredients, and progression layers
 ```
 
-### Late Game Loop
+### Session Loop
 
 ```text
-Full automation
+check bottlenecks
   ->
-Contract fulfillment
+rearrange or upgrade the pantry
   ->
-Market economy
+claim rewards and contracts
   ->
-Prestige system
+set the workshop running
   ->
-New realms unlocked
+return later to review outcomes
 ```
 
-## 5. Game Systems
+## 5. Signature Features
 
-### Ingredient System
+### Spatial Pantry Layout
 
-Ingredients are resources used in potion recipes.
+- Machines occupy visible room space.
+- Placement should create local synergies and readability.
+- The player should be able to build a pantry that looks efficient and charming.
 
-#### Ingredient Types
+### Shared Inventory With Spatial Fiction
 
-Common:
+- The simulation may use a shared pantry inventory under the hood.
+- The presentation must still sell the fantasy of nearby machines, delivery helpers, and local work zones.
+- Layout should influence adjacency bonuses, visibility, and ease of management even if resources are abstracted.
 
-- Mushroom
-- Mint
-- Spring Water
+### Desktop-Idler Support
 
-Uncommon:
+- The game should support a compact mode suitable for a second monitor or edge-of-screen usage.
+- The compact mode surfaces the most important stats, alerts, and actions without full-screen management friction.
 
-- Bat Wing
-- Glow Moss
-- Crystal Dust
+## 6. Progression Structure
 
-Rare:
+Progression is built around:
 
-- Phoenix Feather
-- Ghost Essence
+- unlocking new ingredients
+- improving layout efficiency
+- expanding machine capabilities
+- fulfilling customer groups and faction requests
+- prestige-based witch advancement
 
-Legendary:
+Near-term progression should focus on:
 
-- Dragon Blood
-- Time Sand
+- first functioning pantry line
+- first visible bottleneck and fix
+- first contract streak
+- first major room optimization
+- first prestige
 
-### Potion Recipes
+## 7. Economy and Demand
 
-Potion recipes combine ingredients.
+Core economy direction:
 
-Example:
+- potion sales
+- customer demand
+- faction requests
+- upgrades and room growth
 
-- Potion: Healing Potion
-- Ingredients: Redcap Mushroom, Spring Water
-- Value: 10 gold
-- Brew Time: 5 seconds
+The game should not rely on a complex simulated market economy in the near term.
 
-### Automation Machines
+Instead, demand should come from:
 
-Machines automate production.
+- regular customers
+- guild requests
+- traveling merchants
+- seasonal demand windows
+- special visitors
+
+This gives clearer goals, better pacing control, and stronger thematic hooks.
+
+## 8. Contracts and Demand Hooks
 
 Examples:
 
-- Mortar Golem: grinds ingredients
-- Self-Stirring Cauldron: brews potions automatically
-- Bottle Sprite: bottles finished potions
-- Delivery Owl: ships potions to customers
+- Apothecary Guild requests consistent healing potion output
+- Traveling caravan offers a timed premium for stamina potions
+- Festival week increases demand for color-changing brews
+- A suspicious scholar asks for risky ingredients with bonus rewards
 
-## 6. Production Chain Example
+Contracts should reward:
 
-```text
-Forest Portal
-  ->
-Mushroom Harvester
-  ->
-Mortar Golem
-  ->
-Brewing Cauldron
-  ->
-Bottle Sprite
-  ->
-Potion Shelf
-  ->
-Delivery Owl
-```
+- gold
+- rare ingredients
+- unlock progress
+- reputation with customer groups
+- temporary pantry boons
 
-## 7. Progression
+## 9. Event Philosophy
 
-Progression is driven by:
+Events remain part of the game, but they are no longer built around harsh punishment.
 
-- Unlocking ingredients
-- Unlocking machines
-- Increasing production speed
-- Completing contracts
-- Prestige resets
+Event categories:
 
-## 8. Economy System
+- boons
+- visitors
+- soft disruptions
+- opt-in gambles
 
-Players earn gold by selling potions.
+Rules:
 
-Gold is used for:
+- no major destructive loss
+- no opaque punishment
+- always provide player response or counterplay
+- tension should create texture, not resentment
 
-- Machines
-- Ingredient unlocks
-- Research
-- Pantry expansion
+Example soft-friction events:
 
-## 9. Contracts
+- a shelf imp blocks one machine until given a cheap snack
+- humid weather slows drying and boosts brewing yield
+- a guild inspector requests a quick quality check for a small bonus
 
-Villagers request potions.
+## 10. MVP Direction
 
-Example contract:
+The early public version should prove the product thesis:
 
-- Name: Village Order
-- Goal: 50 Healing Potions
-- Reward: 500 gold
+- readable magical pantry factory
+- satisfying visible production
+- layout-driven optimization
+- customer demand and contracts
+- compact desktop-idler support
+- save and offline progression
+- one prestige loop
 
-## 10. Events
+## 11. Expansion Direction
 
-Random events add variation.
+Future layers can include:
 
-Examples:
+- additional biomes and pantry wings
+- advanced recipe experimentation
+- more customer factions
+- richer event chains
+- deeper long-term automation rules
+- broader market simulation as an optional later system
 
-- Full Moon: potion production doubled
-- Goblin Raid: potions stolen
-- Merchant Caravan: high-value contracts appear
-- Potion Explosion: machine damage
+Export-route pricing and broad market simulation are not core near-term pillars.
 
-## 11. Prestige System
+## 12. Content Targets by Release Stage
 
-Prestige represents becoming a stronger witch.
+### Demo
 
-Effects:
+- one strong pantry room
+- core machine set
+- first customer groups
+- basic desktop-idler mode
+- first prestige teaser or partial unlock
 
-- Reset pantry
-- Gain permanent upgrades
+### Early Access Core
 
-Examples:
+- multiple pantry zones
+- several customer and faction demand loops
+- soft-friction event system
+- broader recipe and machine variety
+- first complete prestige loop
 
-- Potion production multiplier
-- New ingredient realms
-- Advanced automation
+### 1.0
 
-## 12. UI Layout
+- expanded biome content
+- stronger long-term mastery systems
+- additional visual themes and late-game goals
 
-Main screen:
+## 13. UX Requirements
 
-- Ingredient Production
-- Potion Production
-- Active Machines
-- Contracts
-- Gold Balance
+The player should be able to:
 
-Side panel:
+- understand the current pantry state in under 5 seconds
+- identify why production is stalled without opening multiple panels
+- enjoy watching the factory while idle
+- use a compact mode without losing important information
 
-- Recipes
-- Upgrades
-- Research
-- Prestige
+## 14. Risks to Control
 
-## 13. Art Direction
+- feature sprawl
+- unreadable factory scenes
+- overdesigned economy simulation
+- events that break the cozy promise
+- UI that works only at full-screen scale
 
-Style:
+## 15. Success Criteria
 
-- Pixel art
-- Warm cozy lighting
-- Magical fantasy aesthetic
+The game direction is working if:
 
-Visual inspirations:
-
-- Stardew Valley
-- Potion Craft
-- Terraria
-
-## 14. Audio Direction
-
-- Relaxing ambient music
-- Magical bubbling sounds
-- Creature noises
-- Potion brewing effects
-
-## 15. Technical Architecture
-
-Data-driven design:
-
-- ScriptableObjects for ingredients
-- ScriptableObjects for recipes
-- ScriptableObjects for machines
-- ScriptableObjects for contracts
-
-Managers:
-
-- `ProductionManager`
-- `EconomyManager`
-- `SaveManager`
-- `EventManager`
-
-## 16. Save System
-
-- Local save
-- JSON save file
-- Auto-save every 30 seconds
-- Offline progression calculated on load
-
-## 17. Content Scope (MVP)
-
-- Ingredients: 12
-- Potions: 15
-- Machines: 6
-- Events: 6
-- Contracts: 10
-- Prestige Layers: 1
-- Realms: 1
-
-## 18. Development Roadmap
-
-Month 1:
-
-- Core gameplay systems
-- Ingredient system
-- Recipe system
-- Machine system
-- Basic UI
-
-Month 2:
-
-- Automation logic
-- Contracts
-- Economy
-- Prestige
-- Content creation
-
-Month 3:
-
-- Art
-- Audio
-- Balancing
-- Steam integration
-- QA
-
-## 19. Monetization
-
-- Premium game
-- Price target: $6.99 to $9.99
-
-Possible DLC:
-
-- New ingredient realms
-- Additional machines
-
-## 20. Risks
-
-- Scope creep
-- Balancing complexity
-- Automation bugs
-- Save corruption
-
-## 21. Success Metrics
-
-- 10k Steam wishlists before launch
-- 20k copies sold in the first year
-- Positive Steam rating above 85%
-
-## 22. Future Expansion
-
-- Additional realms
-- Ingredient mutation system
-- Potion shop interior
-- Online potion trading
-- Steam Workshop modding
+- screenshots instantly read as "witch pantry factory"
+- the first 10 minutes teach layout plus production naturally
+- players can explain their bottleneck and fix strategy
+- desktop-idler mode remains useful instead of feeling like a gimmick
+- demand and contract loops create meaningful goals without spreadsheet fatigue

@@ -1,255 +1,214 @@
-﻿# Witch's Pantry Automation UI and UX Layout Design
+# Witch's Pantry UI and UX Design
 
 - Engine: Unity 6000.3
-- Resolution: 1920x1080
+- Platform: Steam (Windows)
+- Interaction Modes: Full game view and compact desktop-idler view
 
-Goal: create a clean incremental-game interface optimized for Steam players.
+## 1. UI Goals
 
-## 1. UI Design Principles
+The UI must let the player:
 
-The UI follows these rules:
+- understand production at a glance
+- solve bottlenecks quickly
+- enjoy watching the pantry run
+- keep the game open in a compact mode without losing key control
 
-- Always show important numbers
-- Avoid clutter
-- Introduce systems gradually
-- Provide constant feedback
+## 2. Core UX Principles
 
-Primary visible data:
+- surface the most important numbers constantly
+- make bottlenecks obvious
+- minimize drill-down clicks
+- preserve a cozy fantasy presentation
+- remain readable in screenshots, streams, and compact window sizes
 
-- Gold
-- Gold per second
-- Potion production per second
-- Next machine cost
+## 3. Full Game View
 
-Secondary data:
+Purpose:
 
-- Inventory
-- Contracts
-- Prestige upgrades
-- Achievements
+- main planning and optimization mode
+- rearranging pantry layout
+- inspecting machines and demand
 
-## 2. Main Screen Layout
-
-```text
------------------------------------------------------
-| GOLD | GOLD/SEC | POTIONS/SEC | PRESTIGE LEVEL   |
------------------------------------------------------
-
-| Machines Panel | Factory View | Upgrades Panel |
-|                |              |                |
-|                |              |                |
-|                |              |                |
-
------------------------------------------------------
-| Contracts | Inventory | Prestige | Settings |
------------------------------------------------------
-```
-
-## 3. Top Resource Bar
-
-The most important numbers appear here and remain displayed permanently.
-
-Example:
-
-- Gold: 12,500
-- Gold/sec: 420
-- Potions/sec: 32
-- Prestige Level: Witch Rank 3
-
-## 4. Factory Visualization Panel
-
-The center screen shows animated machines working.
-
-Example machines:
-
-- Herb Garden
-- Mortar Golem
-- Cauldron
-- Bottling Sprite
-
-Purpose: make the idle game satisfying to watch.
-
-## 5. Machines Panel (Left)
-
-Lists all machines.
-
-Example card:
+Recommended layout:
 
 ```text
-Herb Garden
-Owned: 3
-Production: 3 herbs/sec
-Buy Button
-Cost: 120 gold
+--------------------------------------------------------------
+| Gold | Demand | Potions/min | Bottleneck | Compact Toggle  |
+--------------------------------------------------------------
+| Pantry View                | Right Rail                  |
+|                            | - selected machine          |
+|                            | - upgrades                  |
+|                            | - adjacency bonuses         |
+--------------------------------------------------------------
+| Bottom Rail: demand | inventory | events | prestige      |
+--------------------------------------------------------------
 ```
 
-Another example:
+## 4. Compact Desktop-Idler View
 
-```text
-Mortar Golem
-Owned: 1
-Grinding Speed: 2/sec
-Upgrade Button
-Cost: 500 gold
-```
+Purpose:
 
-## 6. Upgrades Panel (Right)
+- side-screen monitoring
+- quick intervention
+- passive progress check-ins
 
-Contains permanent upgrades.
+Must include:
 
-Examples:
+- gold
+- current demand highlight
+- potion throughput
+- current bottleneck or alert
+- top 1 to 3 quick actions
 
-- Faster Brewing: `+20% potion speed`, cost `1000 gold`
-- Better Bottles: `+15% potion value`, cost `800 gold`
-- Advanced Cauldron: double potion output, cost `2000 gold`
+Must avoid:
 
-## 7. Contracts Panel
+- deep panel nesting
+- dense inventory tables
+- tiny unreadable text
 
-Village requests potions.
+## 5. At-a-Glance Rules
 
-Example:
+Within 5 seconds the player should understand:
 
-- Deliver 50 Healing Potions
-- Reward: 500 gold and a rare ingredient
+- whether the pantry is healthy
+- what the main bottleneck is
+- what the next meaningful action probably is
 
-Contract difficulty should scale with progression.
+UI should always expose:
 
-## 8. Inventory Panel
+- current demand target
+- current production rate
+- blocked or starved machine state
+- available upgrade or layout opportunity
 
-Displays ingredients and potions.
+## 6. Pantry View Requirements
 
-Example:
+The pantry view is the primary visual anchor.
 
-- Herbs: 120
-- Mushrooms: 80
-- Crystal Dust: 12
-- Healing Potions: 30
-- Mana Potions: 10
+It must show:
 
-## 9. Prestige Panel
+- distinct machine silhouettes
+- work-state animation
+- local adjacency cues
+- bottleneck states
+- fulfilled order moments
 
-Displays witch progression.
+The pantry view should be useful even when the player never opens a detail panel.
 
-Example:
+## 7. Bottleneck Communication
 
-- Witch Rank 3
-- Prestige reward: Arcane Essence
-- Example upgrade: Ancient Brewing, `+200% potion speed`
+Every stall must have a simple readable cause:
 
-## 10. Machine Tooltip
+- missing input
+- full output
+- weak adjacency
+- unmet demand mix
+- event-related slowdown
 
-Hovering over a machine shows detailed stats.
+Each cause should have:
 
-Example:
+- icon
+- tooltip
+- suggested action
 
-```text
-Mortar Golem
-Grinding Speed: 2 ingredients/sec
-Input Buffer: 20
-Output Buffer: 20
-Efficiency Bonus: +15%
-```
+## 8. Low-Click Management
 
-## 11. Visual Feedback
+The game should support quick management from the main view.
 
-Every action should produce feedback.
+Use:
 
-Examples:
+- top-level quick actions
+- contextual buttons on selected machines
+- simple drag or swap layout actions
+- buy and upgrade flows with minimal modal interruption
 
-- Gold gain animation
-- Potion brewing animation
-- Upgrade flash effect
-- Sound effects
+Avoid:
 
-## 12. Large Number Formatting
+- repeated submenu digging
+- forcing the player into spreadsheet panels for basic decisions
 
-Numbers use suffixes.
+## 9. Demand and Contracts UI
 
-Examples:
+Demand UI should prioritize clarity over data volume.
 
-- `1000 -> 1K`
-- `1000000 -> 1M`
-- `1000000000 -> 1B`
+Show:
 
-Late-game numbers may use scientific notation, for example `1e12`.
+- who wants what
+- how urgent it is
+- what reward is offered
+- whether the player is on pace
 
-## 13. Automation Indicators
+Visual hierarchy:
 
-Machines display icons showing automation status.
+- featured demand card
+- active faction or visitor requests
+- optional secondary tasks
 
-Examples:
+## 10. Event UI
 
-- Auto Feed Enabled
-- Auto Sell Enabled
-- Auto Upgrade Enabled
+Event presentation should respect cozy tone.
 
-## 14. Progress Bars
+Use:
 
-Machines display processing bars.
+- warm banner notifications
+- clear benefits and costs
+- response buttons when intervention is possible
 
-Example:
+Do not use:
 
-```text
-Cauldron
-Brewing Progress
-███████░░░░
-```
+- harsh red panic spam
+- unexplained penalties
+- interruption-heavy popups
 
-## 15. Achievement Popups
+## 11. Number Presentation
 
-Achievements appear in a corner.
+Default:
 
-Example:
+- abbreviations for common large values
+- readable throughput labels such as `potions/min`
+- plain-language summaries where useful
 
-- Potion Apprentice
-- Brew 100 potions
-- Reward: `+5% production`
+Late-game fallback:
 
-## 16. Event Notifications
+- scientific notation only after readable suffixes stop helping
 
-Random magical events appear in a banner.
+## 12. Accessibility and Readability
 
-Example:
+Required options:
 
-- Fairy Blessing: potion production x2 for 60 seconds
+- UI scale
+- reduced motion where needed
+- colorblind-safe bottleneck states
+- adjustable number formatting
 
-## 17. Accessibility
+Readable UI is a product feature, not cleanup work.
 
-Include:
+## 13. Screenshot and Store Readiness
 
-- Colorblind-friendly palette
-- UI scale options
-- Number formatting options
+Key store images should be capturable directly from in-game states.
 
-## 18. UI Art Style
+That means:
 
-Recommended style:
+- readable pantry silhouette
+- obvious machine motion
+- visible demand and reward loop
+- no cluttered debug-looking UI
 
-- Hand-painted fantasy UI
-- Wooden panels
-- Magic runes
-- Glowing potion icons
+## 14. Demo UX Priorities
 
-## 19. Minimum UI Implementation
+For the first public build:
 
-For the first playable build, implement only:
+- strong pantry view
+- one strong full game layout
+- useful compact mode
+- obvious bottleneck feedback
+- readable demand cards
 
-- Resource bar
-- Machine panel
-- Factory view
-- Upgrade panel
+## 15. Expansion UX Priorities
 
-Everything else can be added later.
+Later builds can add:
 
-## 20. Steam UI Optimization
-
-Steam players expect:
-
-- Mouse-first interface
-- Large readable fonts
-- Clear upgrade buttons
-- Visible production growth
-
-## End
-
-End of document.
+- advanced analytics panels
+- more layout overlays
+- faction reputation views
+- richer compact mode automation controls

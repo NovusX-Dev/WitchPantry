@@ -1,244 +1,148 @@
-﻿# Witch's Pantry Automation 3-Month Development Roadmap
+# Witch's Pantry Delivery Roadmap
 
 - Engine: Unity 6000.3
 - Platform: Steam (Windows)
-- Total Duration: 12 weeks
+- Planning Frame: phased delivery, not fixed-date wishful thinking
 
-Goal: ship a polished incremental automation game with replayability and prestige mechanics.
+## 1. Roadmap Purpose
 
-## Development Strategy
+This roadmap is used to sequence work toward:
 
-The project is divided into four phases:
+- a strong internal prototype
+- a marketable public demo
+- an Early Access-ready core game
+- a fuller 1.0 release
 
-1. Pre-production
-2. Core systems
-3. Content expansion
-4. Polish and launch preparation
+The previous 3-month target remains useful only as an optimistic benchmark for a marketable demo, not as a promise for the full game.
 
-## Month 1: Core Gameplay Foundations
+## 2. Delivery Phases
 
-Goal: build the gameplay backbone.
+1. Foundation Prototype
+2. Marketable Demo
+3. Early Access Core
+4. 1.0 Expansion
 
-### Week 1: Project Setup
+## 3. Dependencies
 
-Tasks:
+Before major implementation work, lock the product direction in documentation:
 
-- Create Unity project
-- Implement core folder structure
-- Create `GameLoopManager`
-- Implement tick-based simulation
-- Create basic UI layout
-- Create debug console
+- product strategy
+- experience pillars
+- spatial pantry rules
+- desktop-idler mode
+- customer demand and contracts
+- event framework
+- demo and Early Access plan
 
-Milestone: basic project running with tick simulation.
+Implementation should follow the design direction, not invent it mid-sprint.
 
-### Week 2: Production Graph System
+## 4. Phase 1: Foundation Prototype
 
-Tasks:
+Goals:
 
-- Create `ProductionNode` class
-- Create machine instances
-- Implement resource buffers
-- Create node connections
-- Add example machines
+- establish core data model
+- prove tick simulation
+- prove pantry view and machine readability
+- validate one working production chain
 
-Example machines:
+Key work:
 
-- Herb Farm
-- Grinder
-- Cauldron
+- project architecture
+- runtime player state
+- production simulation
+- first machine framework
+- first pantry scene
+- first layout bonus rules
+- first HUD shell
 
-Milestone: first automated potion production chain works.
+Exit criteria:
 
-### Week 3: Economy System
+- one compact pantry room works
+- at least one bottleneck can be seen and fixed
+- the game already reads as a magical pantry factory
 
-Tasks:
+## 5. Phase 2: Marketable Demo
 
-- Implement potion selling
-- Implement cost scaling formula
-- Add machine purchasing
-- Add upgrade multipliers
+Goals:
 
-Formula:
+- prove the product hook publicly
+- create wishlist-worthy screenshots and trailer footage
+- validate compact desktop-idler support
 
-```text
-cost = baseCost * growthRate^owned
-```
+Key work:
 
-Milestone: game can run for 20 minutes without breaking.
+- better pantry readability
+- core contract and customer demand loop
+- compact mode
+- save and offline progression
+- starter event set
+- first polished art pass for key machines and UI
 
-### Week 4: Save and Offline Progress
+Exit criteria:
 
-Tasks:
+- demo communicates the hook in under 30 seconds
+- compact mode is genuinely usable
+- players understand layout plus demand loops without explanation
 
-- Implement `SaveData` structure
-- Create JSON save system
-- Add auto-save
-- Implement offline progression simulation
+## 6. Phase 3: Early Access Core
 
-Milestone: game can be closed and resumed with progress.
+Goals:
 
-## Month 2: Content Expansion
+- broaden content and progression
+- add richer demand cadence
+- complete first robust prestige loop
 
-Goal: turn the prototype into a real game.
+Key work:
 
-### Week 5: Machine Variety
+- additional ingredients and machines
+- expanded pantry growth
+- faction demand hooks
+- more events with counterplay
+- broader balancing pass
+- stronger retention goals
 
-Add machines:
+Exit criteria:
 
-- Mushroom Farm
-- Mortar Golem
-- Fermentation Barrel
-- Bottling Sprite
+- multiple viable production layouts
+- repeatable progression arc
+- clear reasons to keep playing beyond the demo slice
 
-Add machine upgrades:
+## 7. Phase 4: 1.0 Expansion
 
-- Speed
-- Capacity
-- Efficiency
+Goals:
 
-Milestone: 5-machine production chains.
+- deepen content breadth
+- complete long-term aspiration layers
+- tighten launch presentation
 
-### Week 6: Potion System
+Key work:
 
-Add potion types:
+- biome expansion
+- more advanced machine and recipe families
+- richer progression mastery
+- release marketing assets
+- QA and launch readiness
 
-- Healing Potion
-- Mana Potion
-- Stamina Potion
-- Luck Potion
+Exit criteria:
 
-Add rarity system:
+- content breadth matches full premium expectations
+- major systems are coherent and polished
 
-- Common
-- Rare
-- Epic
-- Legendary
+## 8. Suggested Near-Term Focus
 
-Milestone: potion diversity system functional.
+Near-term priority order:
 
-### Week 7: Contracts System
+1. strategy and design doc alignment
+2. foundation prototype systems
+3. marketable demo slice
+4. Early Access expansion planning
 
-Village requests potions.
+## 9. Planning Reality
 
-Example:
+Three months may be enough for a strong prototype or public demo if execution is focused.
 
-- Deliver 50 healing potions
-- Reward gold or rare ingredients
+It is not treated as a hard commitment for:
 
-Milestone: contracts drive gameplay progression.
-
-### Week 8: Prestige System
-
-Implement prestige reset.
-
-Add bonuses:
-
-- Faster brewing
-- More valuable potions
-- Rare ingredient drops
-
-Milestone: complete gameplay loop.
-
-## Month 3: Polish and Release Preparation
-
-Goal: prepare for Steam launch.
-
-### Week 9: UI Polish
-
-Improve:
-
-- Machine management UI
-- Inventory UI
-- Contracts UI
-
-Add:
-
-- Animations
-- Sound effects
-
-Milestone: game feels visually satisfying.
-
-### Week 10: Economy Balancing
-
-Run the economy simulation tool.
-
-Adjust:
-
-- Machine cost curves
-- Potion values
-- Prestige scaling
-
-Target pacing:
-
-- First prestige: about 2 hours
-
-Milestone: economy is stable.
-
-### Week 11: Steam Preparation
-
-Tasks:
-
-- Create Steam store page
-- Produce trailer
-- Capture screenshots
-- Create capsule art
-- Write store description
-- Start collecting wishlists
-
-Milestone: Steam page live.
-
-### Week 12: Final QA and Launch
-
-Tasks:
-
-- Bug fixing
-- Performance testing
-- Steam build upload
-- Launch day marketing
-
-Milestone: game released.
-
-## Estimated Development Time
-
-| System | Time |
-| --- | --- |
-| Production Graph | 4 days |
-| Economy | 3 days |
-| Save System | 2 days |
-| UI | 10 days |
-| Content | 14 days |
-| Polish | 10 days |
-
-Total: about 8 to 10 weeks.
-
-## Recommended Launch Metrics
-
-Goals for first launch:
-
-- 500 to 1000 wishlists
-- 10 to 20 percent sales conversion
-- 50 to 200 expected launch sales
-
-## Post-Launch Plan
-
-Week 13 and beyond:
-
-- Add content updates
-- New potions
-- New machines
-- Seasonal events
-- Steam discounts
-
-## Long-Term Vision
-
-Add expansions such as:
-
-- Alchemy guild
-- Potion trading market
-- Magic automation network
-- Multiplayer potion trading
-
-## End
-
-End of document.
+- complete content breadth
+- full release polish
+- all later progression layers

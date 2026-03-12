@@ -1,238 +1,181 @@
-﻿# Witch's Pantry Automation Content Plan
+# Witch's Pantry Content Plan
 
 - Engine: Unity 6000.3
 - Platform: Steam
-- Genre: Incremental / Automation
+- Genre: Cozy Automation / Incremental / Desktop Idle
 
-## 1. Game Progression Structure
+## 1. Content Strategy
 
-The game evolves through five phases:
+Content should reinforce four things:
 
-1. Manual potion brewing
-2. Automation machines
-3. Potion production chains
-4. Village contract economy
-5. Prestige witch mastery
+- pantry fantasy
+- readable production growth
+- customer demand variety
+- long-session comfort
 
-## 2. Core Resources
+Content is not just "more stuff." Each addition should strengthen either layout depth, watchability, or player goals.
 
-- Gold: used for machines and upgrades
-- Ingredients: used for brewing potions
-- Potions: primary sellable resource
-- Rare Ingredients: used for advanced potions
+## 2. Progression Structure
+
+The game evolves through these layers:
+
+1. manual pantry setup
+2. first visible production line
+3. demand-driven optimization
+4. room layout mastery
+5. prestige-based witch growth
+
+## 3. Core Resources
+
+- Gold: room growth, machines, upgrades, convenience
+- Ingredients: raw and processed inputs
+- Potions: primary fulfillment output
+- Rare Ingredients: demand rewards, higher-tier recipes, event hooks
 - Arcane Essence: prestige currency
 
-## 3. Ingredient Types
+## 4. Customer Demand Model
 
-Tier 1 ingredients:
+Primary demand sources:
 
-- Herbs
-- Mushrooms
-- Roots
+- local regulars
+- guild orders
+- travelers and merchants
+- festivals and seasonal boosts
+- special visitors
 
-Tier 2 ingredients:
+Demand should create changing priorities without requiring a full dynamic market simulation.
 
-- Crystal Dust
-- Ghost Petals
-- Nightshade
-
-Tier 3 ingredients:
-
-- Dragon Scale Powder
-- Phoenix Ash
-- Void Spores
-
-## 4. Machines
-
-These create the automation pipeline.
-
-### 1. Herb Garden
-
-Produces herbs.
-
-- Production: `1 herb/sec`
-
-### 2. Mushroom Cave
-
-Produces mushrooms.
-
-- Production: `0.8 mushroom/sec`
-
-### 3. Mortar Golem
-
-Grinds ingredients into powder.
-
-- Input: herbs or mushrooms
-- Output: powder
-
-### 4. Cauldron
-
-Brews potions.
-
-- Input: powder
-- Output: basic potion
-
-### 5. Bottling Sprite
-
-Bottles potions for selling.
-
-- Input: potion
-- Output: bottled potion
-
-### 6. Enchanted Shelf
-
-Stores potions and increases value.
-
-- Bonus: `+20% potion value`
-
-### 7. Essence Distiller
-
-Extracts rare ingredients from potions.
-
-## 5. Potion Types
-
-Potion tiers increase in value.
-
-Tier 1:
-
-- Healing Potion: `10 gold`
-- Mana Potion: `12 gold`
-
-Tier 2:
-
-- Strength Potion: `40 gold`
-- Invisibility Potion: `60 gold`
-
-Tier 3:
-
-- Phoenix Potion: `500 gold`
-- Void Elixir: `1200 gold`
-
-## 6. Machine Upgrades
-
-Each machine has three upgrade categories:
-
-- Speed: increase processing rate
-- Efficiency: reduce ingredient usage
-- Capacity: increase storage buffers
-
-Example progression for Mortar Golem:
-
-- Level 1: `+10% grinding speed`
-- Level 5: auto-feed ingredients
-- Level 10: `2x powder output`
-
-## 7. Automation Unlocks
-
-Automation layers unlock progressively:
-
-- Stage 1: manual brewing
-- Stage 2: auto ingredient collection
-- Stage 3: auto brewing
-- Stage 4: auto selling
-- Stage 5: auto contracts
-
-## 8. Village Contract System
-
-Villagers request potions.
+## 5. Customer and Faction Hooks
 
 Examples:
 
-- Deliver 50 healing potions, reward 500 gold
-- Deliver 10 invisibility potions, reward rare ingredients
+- Village Apothecary: stable healing demand
+- Night Market Curator: premium unusual brews
+- Courier Caravan: timed bulk contracts
+- Witch Guild Quartermaster: progression-gated requests
+- Festival Organizer: short seasonal spikes
 
-Contracts scale with progression.
+These groups create:
 
-## 9. Rare Ingredient System
+- pacing control
+- stronger fantasy
+- clearer goals
+- better UI storytelling
 
-Rare ingredients unlock advanced recipes.
+## 6. Machine Content Goals
 
-Examples:
+Machine content should feel like a pantry ecosystem.
 
-- Dragon Scale
-- Phoenix Ash
-- Shadow Essence
+Categories:
 
-Sources:
+- growers and gatherers
+- processors
+- brewers
+- bottlers and shelf helpers
+- customer-facing utility pieces
 
-- Contracts
-- Distillation
-- Random events
+Every machine should earn its place by improving:
 
-## 10. Prestige System
+- visible flow
+- spatial choices
+- output variety
+- compact mode readability
 
-Prestige mechanic: Witch Ascension.
+## 7. Potion Content Goals
 
-Effects:
+Potion content should support:
 
-- Resets progress
-- Rewards Arcane Essence
+- recognizable customer asks
+- visual variety
+- recipe-driven optimization
+- reward pacing
 
-Arcane Essence upgrades can provide:
+Good potion categories:
 
-- Faster brewing
-- Higher potion value
-- New potion recipes
+- staples
+- utility brews
+- premium curiosities
+- event-responsive potions
 
-## 11. Prestige Upgrades
+## 8. Event Content Framework
 
-Examples:
+Events are grouped into:
 
-- Arcane Garden: herbs grow 2x faster
-- Ancient Cauldron: brewing speed `+100%`
-- Grand Witch Knowledge: all potions worth `2x`
-
-## 12. Event System
-
-Random magical events.
-
-Examples:
-
-- Moon Eclipse: potion value `+300%` for 2 minutes
-- Goblin Merchant: rare ingredient shop appears
-- Fairy Blessing: all machines produce `2x` resources
-
-## 13. Late-Game Content
-
-Unlock new magical areas, for example:
-
-- Haunted Forest
-- Sky Islands
-- Volcanic Caverns
-
-Each area introduces new ingredients.
-
-## 14. Achievements
-
-Achievements boost production.
+- boons
+- visitors
+- soft disruptions
+- opt-in gambles
 
 Examples:
 
-- Potion Apprentice: brew 100 potions, reward `+5% production`
-- Master Brewer: brew 10,000 potions, reward `+25% production`
+- Fairy Blessing: one work zone gains an efficiency burst
+- Traveling Buyer: temporary premium on one potion family
+- Humid Weather: slows drying but improves some brew yields
+- Mischief Imp: disables a bonus until bribed or redirected
 
-## 15. Long-Term Player Goals
+## 9. Event Design Rules
 
-- Unlock all potions
-- Build a fully automated pantry
-- Reach Witch Level 100
-- Maximize production efficiency
+- no heavy resource destruction
+- no major progress rollback
+- always communicate cause and remedy
+- the player should feel nudged, not slapped
 
-## 16. Content Scope
+## 10. Pantry Fantasy Hooks
 
-- Machines: 8 total
-- Potions: 12 total
-- Ingredients: 10 total
-- Prestige upgrades: 20 total
-- Events: 10 total
-- Contracts: 30 total
+Recurring content motifs:
 
-## 17. Expected Playtime
+- regular customers with preferences
+- shelves, corners, and work zones with character
+- magical helpers that are functional and charming
+- weather, holidays, and local happenings
+- tiny domestic rituals that make the pantry feel alive
 
-- First prestige: 2 hours
-- Mid game: 10 hours
-- Completion: 40+ hours
+## 11. Content by Release Stage
 
-## End
+### Demo
 
-End of document.
+- strong starter ingredient set
+- a few iconic machines
+- 2 to 3 customer groups
+- first event set
+- one compact pantry room
+
+### Early Access Core
+
+- broader machine and recipe matrix
+- richer demand cadence
+- faction-specific rewards
+- more room growth and adjacency options
+- stronger compact-mode utility
+
+### 1.0
+
+- expanded biomes and ingredients
+- advanced prestige unlocks
+- more event chains
+- higher-tier customer groups
+
+## 12. Achievements and Long-Term Goals
+
+Achievements should reward:
+
+- layout mastery
+- demand streaks
+- efficient production
+- special event responses
+
+Long-term goals:
+
+- create a highly efficient pantry
+- fulfill faction reputations
+- unlock signature machines
+- complete prestige milestones
+
+## 13. Content Scope Discipline
+
+Avoid adding content that:
+
+- does not change the decision space
+- clutters the pantry visually
+- creates unreadable demand states
+- belongs to a complex market sim better saved for later

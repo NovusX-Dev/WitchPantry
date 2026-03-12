@@ -1,303 +1,230 @@
-﻿# Witch's Pantry Automation Production Graph Blueprint
+# Witch's Pantry Production Blueprint
 
 - Engine: Unity 6000.3
-- Genre: Incremental / Automation
+- Genre: Cozy Automation / Incremental
+- Presentation Model: Spatial pantry layout with shared inventory simulation support
 
-## 1. Production Graph Philosophy
+## 1. Production Philosophy
 
-The production system is designed around:
+Production must satisfy three goals at once:
 
-- Resource extraction
-- Ingredient processing
-- Potion brewing
-- Bottling
-- Selling
+- feel good to optimize
+- look good in motion
+- read clearly in screenshots and live play
 
-Players build automation chains that transform simple ingredients into valuable potions.
+The pantry is not just a list of generators. It is a compact magical room where machine placement, work zones, and traffic readability communicate progress.
 
-## 2. Basic Production Flow
+## 2. Core Production Fiction
+
+The simulation may use shared pantry inventory and virtual links, but the player-facing fiction is spatial:
+
+- ingredient sources occupy pantry space
+- helpers and machines visually operate within local zones
+- nearby groupings imply efficiency
+- cluttered layouts become harder to read and manage
+
+The game should never expose pure spreadsheet logic without visual grounding.
+
+## 3. Pantry Space Model
+
+The pantry is organized as a grid or slot-based room layout.
+
+Each machine has:
+
+- footprint size
+- orientation rules if needed
+- visual output direction
+- adjacency tags
+- room role
+
+Example machine footprint classes:
+
+- small helper
+- standard workstation
+- large focal machine
+- wall or shelf utility
+
+## 4. Core Production Flow
 
 ```text
-Herb Garden
+ingredient source
   ->
-Mortar Golem
+processing station
   ->
-Brewing Cauldron
+cauldron or brewing station
   ->
-Bottling Sprite
+bottling or finishing station
   ->
-Potion Shelf
-  ->
-Gold
+shelf, dispatch, or customer fulfillment
 ```
 
-## 3. Early Game Blueprint
+This flow should be visible in the scene even when the underlying logic uses shared buffers.
 
-Phase: Manual Automation
+## 5. Machine Categories
 
-Nodes:
-
-- Herb Garden
-- Mushroom Cave
-- Mortar Golem
-- Basic Cauldron
-
-Diagram:
-
-```text
-Herbs -> Grinder -> Cauldron -> Potion -> Sell
-Mushrooms -> Grinder -> Cauldron -> Potion -> Sell
-```
-
-Production rate example:
-
-- Herb Garden: `1 herb/sec`
-- Mortar Golem: `2 herbs -> powder`
-- Cauldron: `1 powder -> potion`
-- Potion value: `10 gold`
-
-## 4. Mid Game Production Network
-
-Phase: Multi-chain production
-
-Machines:
+### Producers
 
 - Herb Garden
+- Well
 - Mushroom Cave
-- Crystal Harvester
+
+### Processors
+
 - Mortar Golem
-- Fermentation Barrel
+- Crystal Grinder
+- Essence Still
+
+### Brewers
+
 - Enchanted Cauldron
+- advanced specialty cauldrons later
+
+### Fulfillment and Utility
+
 - Bottling Sprite
-- Storage Shelf
+- Enchanted Shelf
+- Dispatch nook or customer counter
 
-Diagram:
+## 6. Spatial Rules
+
+Spatial design should provide meaningful choices without becoming a pathfinding tax.
+
+Recommended rules:
+
+- limit footprint shapes to a small readable set
+- favor adjacency and zoning bonuses over explicit item-conveyor simulation
+- keep rearrangement friction low
+- preserve a tidy cozy-room look even in optimized builds
+
+Examples of spatial bonuses:
+
+- Herb Garden next to Well: growth speed bonus
+- Mortar Golem next to ingredient shelf: reduced cycle downtime
+- Bottling Sprite near cauldron cluster: throughput bonus
+- customer counter near enchanted shelf: faster order handling
+
+## 7. Adjacency Design
+
+Adjacency bonuses should:
+
+- reward intuitive organization
+- reinforce fantasy pairings
+- be simple enough to read from iconography alone
+
+Avoid:
+
+- giant optimization matrices
+- hidden synergies
+- mandatory pixel-perfect layouts
+
+Good adjacency reads as:
+
+`these things belong together`
+
+not:
+
+`I need a doctoral thesis to place a mushroom.`
+
+## 8. Readability Requirements
+
+Every production scene must support:
+
+- at-a-glance understanding of active lines
+- visible identification of stalled machines
+- clear focal points for high-value activity
+- clean screenshots with recognizable silhouettes
+
+Visual rules:
+
+- each major machine needs a distinct silhouette
+- ingredients need color and shape distinction
+- bottlenecks need simple, obvious feedback states
+- busy scenes should still have negative space and lane clarity
+
+## 9. Watchability Requirements
+
+The pantry should be pleasant to watch while idle.
+
+Use:
+
+- short repeating machine loops
+- charming helper animations
+- obvious brew, bottle, and shelf activity
+- subtle celebratory motion on completed orders
+
+Avoid:
+
+- static list-only production
+- overly tiny unreadable motion
+- excessive VFX that hide state
+
+## 10. Compact-Room Optimization
+
+Optimization comes from:
+
+- machine grouping
+- support adjacency
+- balancing throughput across small spaces
+- deciding which room tiles hold premium machines
+
+The player fantasy is:
+
+`I turned a cluttered witch kitchen into a beautiful little productivity monster.`
+
+## 11. Example Early Pantry Layout
 
 ```text
-Herbs ------.
-            v
-Mushrooms -> Mortar Golem -> Powder
-                               |
-Crystal Dust ------------------'
-                               v
-Fermentation Barrel -> Potion Base
-                               v
-Enchanted Cauldron -> Magic Potion
-                               v
-Bottling Sprite -> Bottled Potion
-                               v
-Storage Shelf -> Sell
+[Herb Garden] [Well]        [Ingredient Shelf]
+[Mortar Golem] [Cauldron]   [Bottling Sprite]
+[Customer Counter] [Enchanted Shelf] [Upgrade Corner]
 ```
 
-Production chain complexity increases.
+Goals:
 
-## 5. Late Game Factory
+- production chain visible left-to-right
+- customer fulfillment readable on the bottom row
+- support objects grouped without clutter
 
-Phase: Fully automated magical factory
+## 12. Progression Through Space
 
-Nodes:
-
-- Ingredient Farms
-- Rare Ingredient Extractors
-- Processing Machines
-- Potion Factories
-- Automation Spirits
-- Export Network
-
-Diagram:
-
-```text
-Ingredient Farms
-      ->
-Processing Machines
-      ->
-Intermediate Materials
-      ->
-Potion Factories
-      ->
-Automation Spirits
-      ->
-Export Portals
-      ->
-Village Economy
-```
-
-Multiple production chains run in parallel.
-
-## 6. Potion Production Chains
+Layout progression should be visible.
 
 Examples:
 
-- Healing Potion: `Herbs -> Powder -> Cauldron -> Potion`
-- Mana Potion: `Crystal Dust -> Powder -> Cauldron -> Potion`
-- Strength Potion: `Mushrooms + Roots -> Powder -> Fermentation -> Potion`
-- Invisibility Potion: `Ghost Petals -> Essence -> Cauldron -> Potion`
+- unlock a new pantry wall section
+- earn a special utility tile
+- place a faction request board
+- add rare machine variants with larger footprints
 
-## 7. Advanced Chain Example
+Space progression is a reward loop, not only a storage problem.
 
-Phoenix Potion ingredients:
+## 13. Relationship to Shared Inventory
 
-- Phoenix Ash
-- Crystal Dust
-- Dragon Scale
+If the implementation uses a global pantry inventory:
 
-Graph:
+- keep resource state global for simulation simplicity
+- expose local zone bonuses through adjacency and room tags
+- use visuals to imply transfer and workflow
+- show bottlenecks through machine state rather than invisible math
 
-```text
-Phoenix Ash --.
-              v
-Dragon Scale -> Arcane Grinder -> Essence
-              ^
-Crystal Dust -'
-              v
-Ancient Cauldron -> Phoenix Potion
-                  v
-Bottling Sprite
-                  v
-Sell
-```
+This keeps implementation sane while preserving the layout fantasy.
 
-Value: `500 gold`
+## 14. Demo Blueprint Priorities
 
-## 8. Machine Upgrade Paths
+The demo should prove:
 
-Each machine has three upgrade tracks:
+- one compact pantry room
+- a readable machine cluster
+- 2 to 3 meaningful adjacency bonuses
+- one obvious bottleneck type
+- one obvious layout improvement moment
 
-- Speed: increases processing rate
-- Efficiency: consumes fewer ingredients
-- Capacity: increases buffer size
+## 15. Expansion Blueprint Priorities
 
-Example:
+Later releases can add:
 
-- Cauldron Level 10: `2x potion output`
-
-## 9. Production Bottlenecks
-
-Typical bottlenecks:
-
-- Ingredient shortages
-- Slow processing machines
-- Insufficient storage
-
-Players must optimize machine ratios.
-
-Example ratio:
-
-- 3 Herb Farms
-- 2 Mortar Golems
-- 1 Cauldron
-
-## 10. Optimal Early Factory
-
-Best starter ratio:
-
-- Herb Garden x3
-- Mortar Golem x2
-- Basic Cauldron x1
-- Bottling Sprite x1
-
-This creates a stable pipeline.
-
-## 11. Parallel Production
-
-Late-game factories produce multiple potions simultaneously.
-
-Examples:
-
-- Healing Potion line
-- Mana Potion line
-- Strength Potion line
-
-Each line uses different ingredients.
-
-## 12. Rare Ingredient Extraction
-
-Advanced machine:
-
-- Essence Distiller
-
-Flow:
-
-- Input: excess potions
-- Output: rare ingredients
-
-These are used for advanced recipes.
-
-## 13. Automation Spirits
-
-Late-game automation layer.
-
-Tasks:
-
-- Auto-build machines
-- Auto-upgrade machines
-- Auto-complete contracts
-
-This transforms the factory into a self-running system.
-
-## 14. Village Export Network
-
-Potions are sold through trade routes.
-
-Routes:
-
-- Village Market
-- Wizard Academy
-- Royal Court
-
-Each route has price modifiers.
-
-## 15. Prestige Layer
-
-Prestige resets production and unlocks Arcane Relics.
-
-Examples:
-
-- Golden Cauldron: `+200% brew speed`
-- Endless Shelf: infinite potion storage
-
-## 16. Production Scaling
-
-Example progression:
-
-- Early Game: `10 gold/sec`
-- Mid Game: `500 gold/sec`
-- Late Game: `50,000 gold/sec`
-- End Game: `1e9 gold/sec`
-
-## 17. Graph Visualization
-
-Players see production networks visually.
-
-Example:
-
-`Herb Farm -> Grinder -> Cauldron -> Bottler -> Shelf`
-
-Multiple chains connect into larger factory networks.
-
-## 18. Factory Optimization Goals
-
-Players optimize:
-
-- Machine ratios
-- Upgrade paths
-- Resource distribution
-- Contract completion speed
-
-## 19. End-Game Factory
-
-```text
-Ingredient Worlds
-      ->
-Mega Processing Plants
-      ->
-Arcane Potion Factories
-      ->
-Magical Export Network
-      ->
-Infinite Wealth
-```
-
-## End
-
-End of document.
+- additional room types
+- specialty wings
+- advanced adjacency sets
+- prestige-only decor and utility pieces
+- more specialized customer fulfillment stations

@@ -1,224 +1,118 @@
-﻿# Witch's Pantry Automation Ingredient and Biome Progression Design
+# Witch's Pantry Ingredient and Biome Progression
 
-- Scope: 3-month project
-- Engine: Unity 6
-- Genre: Incremental / Automation / Cozy Fantasy
-- Production Model: Virtual Connections (Shared Pantry Inventory)
+- Engine: Unity 6000.3
+- Genre: Cozy Automation / Incremental / Desktop Idle
+- Progression Model: Spatial pantry factory with customer demand
 
-This document defines a tight ingredient and biome progression suitable for a solo 3-month project.
+## 1. Design Goals
 
-Goals:
+- clear ingredient discovery
+- visually distinct resources for screenshot readability
+- phased content planning across demo, Early Access, and 1.0
+- biome additions that expand fantasy and decisions, not just item count
 
-- About 15 ingredients
-- 5 biomes
-- 10 to 12 potions
-- Predictable economy scaling
-- Clear player progression
+## 2. Release Phase Overview
 
-## 1. Biome Progression Overview
-
-| Biome | Tier | Ingredients | Machines | Unlock Cost |
-| --- | --- | --- | --- | --- |
-| Backyard Garden | Tier 1 | Herb, Water | Herb Garden | Start Area |
-| Damp Cave | Tier 1 | Mushroom | Mushroom Cave | 150 Gold |
-| Crystal Cavern | Tier 2 | Crystal Dust, Glow Shard | Crystal Mine | 800 Gold + 25 Healing Potions |
-| Shadow Woods | Tier 2 | Nightshade, Moonleaf | Shadow Grove | 2000 Gold + Research: Toxicology |
-| Floating Isles | Tier 3 | Sky Lotus, Phoenix Feather | Sky Garden | 8000 Gold + Prestige Level 1 |
-
-Total primary ingredients introduced: `9`
-
-## 2. Ingredient List
-
-### Raw Ingredients
-
-| Ingredient | Source Machine | Biome |
-| --- | --- | --- |
-| Herb | Herb Garden | Backyard Garden |
-| Water | Well | Backyard Garden |
-| Mushroom | Mushroom Cave | Damp Cave |
-| Crystal Dust | Crystal Mine | Crystal Cavern |
-| Glow Shard | Crystal Mine | Crystal Cavern |
-| Nightshade | Shadow Grove | Shadow Woods |
-| Moonleaf | Shadow Grove | Shadow Woods |
-| Sky Lotus | Sky Garden | Floating Isles |
-| Phoenix Feather | Sky Garden | Floating Isles |
-
-### Processed Ingredients
-
-These are created by converter machines.
-
-| Ingredient | Machine | Inputs |
-| --- | --- | --- |
-| Ground Herb | Mortar Golem | Herb |
-| Mushroom Paste | Mortar Golem | Mushroom |
-| Crystal Powder | Crystal Grinder | Crystal Dust |
-| Shadow Essence | Essence Still | Nightshade |
-| Lotus Extract | Essence Still | Sky Lotus |
-
-Total processed ingredients: `5`
-
-## 3. Total Ingredient Count
-
-- Raw ingredients: 9
-- Processed ingredients: 5
-- Total: 14 ingredients
-
-This number is ideal for a 3-month production schedule.
-
-## 4. Potion Recipes
-
-| Potion | Inputs |
+| Phase | Focus |
 | --- | --- |
-| Healing Potion | Ground Herb + Water |
-| Energy Potion | Mushroom Paste |
-| Mana Potion | Crystal Powder + Water |
-| Clarity Elixir | Glow Shard + Ground Herb |
-| Antidote | Moonleaf + Mushroom Paste |
-| Shadow Cure | Shadow Essence + Crystal Powder |
-| Fire Resistance | Crystal Powder + Mushroom Paste |
-| Levitation Potion | Lotus Extract |
-| Resurrection Tonic | Phoenix Feather + Lotus Extract |
+| Demo | iconic starter pantry and readable ingredient set |
+| Early Access | broader demand, more room optimization, additional machine families |
+| 1.0 | richer biome identity, rarer fantasy ingredients, deeper prestige interactions |
 
-Total potions: `9`
+## 3. Biome Progression Overview
 
-## 5. Biome Unlock Details
+| Biome | Phase | Tier | Ingredients | Notes |
+| --- | --- | --- | --- | --- |
+| Backyard Garden | Demo | Tier 1 | Herb, Water | clean starter readability |
+| Damp Cave | Demo | Tier 1 | Mushroom | early secondary branch |
+| Crystal Cavern | Early Access | Tier 2 | Crystal Dust, Glow Shard | visually strong, high screenshot value |
+| Shadow Woods | Early Access | Tier 2 | Nightshade, Moonleaf | moodier utility branch |
+| Floating Isles | 1.0 | Tier 3 | Sky Lotus, Phoenix Feather | late-game spectacle ingredients |
 
-### Backyard Garden
+## 4. Raw Ingredients
 
-Starting biome.
+| Ingredient | Source Machine | Biome | Phase | Screenshot Value |
+| --- | --- | --- | --- | --- |
+| Herb | Herb Garden | Backyard Garden | Demo | Medium |
+| Water | Well | Backyard Garden | Demo | Low |
+| Mushroom | Mushroom Cave | Damp Cave | Demo | Medium |
+| Crystal Dust | Crystal Mine | Crystal Cavern | Early Access | High |
+| Glow Shard | Crystal Mine | Crystal Cavern | Early Access | High |
+| Nightshade | Shadow Grove | Shadow Woods | Early Access | High |
+| Moonleaf | Shadow Grove | Shadow Woods | Early Access | Medium |
+| Sky Lotus | Sky Garden | Floating Isles | 1.0 | High |
+| Phoenix Feather | Sky Garden | Floating Isles | 1.0 | High |
 
-Machines:
+## 5. Processed Ingredients
+
+| Ingredient | Machine | Inputs | Phase | Screenshot Value |
+| --- | --- | --- | --- | --- |
+| Ground Herb | Mortar Golem | Herb | Demo | Medium |
+| Mushroom Paste | Mortar Golem | Mushroom | Demo | Medium |
+| Crystal Powder | Crystal Grinder | Crystal Dust | Early Access | High |
+| Shadow Essence | Essence Still | Nightshade | Early Access | High |
+| Lotus Extract | Essence Still | Sky Lotus | 1.0 | High |
+
+## 6. Potion Progression
+
+| Potion | Inputs | Phase | Role |
+| --- | --- | --- | --- |
+| Healing Potion | Ground Herb + Water | Demo | reliable staple |
+| Energy Potion | Mushroom Paste | Demo | early branch variety |
+| Mana Potion | Crystal Powder + Water | Early Access | premium utility |
+| Clarity Elixir | Glow Shard + Ground Herb | Early Access | specialty demand |
+| Antidote | Moonleaf + Mushroom Paste | Early Access | faction utility |
+| Shadow Cure | Shadow Essence + Crystal Powder | Early Access | high-value mix |
+| Fire Resistance | Crystal Powder + Mushroom Paste | Early Access | event-responsive utility |
+| Levitation Potion | Lotus Extract | 1.0 | premium spectacle |
+| Resurrection Tonic | Phoenix Feather + Lotus Extract | 1.0 | rare aspirational craft |
+
+## 7. Machine Count by Phase
+
+### Demo
 
 - Herb Garden
 - Well
-
-Resources:
-
-- Herb
-- Water
-
-Purpose: starter production chain.
-
-### Damp Cave
-
-Unlock cost:
-
-- 150 Gold
-
-Machines:
-
 - Mushroom Cave
+- Mortar Golem
+- Enchanted Cauldron
+- Bottling Sprite
+- Enchanted Shelf or customer counter utility
 
-Resources:
-
-- Mushroom
-
-Purpose: adds a secondary potion branch.
-
-### Crystal Cavern
-
-Unlock cost:
-
-- 800 Gold
-- Deliver 25 Healing Potions
-
-Machines:
+### Early Access
 
 - Crystal Mine
 - Crystal Grinder
-
-Resources:
-
-- Crystal Dust
-- Glow Shard
-
-Purpose: introduces magical resources and mana potions.
-
-### Shadow Woods
-
-Unlock cost:
-
-- 2000 Gold
-- Research: Toxicology
-
-Machines:
-
 - Shadow Grove
 - Essence Still
+- demand-focused utility machines
 
-Resources:
-
-- Nightshade
-- Moonleaf
-
-Purpose: unlocks antidotes and rare cures.
-
-### Floating Isles
-
-Unlock cost:
-
-- 8000 Gold
-- Prestige Level 1
-
-Machines:
+### 1.0
 
 - Sky Garden
+- late-game specialty brewers
+- higher-tier fulfillment helpers
 
-Resources:
+## 8. Why This Progression Works
 
-- Sky Lotus
-- Phoenix Feather
+- Demo ingredients are simple and readable.
+- Early Access adds stronger color identity and customer variety.
+- 1.0 adds spectacle ingredients that market well and extend aspiration.
 
-Purpose: late-game exotic potion crafting.
+The progression is designed around:
 
-## 6. Example Progression Curve
+- player comprehension
+- visual identity
+- unlock anticipation
+- manageable implementation sequencing
 
-- Stage 1: Herb + Water -> Healing Potions
-- Stage 2: Mushroom -> Energy Potions
-- Stage 3: Crystal Dust -> Mana Potions
-- Stage 4: Nightshade -> Antidotes
-- Stage 5: Sky Lotus -> Legendary Potions
+## 9. Biome Unlock Philosophy
 
-## 7. Machine Count (MVP)
+Biome unlocks should signal:
 
-| Machine | Type |
-| --- | --- |
-| Herb Garden | Producer |
-| Well | Producer |
-| Mushroom Cave | Producer |
-| Crystal Mine | Producer |
-| Shadow Grove | Producer |
-| Sky Garden | Producer |
-| Mortar Golem | Converter |
-| Crystal Grinder | Converter |
-| Essence Still | Converter |
-| Enchanted Cauldron | Converter |
-| Bottling Sprite | Utility |
-| Market Cart | Utility |
+- a new fantasy
+- a new customer need
+- a new layout problem
+- a new visual look for screenshots and trailers
 
-Total machines: `12`
-
-## 8. Why This Works
-
-This progression ensures:
-
-- Steady ingredient discovery
-- Manageable code complexity
-- Clear economy scaling
-- Consistent player goals
-- Expandable systems
-
-Each biome adds:
-
-- 2 ingredients
-- 1 to 2 machines
-- 2 to 3 potions
-
-## 9. Final Scope Summary
-
-- Biomes: 5
-- Ingredients: 14
-- Potions: 9
-- Machines: 12
-
-This design fits comfortably within a solo 12-week development cycle.
+Unlocks should not exist only to inflate scope.
