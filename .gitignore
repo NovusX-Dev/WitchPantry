@@ -101,6 +101,7 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests.
 /Witch-Pantry/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+/Witch-Pantry/Exports/
 
 # Local Codex session memory.
 SESSION_SUMMARY.local.md
