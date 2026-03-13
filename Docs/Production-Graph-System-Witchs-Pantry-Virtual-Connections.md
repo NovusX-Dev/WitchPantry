@@ -136,7 +136,7 @@ You lose the logistics puzzle of physical routing, but gain stronger pacing, cle
 
 The production system is made of these layers:
 
-- Static data: ScriptableObjects define machine behavior, recipes, and costs.
+- Static data: `ContentDefinition`, `IngredientDefinition`, `PotionDefinition`, `RecipeDefinition`, `MachineDefinition`, and `ContractDefinition` hold authored gameplay data.
 - Runtime state: runtime classes track owned machines, machine progress, upgrades, and inventory totals.
 - Tick simulation: every second, all active machines run their processing logic.
 - Shared inventory: resources are added and removed from one central store.
@@ -189,36 +189,40 @@ public class PantryInventory
 using System;
 
 [Serializable]
-public struct ResourceAmount
+public struct IngredientAmount
 {
-    public string ResourceId;
-    public double Amount;
+    public IngredientDefinition ingredient;
+    public int amount;
+}
 
-    public ResourceAmount(string resourceId, double amount)
-    {
-        ResourceId = resourceId;
-        Amount = amount;
-    }
+[Serializable]
+public struct PotionAmount
+{
+    public PotionDefinition potion;
+    public int amount;
 }
 ```
 
 ## 10. Machine Definition Data
 
-Use ScriptableObjects for machine definitions so behavior is data-driven.
+Use ScriptableObjects for machine definitions so behavior is data-driven and aligned with
+the current content-definition layer.
 
 ```csharp
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "WitchPantry/Machine Definition")]
-public class MachineDefinition : ScriptableObject
+public class MachineDefinition : ContentDefinition
 {
-    public string machineId;
-    public string displayName;
-    public float processTime = 1f;
-    public bool isProducer;
-    public ResourceAmount[] inputs;
-    public ResourceAmount[] outputs;
-    public double baseCost = 10;
+    public float PurchaseCost;
+    public float UpgradeCost;
+    public float ProcessingSpeed;
+    public int QueueCapacity;
+    public float EnergyCost;
+    public Vector2Int Footprint;
+    public RecipeDefinition[] SupportedRecipes;
+    public MachineCategory MachineCategory;
+    public bool CanRunOffline;
 }
 ```
 
@@ -230,14 +234,15 @@ using System;
 [Serializable]
 public class MachineInstance
 {
-    public string machineId;
+    public string machineDefinitionId;
+    public string assignedRecipeId;
     public int level = 1;
     public int owned = 0;
     public float progress = 0f;
 
-    public MachineInstance(string machineId)
+    public MachineInstance(string machineDefinitionId)
     {
-        this.machineId = machineId;
+        this.machineDefinitionId = machineDefinitionId;
     }
 }
 ```
@@ -276,10 +281,10 @@ Examples:
 Every tick:
 
 1. Loop over active machines.
-2. For each machine, if it is a producer, advance progress and produce output when complete.
-3. If it is a converter, check shared inventory for inputs.
-4. If inputs exist, consume them and start or finish processing.
-5. Write outputs back to shared inventory.
+2. Resolve the current machine definition and assigned recipe.
+3. Check shared inventory for the recipe inputs.
+4. Advance progress using recipe craft time plus machine speed modifiers.
+5. Write outputs back to shared inventory when complete.
 6. Recalculate economy and UI.
 
 ## 14. Production System Example
@@ -309,7 +314,7 @@ public class ProductionSystem
         foreach (var machine in _machines)
         {
             if (machine.owned <= 0) continue;
-            if (!_definitions.TryGetValue(machine.machineId, out var def)) continue;
+            if (!_definitions.TryGetValue(machine.machineDefinitionId, out var def)) continue;
 
             for (int i = 0; i < machine.owned; i++)
             {
@@ -323,49 +328,33 @@ public class ProductionSystem
         MachineDefinition def,
         float deltaTime)
     {
-        if (!def.isProducer && !HasAllInputs(def.inputs))
-            return;
-
         machine.progress += deltaTime;
-
-        if (machine.progress < def.processTime)
-            return;
-
-        machine.progress = 0f;
-
-        if (!def.isProducer)
-            ConsumeInputs(def.inputs);
-
-        ProduceOutputs(def.outputs);
     }
 
-    private bool HasAllInputs(ResourceAmount[] inputs)
+    private bool HasAllInputs(IngredientAmount[] inputs)
     {
         if (inputs == null) return true;
 
         foreach (var input in inputs)
         {
-            if (!_inventory.Has(input.ResourceId, input.Amount))
+            if (!_inventory.Has(input.ingredient.Id, input.amount))
                 return false;
         }
 
         return true;
     }
 
-    private void ConsumeInputs(ResourceAmount[] inputs)
+    private void ConsumeInputs(IngredientAmount[] inputs)
     {
         if (inputs == null) return;
 
         foreach (var input in inputs)
-            _inventory.TryConsume(input.ResourceId, input.Amount);
+            _inventory.TryConsume(input.ingredient.Id, input.amount);
     }
 
-    private void ProduceOutputs(ResourceAmount[] outputs)
+    private void ProduceOutputs(PotionAmount output)
     {
-        if (outputs == null) return;
-
-        foreach (var output in outputs)
-            _inventory.Add(output.ResourceId, output.Amount);
+        _inventory.Add(output.potion.Id, output.amount);
     }
 }
 ```

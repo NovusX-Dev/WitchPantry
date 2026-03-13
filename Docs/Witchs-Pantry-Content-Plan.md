@@ -33,6 +33,33 @@ The game evolves through these layers:
 - Rare Ingredients: demand rewards, higher-tier recipes, event hooks
 - Arcane Essence: prestige currency
 
+## 3.1 Authored Content Data Layer
+
+The content plan should map directly to the authored ScriptableObject model:
+
+- `IngredientDefinition`
+  - covers raw and processed ingredient content
+  - should use `IngredientCategory`, `IngredientStage`, `Tier`, and `UnlockSource`
+
+- `PotionDefinition`
+  - covers sellable and fulfillable potion content
+  - should use `PotionCategory`, `Tier`, and `UnlockSource`
+
+- `RecipeDefinition`
+  - defines ingredient inputs, potion outputs, and craft time
+  - should use `IngredientAmount[]` and `PotionAmount`
+
+- `MachineDefinition`
+  - defines machine costs, footprint, throughput, and supported recipes
+  - should use `MachineCategory` and `SupportedRecipes`
+
+- `ContractDefinition`
+  - defines authored demand asks for runtime selection
+  - should use `ContractFaction`, `TargetPotion`, `AmountRequired`, `RewardGold`, `DurationHours`, and `Weight`
+
+This keeps content planning, balancing, and implementation in one lane instead of splitting
+design language from data language.
+
 ## 4. Customer Demand Model
 
 Primary demand sources:

@@ -11,6 +11,26 @@
 - phased content planning across demo, Early Access, and 1.0
 - biome additions that expand fantasy and decisions, not just item count
 
+## 1.1 Content Data Mapping
+
+This document should map directly to the current authored content-definition model:
+
+- raw and processed ingredients become `IngredientDefinition` assets
+- potions become `PotionDefinition` assets
+- ingredient-to-potion transformations become `RecipeDefinition` assets
+- source and processing stations become `MachineDefinition` assets
+
+Recommended data interpretation:
+
+- biome phase maps to unlock progression
+- ingredient rarity maps to `Tiers`
+- raw vs processed state maps to `IngredientStage`
+- ingredient families map to `IngredientCategory`
+- potion role maps to `PotionCategory`
+
+The goal is for this document to describe what content exists, while the authored asset layer
+describes exactly how that content is represented in Unity.
+
 ## 2. Release Phase Overview
 
 | Phase | Focus |

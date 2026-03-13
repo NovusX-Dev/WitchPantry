@@ -42,6 +42,31 @@ Demand can shift because of:
 - higher tiers ask for more specialized mixes
 - demand should steer the player toward new layout and production decisions
 
+## Contract Data Shape
+
+Contracts should be authored as `ContractDefinition` ScriptableObjects rather than loose
+hardcoded request blobs.
+
+Recommended concrete fields:
+
+- `DisplayName`
+- `Tier`
+- `Faction`
+- `TargetPotion`
+- `AmountRequired`
+- `RewardGold`
+- `DurationHours`
+- `Weight`
+
+Supporting metadata:
+
+- `ContractFaction` identifies who is asking
+- `Weight` controls how often a valid contract appears relative to other valid contracts
+- `TargetPotion` should reference `PotionDefinition` directly
+
+This keeps demand readable in design terms while still giving runtime systems a concrete,
+typed contract pool to generate from.
+
 ## UX Rule
 
 The player should always know:

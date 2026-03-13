@@ -63,6 +63,12 @@ Assets/
 
 Used to configure economy parameters.
 
+For Witch Pantry, this tool should eventually read from the authored content-definition layer
+instead of treating machine economics as a completely separate data universe. In practice that
+means machine purchase and upgrade tuning should stay compatible with `MachineDefinition`,
+recipe timing should stay compatible with `RecipeDefinition`, and potion value assumptions
+should stay compatible with `PotionDefinition`.
+
 ```csharp
 [CreateAssetMenu]
 class EconomySettings : ScriptableObject

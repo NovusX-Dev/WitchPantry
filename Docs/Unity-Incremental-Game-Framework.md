@@ -114,11 +114,11 @@ Each machine has:
 
 Use a ScriptableObject called `MachineDefinition` with fields such as:
 
-- `machineID`
-- `baseProduction`
-- `processTime`
-- `inputResources`
-- `outputResources`
+- `Id`
+- `DisplayName`
+- `ProcessingSpeed`
+- `SupportedRecipes`
+- `PurchaseCost`
 
 Example machine:
 

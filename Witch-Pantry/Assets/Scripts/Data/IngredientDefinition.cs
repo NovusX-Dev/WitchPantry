@@ -1,0 +1,15 @@
+﻿using UnityEngine;
+
+namespace WitchPantry.Data
+{
+    [CreateAssetMenu(fileName = "Ingredient Definition", menuName = "WitchPantry/Content Def/Ingredients", order = 0)]
+    public class IngredientDefinition : ContentDefinition
+    {
+        [Header("Ingredient Properties")]
+        [field: SerializeField] public float BaseValue { get; private set; }
+        [field: SerializeField] public GlobalConstants.Tiers Tier { get; set; }
+        [field: SerializeField] public GlobalConstants.IngredientCategory IngredientCategory { get; set; }
+        [field: SerializeField] public GlobalConstants.IngredientStage Stage { get; set; }
+        [field: SerializeField] public UnlockSource UnlockSource { get; set; }
+    }
+}

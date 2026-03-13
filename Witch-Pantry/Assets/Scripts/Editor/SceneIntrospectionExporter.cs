@@ -8,7 +8,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace WitchPantry.EditorTools
+namespace WitchPantry.Editor
 {
     public static class SceneIntrospectionExporter
     {
