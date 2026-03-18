@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 779da5ac10ae4c7fa97a6b87b76ebc95, type: 3}
+  m_Name: Recipe.HealingPotion
+  m_EditorClassIdentifier: Assembly-CSharp::WitchPantry.Data.RecipeDefinition
+  <Icon>k__BackingField: {fileID: 0}
+  <Id>k__BackingField: recipe.healing_potion_recipe
+  <ContentType>k__BackingField: 2
+  <DisplayName>k__BackingField: Healing Potion Recipe
+  <Inputs>k__BackingField:
+  - ingredient: {fileID: 11400000, guid: d733015e20f96444d984d90b6cfe7d50, type: 2}
+    amount: 1
+  - ingredient: {fileID: 11400000, guid: b2ac246df99226d4ab0a797249b46cf7, type: 2}
+    amount: 1
+  <Outputs>k__BackingField:
+  - output: {fileID: 11400000, guid: d2e2fdbe80d48a4499423beb39c238cc, type: 2}
+    amount: 1
+  <CraftTime>k__BackingField: 2

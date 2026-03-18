@@ -6,7 +6,7 @@ namespace WitchPantry.Data
     public class IngredientDefinition : ContentDefinition
     {
         [field: Header("Ingredient Properties")]
-        [field: SerializeField] public float BaseValue { get; private set; }
+        [field: SerializeField] public float EconomicValue { get; private set; }
         [field: SerializeField] public GlobalConstants.Tiers Tier { get; set; }
         [field: SerializeField] public GlobalConstants.IngredientCategory IngredientCategory { get; set; }
         [field: SerializeField] public GlobalConstants.IngredientStage Stage { get; set; }

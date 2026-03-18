@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a624b2516906492185466336bd5e169b, type: 3}
+  m_Name: Ingredient.Water
+  m_EditorClassIdentifier: Assembly-CSharp::WitchPantry.Data.IngredientDefinition
+  <Icon>k__BackingField: {fileID: 0}
+  <Id>k__BackingField: ingredient.water
+  <ContentType>k__BackingField: 0
+  <DisplayName>k__BackingField: Water
+  <EconomicValue>k__BackingField: 5
+  <Tier>k__BackingField: 0
+  <IngredientCategory>k__BackingField: 4
+  <Stage>k__BackingField: 0
+  <UnlockSource>k__BackingField:
+    Type: 2
+    SourceId: machine.machine.well

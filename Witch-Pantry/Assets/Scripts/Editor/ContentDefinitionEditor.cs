@@ -186,7 +186,7 @@ namespace WitchPantry.Editor
                 changed |= SetContentType(serializedObject, expectedContentType.Value);
             }
 
-            changed |= SetDisplayName(serializedObject, definition.name);
+            changed |= InitializeDisplayName(serializedObject, definition.name);
             changed |= NormalizeUnlockSource(serializedObject);
             changed |= SetId(serializedObject, GenerateId(definition), forceIdRegeneration);
 
@@ -258,10 +258,10 @@ namespace WitchPantry.Editor
             return true;
         }
 
-        private static bool SetDisplayName(SerializedObject serializedObject, string generatedName)
+        private static bool InitializeDisplayName(SerializedObject serializedObject, string generatedName)
         {
             var property = serializedObject.FindProperty(DisplayNameBackingField);
-            if (property == null || string.Equals(property.stringValue, generatedName, StringComparison.Ordinal))
+            if (property == null || !string.IsNullOrWhiteSpace(property.stringValue))
             {
                 return false;
             }

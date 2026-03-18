@@ -39,6 +39,34 @@ Apply these rules to every authored asset:
 - `Prestige` uses `prestige.<slug>`
 - `EventReward` uses `event.<slug>`
 
+Value fields:
+
+- `IngredientDefinition.BaseValue`
+  - use as the baseline economic worth of an ingredient
+  - this is useful for recipe balance, reward tuning, and future ingredient-selling rules
+  - if ingredients are never directly sellable, treat it as internal balance data rather than a player-facing price
+
+- `PotionDefinition.SellValue`
+  - use as the direct player-facing sale value of a potion
+  - this should be the clearest monetization output field in the authored data
+
+Machine fields:
+
+- `PurchaseCost`
+  - upfront machine purchase price
+- `UpgradeCost`
+  - base cost anchor for future upgrade scaling
+- `ProcessingSpeed`
+  - use `1.0` as the neutral baseline
+  - higher than `1.0` means faster than recipe baseline
+  - lower than `1.0` means slower than recipe baseline
+- `QueueCapacity`
+  - how many jobs or queued items the machine can hold
+- `EnergyCost`
+  - ongoing operating burden or upkeep weight
+- `Footprint`
+  - pantry tile size
+
 ## Canonical Starter Slice
 
 This is the first real authored content set the project should have.
@@ -47,6 +75,7 @@ This is the first real authored content set the project should have.
 
 - [ ] `ingredient.herb`
   - `DisplayName`: `Herb`
+  - `BaseValue`: author a starter value
   - `Tier`: `Common`
   - `IngredientCategory`: `Herb`
   - `Stage`: `Raw`
@@ -55,6 +84,7 @@ This is the first real authored content set the project should have.
 
 - [ ] `ingredient.water`
   - `DisplayName`: `Water`
+  - `BaseValue`: author a starter value
   - `Tier`: `Common`
   - `IngredientCategory`: `Liquid`
   - `Stage`: `Raw`
@@ -63,6 +93,7 @@ This is the first real authored content set the project should have.
 
 - [ ] `ingredient.mushroom`
   - `DisplayName`: `Mushroom`
+  - `BaseValue`: author a starter value
   - `Tier`: `Common`
   - `IngredientCategory`: `Mushroom`
   - `Stage`: `Raw`
@@ -71,6 +102,7 @@ This is the first real authored content set the project should have.
 
 - [ ] `ingredient.ground_herb`
   - `DisplayName`: `Ground Herb`
+  - `BaseValue`: author a starter value
   - `Tier`: `Common`
   - `IngredientCategory`: `Processed`
   - `Stage`: `Processed`
@@ -79,6 +111,7 @@ This is the first real authored content set the project should have.
 
 - [ ] `ingredient.mushroom_paste`
   - `DisplayName`: `Mushroom Paste`
+  - `BaseValue`: author a starter value
   - `Tier`: `Common`
   - `IngredientCategory`: `Processed`
   - `Stage`: `Processed`
@@ -89,6 +122,7 @@ This is the first real authored content set the project should have.
 
 - [ ] `potion.healing_potion`
   - `DisplayName`: `Healing Potion`
+  - `SellValue`: author a starter value
   - `Tier`: `Common`
   - `PotionCategory`: `Healing`
   - `UnlockSource`: `Recipe / recipe.healing_potion`
@@ -96,12 +130,34 @@ This is the first real authored content set the project should have.
 
 - [ ] `potion.energy_potion`
   - `DisplayName`: `Energy Potion`
+  - `SellValue`: author a starter value
   - `Tier`: `Common`
   - `PotionCategory`: `Utility`
   - `UnlockSource`: `Recipe / recipe.energy_potion`
   - Notes: first branch potion
 
 ### Recipes
+
+- [ ] `recipe.gather_herb`
+  - `DisplayName`: `Gather Herb`
+  - `Inputs`: none
+  - `Outputs`:
+    - `Herb x1`
+  - `CraftTime`: author a starter value
+
+- [ ] `recipe.draw_water`
+  - `DisplayName`: `Draw Water`
+  - `Inputs`: none
+  - `Outputs`:
+    - `Water x1`
+  - `CraftTime`: author a starter value
+
+- [ ] `recipe.grow_mushroom`
+  - `DisplayName`: `Grow Mushroom`
+  - `Inputs`: none
+  - `Outputs`:
+    - `Mushroom x1`
+  - `CraftTime`: author a starter value
 
 - [ ] `recipe.ground_herb`
   - `DisplayName`: `Ground Herb`
@@ -140,27 +196,54 @@ This is the first real authored content set the project should have.
 
 - [ ] `machine.herb_garden`
   - `DisplayName`: `Herb Garden`
+  - `PurchaseCost`: `10`
+  - `UpgradeCost`: `20`
+  - `ProcessingSpeed`: `1.0`
+  - `QueueCapacity`: `2`
+  - `EnergyCost`: `0`
+  - `Footprint`: `2 x 2`
   - `MachineCategory`: `Gathering`
-  - `SupportedRecipes`: none or runtime producer behavior
+  - `SupportedRecipes`:
+    - `recipe.gather_herb`
   - `CanRunOffline`: yes
   - Notes: produces `ingredient.herb`
 
 - [ ] `machine.well`
   - `DisplayName`: `Well`
+  - `PurchaseCost`: `12`
+  - `UpgradeCost`: `24`
+  - `ProcessingSpeed`: `1.0`
+  - `QueueCapacity`: `2`
+  - `EnergyCost`: `0`
+  - `Footprint`: `2 x 2`
   - `MachineCategory`: `Gathering`
-  - `SupportedRecipes`: none or runtime producer behavior
+  - `SupportedRecipes`:
+    - `recipe.draw_water`
   - `CanRunOffline`: yes
   - Notes: produces `ingredient.water`
 
 - [ ] `machine.mushroom_cave`
   - `DisplayName`: `Mushroom Cave`
+  - `PurchaseCost`: `15`
+  - `UpgradeCost`: `30`
+  - `ProcessingSpeed`: `0.9`
+  - `QueueCapacity`: `2`
+  - `EnergyCost`: `0`
+  - `Footprint`: `2 x 2`
   - `MachineCategory`: `Gathering`
-  - `SupportedRecipes`: none or runtime producer behavior
+  - `SupportedRecipes`:
+    - `recipe.grow_mushroom`
   - `CanRunOffline`: yes
   - Notes: produces `ingredient.mushroom`
 
 - [ ] `machine.mortar_golem`
   - `DisplayName`: `Mortar Golem`
+  - `PurchaseCost`: `30`
+  - `UpgradeCost`: `45`
+  - `ProcessingSpeed`: `1.0`
+  - `QueueCapacity`: `3`
+  - `EnergyCost`: `1`
+  - `Footprint`: `2 x 2`
   - `MachineCategory`: `Processing`
   - `SupportedRecipes`:
     - `recipe.ground_herb`
@@ -169,6 +252,12 @@ This is the first real authored content set the project should have.
 
 - [ ] `machine.enchanted_cauldron`
   - `DisplayName`: `Enchanted Cauldron`
+  - `PurchaseCost`: `50`
+  - `UpgradeCost`: `75`
+  - `ProcessingSpeed`: `1.0`
+  - `QueueCapacity`: `2`
+  - `EnergyCost`: `2`
+  - `Footprint`: `3 x 2`
   - `MachineCategory`: `Brewing`
   - `SupportedRecipes`:
     - `recipe.healing_potion`
@@ -177,12 +266,24 @@ This is the first real authored content set the project should have.
 
 - [ ] `machine.bottling_sprite`
   - `DisplayName`: `Bottling Sprite`
+  - `PurchaseCost`: `40`
+  - `UpgradeCost`: `60`
+  - `ProcessingSpeed`: `1.1`
+  - `QueueCapacity`: `2`
+  - `EnergyCost`: `1`
+  - `Footprint`: `2 x 1`
   - `MachineCategory`: `Bottling`
   - `CanRunOffline`: yes
   - Notes: useful for future runtime flow, but current authored recipe schema does not yet model bottled outputs directly
 
 - [ ] `machine.enchanted_shelf`
   - `DisplayName`: `Enchanted Shelf`
+  - `PurchaseCost`: `20`
+  - `UpgradeCost`: `35`
+  - `ProcessingSpeed`: `1.0`
+  - `QueueCapacity`: `8`
+  - `EnergyCost`: `0`
+  - `Footprint`: `2 x 1`
   - `MachineCategory`: `Storage`
   - `CanRunOffline`: yes
   - Notes: utility/support machine for future storage or fulfillment handling
@@ -227,6 +328,7 @@ This is the first authored content branch after the starter slice and supports t
 
 - [ ] `ingredient.crystal_dust`
   - `DisplayName`: `Crystal Dust`
+  - `BaseValue`: author a follow-on value
   - `Tier`: `Rare`
   - `IngredientCategory`: `Mineral`
   - `Stage`: `Raw`
@@ -234,6 +336,7 @@ This is the first authored content branch after the starter slice and supports t
 
 - [ ] `ingredient.crystal_powder`
   - `DisplayName`: `Crystal Powder`
+  - `BaseValue`: author a follow-on value
   - `Tier`: `Rare`
   - `IngredientCategory`: `Processed`
   - `Stage`: `Processed`
@@ -243,11 +346,19 @@ This is the first authored content branch after the starter slice and supports t
 
 - [ ] `potion.mana_potion`
   - `DisplayName`: `Mana Potion`
+  - `SellValue`: author a follow-on value
   - `Tier`: `Rare`
   - `PotionCategory`: `Utility`
   - `UnlockSource`: `Recipe / recipe.mana_potion`
 
 ### Recipes
+
+- [ ] `recipe.gather_crystal_dust`
+  - `DisplayName`: `Gather Crystal Dust`
+  - `Inputs`: none
+  - `Outputs`:
+    - `Crystal Dust x1`
+  - `CraftTime`: author a follow-on value
 
 - [ ] `recipe.crystal_powder`
   - `DisplayName`: `Crystal Powder`
@@ -270,12 +381,26 @@ This is the first authored content branch after the starter slice and supports t
 
 - [ ] `machine.crystal_mine`
   - `DisplayName`: `Crystal Mine`
+  - `PurchaseCost`: `80`
+  - `UpgradeCost`: `120`
+  - `ProcessingSpeed`: `0.8`
+  - `QueueCapacity`: `2`
+  - `EnergyCost`: `1`
+  - `Footprint`: `2 x 2`
   - `MachineCategory`: `Gathering`
+  - `SupportedRecipes`:
+    - `recipe.gather_crystal_dust`
   - `CanRunOffline`: yes
   - Notes: produces `ingredient.crystal_dust`
 
 - [ ] `machine.crystal_grinder`
   - `DisplayName`: `Crystal Grinder`
+  - `PurchaseCost`: `90`
+  - `UpgradeCost`: `135`
+  - `ProcessingSpeed`: `1.0`
+  - `QueueCapacity`: `3`
+  - `EnergyCost`: `2`
+  - `Footprint`: `2 x 2`
   - `MachineCategory`: `Processing`
   - `SupportedRecipes`:
     - `recipe.crystal_powder`

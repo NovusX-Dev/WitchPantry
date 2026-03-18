@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebfcd44a4dca4d89b5f4ecbe04111f9d, type: 3}
+  m_Name: Contract.MerchantEnergyOrder
+  m_EditorClassIdentifier: Assembly-CSharp::WitchPantry.Data.ContractDefinition
+  <Icon>k__BackingField: {fileID: 0}
+  <Id>k__BackingField: contract.merchant_energy_contract
+  <ContentType>k__BackingField: 4
+  <DisplayName>k__BackingField: Merchant Energy Contract
+  <Tier>k__BackingField: 0
+  <Faction>k__BackingField: 1
+  <TargetPotion>k__BackingField: {fileID: 11400000, guid: 1f6a8d06ec1175d4789ed8a7d666f70d, type: 2}
+  <AmountRequired>k__BackingField: 5
+  <RewardGold>k__BackingField: 250
+  <DurationHours>k__BackingField: 5
+  <Weight>k__BackingField: 5

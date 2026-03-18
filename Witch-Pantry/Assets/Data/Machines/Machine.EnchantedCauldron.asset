@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f96e8f12fe30438394d39701c8ca4bdf, type: 3}
+  m_Name: Machine.EnchantedCauldron
+  m_EditorClassIdentifier: Assembly-CSharp::WitchPantry.Data.MachineDefinition
+  <Icon>k__BackingField: {fileID: 0}
+  <Id>k__BackingField: machine.enchanted_cauldron
+  <ContentType>k__BackingField: 1
+  <DisplayName>k__BackingField: Enchanted Cauldron
+  <PurchaseCost>k__BackingField: 50
+  <UpgradeCost>k__BackingField: 75
+  <ProcessingSpeed>k__BackingField: 1
+  <QueueCapacity>k__BackingField: 2
+  <EnergyCost>k__BackingField: 2
+  <Footprint>k__BackingField: {x: 3, y: 2}
+  <SupportedRecipes>k__BackingField:
+  - {fileID: 11400000, guid: 396281b1ac85c974b9bedc17fb57fc28, type: 2}
+  - {fileID: 11400000, guid: 709a1bd5ec0a1124eaacd33b20c00c04, type: 2}
+  - {fileID: 11400000, guid: 220a3fcfb56eac3418ac5de880416a1c, type: 2}
+  <MachineCategory>k__BackingField: 2
+  <CanRunOffline>k__BackingField: 1

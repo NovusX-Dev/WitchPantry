@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 779da5ac10ae4c7fa97a6b87b76ebc95, type: 3}
+  m_Name: Recipe.GatherHerb
+  m_EditorClassIdentifier: Assembly-CSharp::WitchPantry.Data.RecipeDefinition
+  <Icon>k__BackingField: {fileID: 0}
+  <Id>k__BackingField: recipe.gather_herb_recipe
+  <ContentType>k__BackingField: 2
+  <DisplayName>k__BackingField: Gather Herb Recipe
+  <Inputs>k__BackingField: []
+  <Outputs>k__BackingField:
+  - output: {fileID: 11400000, guid: 3195eb9036559d34f8a049f5cf72e01a, type: 2}
+    amount: 1
+  <CraftTime>k__BackingField: 0.5

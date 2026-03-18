@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a624b2516906492185466336bd5e169b, type: 3}
-  m_Name: Ingredient Definition
+  m_Name: Ingredient.GroundHerb
   m_EditorClassIdentifier: Assembly-CSharp::WitchPantry.Data.IngredientDefinition
   <Icon>k__BackingField: {fileID: 0}
-  <Id>k__BackingField: ingredient.ingredient_definition
+  <Id>k__BackingField: ingredient.ground_herb
   <ContentType>k__BackingField: 0
-  <DisplayName>k__BackingField: Ingredient Definition
-  <BaseValue>k__BackingField: 5
+  <DisplayName>k__BackingField: Ground Herb
+  <EconomicValue>k__BackingField: 5
   <Tier>k__BackingField: 0
-  <IngredientCategory>k__BackingField: 0
-  <Stage>k__BackingField: 0
+  <IngredientCategory>k__BackingField: 6
+  <Stage>k__BackingField: 1
   <UnlockSource>k__BackingField:
-    Type: 0
-    SourceId: 
+    Type: 3
+    SourceId: recipe.ground_herb

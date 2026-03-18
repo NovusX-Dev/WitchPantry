@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f96e8f12fe30438394d39701c8ca4bdf, type: 3}
-  m_Name: Machine Definition
+  m_Name: Machine.Well
   m_EditorClassIdentifier: Assembly-CSharp::WitchPantry.Data.MachineDefinition
   <Icon>k__BackingField: {fileID: 0}
-  <Id>k__BackingField: machine.gathering
+  <Id>k__BackingField: machine.well
   <ContentType>k__BackingField: 1
-  <DisplayName>k__BackingField: Gathering
-  <PurchaseCost>k__BackingField: 5
-  <UpgradeCost>k__BackingField: 25
-  <ProcessingSpeed>k__BackingField: 10
-  <QueueCapacity>k__BackingField: 3
+  <DisplayName>k__BackingField: Well
+  <PurchaseCost>k__BackingField: 12
+  <UpgradeCost>k__BackingField: 24
+  <ProcessingSpeed>k__BackingField: 1
+  <QueueCapacity>k__BackingField: 2
   <EnergyCost>k__BackingField: 25
   <Footprint>k__BackingField: {x: 2, y: 2}
   <SupportedRecipes>k__BackingField:
-  - {fileID: 11400000, guid: dc9c479bb115ae74481d2b99663fe0cc, type: 2}
+  - {fileID: 11400000, guid: 7ae2eeff3fe898a42863eac4c28a1e7d, type: 2}
   <MachineCategory>k__BackingField: 0
   <CanRunOffline>k__BackingField: 1
