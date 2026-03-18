@@ -5,7 +5,7 @@ namespace WitchPantry.Data
     [CreateAssetMenu(fileName = "Machine Definition", menuName = "WitchPantry/Content Def/Machines", order = 0)]
     public class MachineDefinition : ContentDefinition
     {
-        [Header("Machine Properties")]
+        [field: Header("Machine Properties")]
         [field: SerializeField] public float PurchaseCost { get; private set; }
         [field: SerializeField] public float UpgradeCost { get; private set; }
         [field: SerializeField] public float ProcessingSpeed { get; private set; }

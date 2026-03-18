@@ -6,14 +6,8 @@ namespace WitchPantry.Data
     [Serializable]
     public struct UnlockSource
     {
-        public GlobalConstants.UnlockSourceType type;
-        public string sourceId;
-        
-        public UnlockSource(GlobalConstants.UnlockSourceType type, string source)
-        {
-            this.type = type;
-            sourceId = $"{type}.{source}";
-        }
+        public GlobalConstants.UnlockSourceType Type;
+        public string SourceId;
     }
 
     [Serializable]

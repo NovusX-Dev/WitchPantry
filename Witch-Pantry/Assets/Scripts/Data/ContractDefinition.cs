@@ -5,7 +5,7 @@ namespace WitchPantry.Data
     [CreateAssetMenu(fileName = "Contract Definition", menuName = "WitchPantry/Content Def/Contracts", order = 0)]
     public class ContractDefinition : ContentDefinition
     {
-        [Header("Contract Properties")]
+        [field: Header("Contract Properties")]
         [field: SerializeField] public GlobalConstants.Tiers Tier { get; private set; }
         [field: SerializeField] public GlobalConstants.ContractFaction Faction { get; private set; }
         [field: SerializeField] public PotionDefinition TargetPotion { get; private set; }

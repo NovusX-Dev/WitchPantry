@@ -11,10 +11,20 @@ namespace WitchPantry.Editor
     [CustomEditor(typeof(ContentDefinition), true)]
     public sealed class ContentDefinitionEditor : UnityEditor.Editor
     {
+        private const string RegenerateIdButtonLabel = "Regenerate ID";
+        private const string ValidateAllButtonLabel = "Validate All";
+        private static readonly string[] InspectorPropertiesToExclude =
+        {
+            ContentDefinitionEditorUtility.ScriptPropertyName,
+            ContentDefinitionEditorUtility.UnlockSourceBackingFieldName,
+        };
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            DrawDefaultInspector();
+
+            DrawPropertiesExcluding(serializedObject, InspectorPropertiesToExclude);
+            DrawUnlockSourceInspector();
             serializedObject.ApplyModifiedProperties();
 
             var definition = (ContentDefinition)target;
@@ -30,15 +40,51 @@ namespace WitchPantry.Editor
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("Regenerate ID"))
+                if (GUILayout.Button(RegenerateIdButtonLabel))
                 {
                     ContentDefinitionEditorUtility.RegenerateId(definition);
                 }
 
-                if (GUILayout.Button("Validate All"))
+                if (GUILayout.Button(ValidateAllButtonLabel))
                 {
                     ContentDefinitionEditorUtility.ValidateAllContentDefinitions(logResults: true);
                 }
+            }
+        }
+
+        private void DrawUnlockSourceInspector()
+        {
+            var unlockSourceProperty = ContentDefinitionEditorUtility.GetUnlockSourceProperty(serializedObject);
+            if (unlockSourceProperty == null)
+            {
+                return;
+            }
+
+            var unlockTypeProperty = unlockSourceProperty.FindPropertyRelative(ContentDefinitionEditorUtility.UnlockSourceTypeFieldName);
+            var sourceIdProperty = unlockSourceProperty.FindPropertyRelative(ContentDefinitionEditorUtility.UnlockSourceIdFieldName);
+            if (unlockTypeProperty == null || sourceIdProperty == null)
+            {
+                EditorGUILayout.PropertyField(unlockSourceProperty, includeChildren: true);
+                return;
+            }
+
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(unlockTypeProperty);
+            if (EditorGUI.EndChangeCheck())
+            {
+                ContentDefinitionEditorUtility.ApplyUnlockSourceTypeSelection(unlockTypeProperty, sourceIdProperty);
+            }
+
+            var selectedUnlockType = (GlobalConstants.UnlockSourceType)unlockTypeProperty.enumValueIndex;
+            var sourceIdShouldBeDisabled = selectedUnlockType == GlobalConstants.UnlockSourceType.StartingContent;
+            if (sourceIdShouldBeDisabled && !string.IsNullOrWhiteSpace(sourceIdProperty.stringValue))
+            {
+                sourceIdProperty.stringValue = string.Empty;
+            }
+
+            using (new EditorGUI.DisabledScope(sourceIdShouldBeDisabled))
+            {
+                EditorGUILayout.PropertyField(sourceIdProperty);
             }
         }
     }
@@ -64,11 +110,34 @@ namespace WitchPantry.Editor
 
     public static class ContentDefinitionEditorUtility
     {
-        private const string IdBackingField = "<Id>k__BackingField";
-        private const string ContentTypeBackingField = "<ContentType>k__BackingField";
-        private const string ContentNameBackingField = "<ContentName>k__BackingField";
+        private const string ToolsMenuRoot = "Tools/Witch Pantry/Validation/";
+        private const string FixMenuItemPath = ToolsMenuRoot + "Fix Content Definitions";
+        private const string ValidateMenuItemPath = ToolsMenuRoot + "Validate Content Definitions";
+        private const string ContentDefinitionAssetFilter = "t:" + nameof(ContentDefinition);
+        private const string DefaultIdPrefix = "content.";
+        private const string DefaultSlug = "unnamed";
+        private const string IdSeparator = ".";
+        public const string ScriptPropertyName = "m_Script";
+        public static readonly string UnlockSourceBackingFieldName = GetAutoPropertyBackingFieldName(nameof(IngredientDefinition.UnlockSource));
+        public static readonly string UnlockSourceTypeFieldName = nameof(UnlockSource.Type);
+        public static readonly string UnlockSourceIdFieldName = nameof(UnlockSource.SourceId);
 
-        [MenuItem("Tools/Witch Pantry/Validation/Fix Content Definitions")]
+        private static readonly string IdBackingField = GetAutoPropertyBackingFieldName(nameof(ContentDefinition.Id));
+        private static readonly string ContentTypeBackingField = GetAutoPropertyBackingFieldName(nameof(ContentDefinition.ContentType));
+        private static readonly string DisplayNameBackingField = GetAutoPropertyBackingFieldName(nameof(ContentDefinition.DisplayName));
+        private static readonly IReadOnlyDictionary<GlobalConstants.UnlockSourceType, string> UnlockSourcePrefixes =
+            new Dictionary<GlobalConstants.UnlockSourceType, string>
+            {
+                { GlobalConstants.UnlockSourceType.Biome, BuildIdPrefix("biome") },
+                { GlobalConstants.UnlockSourceType.Machine, BuildIdPrefix(nameof(GlobalConstants.ContentType.Machine)) },
+                { GlobalConstants.UnlockSourceType.Recipe, BuildIdPrefix(nameof(GlobalConstants.ContentType.Recipe)) },
+                { GlobalConstants.UnlockSourceType.ContractReward, BuildIdPrefix("contract") },
+                { GlobalConstants.UnlockSourceType.Research, BuildIdPrefix("research") },
+                { GlobalConstants.UnlockSourceType.Prestige, BuildIdPrefix("prestige") },
+                { GlobalConstants.UnlockSourceType.EventReward, BuildIdPrefix("event") },
+            };
+
+        [MenuItem(FixMenuItemPath)]
         public static void FixAllContentDefinitions()
         {
             var definitions = LoadAllContentDefinitions();
@@ -87,7 +156,7 @@ namespace WitchPantry.Editor
             Debug.Log($"ContentDefinition fix-up complete. Updated {updatedCount} asset(s).");
         }
 
-        [MenuItem("Tools/Witch Pantry/Validation/Validate Content Definitions")]
+        [MenuItem(ValidateMenuItemPath)]
         public static void ValidateAllContentDefinitionsMenu()
         {
             ValidateAllContentDefinitions(logResults: true);
@@ -114,7 +183,8 @@ namespace WitchPantry.Editor
                 changed |= SetContentType(serializedObject, expectedContentType.Value);
             }
 
-            changed |= SetContentName(serializedObject, definition.name);
+            changed |= SetDisplayName(serializedObject, definition.name);
+            changed |= NormalizeUnlockSource(serializedObject);
             changed |= SetId(serializedObject, GenerateId(definition), forceIdRegeneration);
 
             if (!changed)
@@ -165,7 +235,7 @@ namespace WitchPantry.Editor
 
         private static IReadOnlyList<ContentDefinition> LoadAllContentDefinitions()
         {
-            return AssetDatabase.FindAssets("t:ContentDefinition")
+            return AssetDatabase.FindAssets(ContentDefinitionAssetFilter)
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<ContentDefinition>)
                 .Where(definition => definition != null)
@@ -185,9 +255,9 @@ namespace WitchPantry.Editor
             return true;
         }
 
-        private static bool SetContentName(SerializedObject serializedObject, string generatedName)
+        private static bool SetDisplayName(SerializedObject serializedObject, string generatedName)
         {
-            var property = serializedObject.FindProperty(ContentNameBackingField);
+            var property = serializedObject.FindProperty(DisplayNameBackingField);
             if (property == null || string.Equals(property.stringValue, generatedName, StringComparison.Ordinal))
             {
                 return false;
@@ -219,6 +289,44 @@ namespace WitchPantry.Editor
             return true;
         }
 
+        public static SerializedProperty GetUnlockSourceProperty(SerializedObject serializedObject)
+        {
+            return serializedObject.FindProperty(UnlockSourceBackingFieldName);
+        }
+
+        public static void ApplyUnlockSourceTypeSelection(
+            SerializedProperty unlockTypeProperty,
+            SerializedProperty sourceIdProperty)
+        {
+            if (unlockTypeProperty == null || sourceIdProperty == null)
+            {
+                return;
+            }
+
+            var selectedUnlockType = (GlobalConstants.UnlockSourceType)unlockTypeProperty.enumValueIndex;
+            if (selectedUnlockType == GlobalConstants.UnlockSourceType.StartingContent)
+            {
+                sourceIdProperty.stringValue = string.Empty;
+                return;
+            }
+
+            var expectedPrefix = GetUnlockSourcePrefix(selectedUnlockType);
+            if (string.IsNullOrWhiteSpace(expectedPrefix))
+            {
+                return;
+            }
+
+            var currentSourceId = sourceIdProperty.stringValue ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(currentSourceId))
+            {
+                sourceIdProperty.stringValue = expectedPrefix;
+                return;
+            }
+
+            var suffix = TrimKnownUnlockSourcePrefix(currentSourceId);
+            sourceIdProperty.stringValue = expectedPrefix + suffix;
+        }
+
         private static IReadOnlyList<string> ValidateDefinitionAgainstMap(
             ContentDefinition definition,
             IReadOnlyDictionary<string, List<ContentDefinition>> duplicateMap)
@@ -238,7 +346,7 @@ namespace WitchPantry.Editor
 
             if (string.IsNullOrWhiteSpace(definition.DisplayName))
             {
-                issues.Add("ContentName is required.");
+                issues.Add("DisplayName is required.");
             }
 
             var expectedId = GenerateId(definition);
@@ -258,7 +366,123 @@ namespace WitchPantry.Editor
                 issues.Add($"Duplicate Id `{definition.Id}` is used by {duplicates.Count} content assets.");
             }
 
+            issues.AddRange(ValidateUnlockSource(definition));
+
             return issues;
+        }
+
+        private static IEnumerable<string> ValidateUnlockSource(ContentDefinition definition)
+        {
+            if (!TryGetUnlockSource(definition, out var unlockSource))
+            {
+                yield break;
+            }
+
+            if (unlockSource.Type == GlobalConstants.UnlockSourceType.StartingContent)
+            {
+                if (!string.IsNullOrWhiteSpace(unlockSource.SourceId))
+                {
+                    yield return "UnlockSource.SourceId must be empty when UnlockSource.Type is StartingContent.";
+                }
+
+                yield break;
+            }
+
+            if (string.IsNullOrWhiteSpace(unlockSource.SourceId))
+            {
+                yield return $"UnlockSource.SourceId is required when UnlockSource.Type is {unlockSource.Type}.";
+                yield break;
+            }
+
+            var expectedPrefix = GetUnlockSourcePrefix(unlockSource.Type);
+            if (!string.IsNullOrWhiteSpace(expectedPrefix) &&
+                !unlockSource.SourceId.StartsWith(expectedPrefix, StringComparison.Ordinal))
+            {
+                yield return $"UnlockSource.SourceId should start with `{expectedPrefix}` when UnlockSource.Type is {unlockSource.Type}.";
+            }
+        }
+
+        private static bool TryGetUnlockSource(ContentDefinition definition, out UnlockSource unlockSource)
+        {
+            switch (definition)
+            {
+                case IngredientDefinition ingredientDefinition:
+                    unlockSource = ingredientDefinition.UnlockSource;
+                    return true;
+                case PotionDefinition potionDefinition:
+                    unlockSource = potionDefinition.UnlockSource;
+                    return true;
+                default:
+                    unlockSource = default;
+                    return false;
+            }
+        }
+
+        private static string GetUnlockSourcePrefix(GlobalConstants.UnlockSourceType unlockSourceType)
+        {
+            return UnlockSourcePrefixes.TryGetValue(unlockSourceType, out var prefix)
+                ? prefix
+                : string.Empty;
+        }
+
+        private static bool NormalizeUnlockSource(SerializedObject serializedObject)
+        {
+            var unlockSourceProperty = GetUnlockSourceProperty(serializedObject);
+            if (unlockSourceProperty == null)
+            {
+                return false;
+            }
+
+            var unlockTypeProperty = unlockSourceProperty.FindPropertyRelative(UnlockSourceTypeFieldName);
+            var sourceIdProperty = unlockSourceProperty.FindPropertyRelative(UnlockSourceIdFieldName);
+            if (unlockTypeProperty == null || sourceIdProperty == null)
+            {
+                return false;
+            }
+
+            var selectedUnlockType = (GlobalConstants.UnlockSourceType)unlockTypeProperty.enumValueIndex;
+            if (selectedUnlockType != GlobalConstants.UnlockSourceType.StartingContent)
+            {
+                var expectedPrefix = GetUnlockSourcePrefix(selectedUnlockType);
+                if (string.IsNullOrWhiteSpace(expectedPrefix))
+                {
+                    return false;
+                }
+
+                if (string.IsNullOrWhiteSpace(sourceIdProperty.stringValue))
+                {
+                    sourceIdProperty.stringValue = expectedPrefix;
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(sourceIdProperty.stringValue))
+            {
+                return false;
+            }
+
+            sourceIdProperty.stringValue = string.Empty;
+            return true;
+        }
+
+        private static string TrimKnownUnlockSourcePrefix(string sourceId)
+        {
+            if (string.IsNullOrWhiteSpace(sourceId))
+            {
+                return string.Empty;
+            }
+
+            foreach (var prefix in UnlockSourcePrefixes.Values)
+            {
+                if (sourceId.StartsWith(prefix, StringComparison.Ordinal))
+                {
+                    return sourceId.Substring(prefix.Length);
+                }
+            }
+
+            return sourceId;
         }
 
         private static Dictionary<string, List<ContentDefinition>> FindDuplicateIds()
@@ -288,8 +512,8 @@ namespace WitchPantry.Editor
         {
             var expectedType = GetExpectedContentType(type);
             return expectedType.HasValue
-                ? expectedType.Value.ToString().ToLowerInvariant() + "."
-                : "content.";
+                ? BuildIdPrefix(expectedType.Value.ToString())
+                : DefaultIdPrefix;
         }
 
         private static GlobalConstants.ContentType? GetExpectedContentType(Type type)
@@ -326,7 +550,7 @@ namespace WitchPantry.Editor
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                return "unnamed";
+                return DefaultSlug;
             }
 
             var builder = new StringBuilder(value.Length);
@@ -351,7 +575,7 @@ namespace WitchPantry.Editor
             }
 
             var slug = builder.ToString().Trim('_');
-            return string.IsNullOrWhiteSpace(slug) ? "unnamed" : slug;
+            return string.IsNullOrWhiteSpace(slug) ? DefaultSlug : slug;
         }
 
         private static string BuildIssueLog(string assetPath, IReadOnlyList<string> issues)
@@ -365,6 +589,16 @@ namespace WitchPantry.Editor
             }
 
             return builder.ToString();
+        }
+
+        private static string BuildIdPrefix(string prefixRoot)
+        {
+            return prefixRoot.ToLowerInvariant() + IdSeparator;
+        }
+
+        private static string GetAutoPropertyBackingFieldName(string propertyName)
+        {
+            return $"<{propertyName}>k__BackingField";
         }
     }
 }

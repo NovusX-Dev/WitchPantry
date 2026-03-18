@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Contract Definition
   m_EditorClassIdentifier: Assembly-CSharp::WitchPantry.Data.ContractDefinition
   <Icon>k__BackingField: {fileID: 0}
-  <Id>k__BackingField: contract.luna
+  <Id>k__BackingField: contract.contract_definition
   <ContentType>k__BackingField: 4
-  <DisplayName>k__BackingField: Luna
+  <DisplayName>k__BackingField: Contract Definition
   <Tier>k__BackingField: 0
   <Faction>k__BackingField: 0
   <TargetPotion>k__BackingField: {fileID: 11400000, guid: d2e2fdbe80d48a4499423beb39c238cc, type: 2}

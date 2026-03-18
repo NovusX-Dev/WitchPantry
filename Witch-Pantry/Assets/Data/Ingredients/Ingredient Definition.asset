@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Ingredient Definition
   m_EditorClassIdentifier: Assembly-CSharp::WitchPantry.Data.IngredientDefinition
   <Icon>k__BackingField: {fileID: 0}
-  <Id>k__BackingField: ingredient.t1
+  <Id>k__BackingField: ingredient.ingredient_definition
   <ContentType>k__BackingField: 0
-  <DisplayName>k__BackingField: t1
+  <DisplayName>k__BackingField: Ingredient Definition
   <BaseValue>k__BackingField: 5
   <Tier>k__BackingField: 0
   <IngredientCategory>k__BackingField: 0
   <Stage>k__BackingField: 0
   <UnlockSource>k__BackingField:
-    type: 0
-    sourceId: 
+    Type: 0
+    SourceId: 
