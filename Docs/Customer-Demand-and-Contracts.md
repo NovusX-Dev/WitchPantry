@@ -1,5 +1,7 @@
 # Customer Demand and Contracts
 
+For the concrete authored contract list, use [ScriptableObject-Authoring-Checklist.md](C:/Unity/Repos/WitchPantry/Docs/ScriptableObject-Authoring-Checklist.md) as the implementation checklist.
+
 ## Core Direction
 
 Use controllable customer demand and faction requests instead of a broad simulated export market.
@@ -49,7 +51,11 @@ hardcoded request blobs.
 
 Recommended concrete fields:
 
-- `DisplayName`
+- inherited from `ContentDefinition`:
+  - `Icon`
+  - `Id`
+  - `ContentType`
+  - `DisplayName`
 - `Tier`
 - `Faction`
 - `TargetPotion`
@@ -63,6 +69,8 @@ Supporting metadata:
 - `ContractFaction` identifies who is asking
 - `Weight` controls how often a valid contract appears relative to other valid contracts
 - `TargetPotion` should reference `PotionDefinition` directly
+- contracts do not currently use `UnlockSource`; availability is expected to be controlled by runtime generation rules and progression logic
+- `Id` should follow the stable authored format `contract.<slug>`
 
 This keeps demand readable in design terms while still giving runtime systems a concrete,
 typed contract pool to generate from.

@@ -123,16 +123,12 @@ Rules for the base type:
 
 Recommended supporting value types:
 
-- `ContentAmount`
-  - `ContentDefinition definition`
-  - `int amount`
-
 - `IngredientAmount`
   - `IngredientDefinition ingredient`
   - `int amount`
 
-- `PotionAmount`
-  - `PotionDefinition potion`
+- `OutputAmount`
+  - `ContentDefinition output`
   - `int amount`
 
 The purpose of these small serializable structs is to avoid the weak "array of references
@@ -142,29 +138,30 @@ with implied quantity = 1" pattern while keeping recipe outputs explicit and ser
 
 - `IngredientDefinition`
   - inherits `ContentDefinition`
-  - `BaseValue`
-  - recommended additions:
-    - `Tier`
-    - `IngredientCategory`
-    - `UnlockSource`
-    - `Stage`
+  - current concrete structure:
+    - `float BaseValue`
+    - `Tiers Tier`
+    - `IngredientCategory IngredientCategory`
+    - `IngredientStage Stage`
+    - `UnlockSource UnlockSource`
 
 - `PotionDefinition`
   - inherits `ContentDefinition`
-  - `SellValue`
-  - recommended additions:
-    - `Tier`
-    - `PotionCategory`
-    - `UnlockSource`
+  - current concrete structure:
+    - `float SellValue`
+    - `Tiers Tier`
+    - `PotionCategory PotionCategory`
+    - `UnlockSource UnlockSource`
 
 - `RecipeDefinition`
   - inherits `ContentDefinition`
   - current concrete structure:
     - `IngredientAmount[] Inputs`
-    - `PotionAmount PotionAmount`
+    - `OutputAmount[] Outputs`
     - `float CraftTime`
   - note:
-    - output quantity is carried inside `PotionAmount`
+    - output quantity is carried inside each `OutputAmount`
+    - output definitions can currently reference authored content generically
     - machine compatibility should remain owned by `MachineDefinition`, not duplicated here
 
 - `MachineDefinition`
@@ -274,11 +271,23 @@ with implied quantity = 1" pattern while keeping recipe outputs explicit and ser
 - `UnlockSource`
   - a small serializable metadata struct
   - current fields:
-    - `UnlockSourceType type`
-    - `string sourceId`
+    - `UnlockSourceType Type`
+    - `string SourceId`
+
+Authoring rules for `UnlockSource`:
+
+- if `Type == StartingContent`, `SourceId` must stay empty
+- otherwise `SourceId` should be explicitly authored with a type-matching prefix:
+  - `biome.*`
+  - `machine.*`
+  - `recipe.*`
+  - `contract.*`
+  - `research.*`
+  - `prestige.*`
+  - `event.*`
 
 `UnlockSourceType` should be an enum, but the enum alone is too vague for real progression
-tracking. Pairing it with `sourceId` keeps the data model simple while still telling the
+tracking. Pairing it with `SourceId` keeps the data model simple while still telling the
 game which biome, machine, research node, contract line, or event actually unlocked the content.
 
 ### Concrete Implementation Target
@@ -360,8 +369,9 @@ class ProductionSystem
 - `inputBuffer`
 - `outputBuffer`
 
-`RecipeDefinition.Inputs` and `RecipeDefinition.PotionAmount` define what the machine consumes
-and produces. `PotionDefinition` provides the sellable output metadata used by the economy.
+`RecipeDefinition.Inputs` and `RecipeDefinition.Outputs` define what the machine consumes
+and produces. `PotionDefinition` still provides the sellable output metadata used by the economy
+whenever a recipe output is a potion.
 
 ## 8. Economy System
 

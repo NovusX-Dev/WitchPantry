@@ -24,14 +24,14 @@ namespace WitchPantry.Data
     }
 
     [Serializable]
-    public struct PotionAmount
+    public struct OutputAmount
     {
-        public PotionDefinition potion;
+        public ContentDefinition output;
         public int amount;
 
-        public PotionAmount(PotionDefinition potion, int amount)
+        public OutputAmount(ContentDefinition output, int amount)
         {
-            this.potion = potion;
+            this.output = output;
             this.amount = amount;
         }
     }

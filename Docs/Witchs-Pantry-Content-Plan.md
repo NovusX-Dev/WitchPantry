@@ -4,6 +4,8 @@
 - Platform: Steam
 - Genre: Cozy Automation / Incremental / Desktop Idle
 
+For the concrete asset-by-asset authoring list, use [ScriptableObject-Authoring-Checklist.md](C:/Unity/Repos/WitchPantry/Docs/ScriptableObject-Authoring-Checklist.md) as the canonical checklist.
+
 ## 1. Content Strategy
 
 Content should reinforce four things:
@@ -37,25 +39,130 @@ The game evolves through these layers:
 
 The content plan should map directly to the authored ScriptableObject model:
 
+- `ContentDefinition`
+  - shared base for all authored content assets
+  - concrete shared fields:
+    - `Icon`
+    - `Id`
+    - `ContentType`
+    - `DisplayName`
+  - authoring rules:
+    - `Id` format is `<contentType>.<slug>`
+    - `ContentType` is derived from the concrete asset type and editor-validated
+    - `DisplayName` is the player-facing name
+
 - `IngredientDefinition`
   - covers raw and processed ingredient content
-  - should use `IngredientCategory`, `IngredientStage`, `Tier`, and `UnlockSource`
+  - concrete fields:
+    - `BaseValue`
+    - `Tier`
+    - `IngredientCategory`
+    - `Stage`
+    - `UnlockSource`
 
 - `PotionDefinition`
   - covers sellable and fulfillable potion content
-  - should use `PotionCategory`, `Tier`, and `UnlockSource`
+  - concrete fields:
+    - `SellValue`
+    - `Tier`
+    - `PotionCategory`
+    - `UnlockSource`
 
 - `RecipeDefinition`
-  - defines ingredient inputs, potion outputs, and craft time
-  - should use `IngredientAmount[]` and `PotionAmount`
+  - defines ingredient inputs, authored outputs, and craft time
+  - concrete fields:
+    - `IngredientAmount[] Inputs`
+    - `OutputAmount[] Outputs`
+    - `CraftTime`
 
 - `MachineDefinition`
   - defines machine costs, footprint, throughput, and supported recipes
-  - should use `MachineCategory` and `SupportedRecipes`
+  - concrete fields:
+    - `PurchaseCost`
+    - `UpgradeCost`
+    - `ProcessingSpeed`
+    - `QueueCapacity`
+    - `EnergyCost`
+    - `Footprint`
+    - `SupportedRecipes`
+    - `MachineCategory`
+    - `CanRunOffline`
 
 - `ContractDefinition`
   - defines authored demand asks for runtime selection
-  - should use `ContractFaction`, `TargetPotion`, `AmountRequired`, `RewardGold`, `DurationHours`, and `Weight`
+  - concrete fields:
+    - `Tier`
+    - `Faction`
+    - `TargetPotion`
+    - `AmountRequired`
+    - `RewardGold`
+    - `DurationHours`
+    - `Weight`
+
+Supporting value structs used by the content layer:
+
+- `UnlockSource`
+  - `Type`
+  - `SourceId`
+  - authoring rule:
+    - `StartingContent` must keep `SourceId` empty
+    - all other types should use a prefixed `SourceId` such as `biome.*`, `machine.*`, `recipe.*`, `contract.*`, `research.*`, `prestige.*`, or `event.*`
+
+- `IngredientAmount`
+  - `ingredient`
+  - `amount`
+
+- `OutputAmount`
+  - `output`
+  - `amount`
+
+Current enum vocabulary used by content authoring:
+
+- `MachineCategory`
+  - `Gathering`
+  - `Processing`
+  - `Brewing`
+  - `Storage`
+  - `Support`
+  - `Utility`
+  - `Bottling`
+  - `Delivery`
+
+- `IngredientCategory`
+  - `Herb`
+  - `Mineral`
+  - `Animal`
+  - `Mushroom`
+  - `Liquid`
+  - `Essence`
+  - `Processed`
+
+- `PotionCategory`
+  - `Healing`
+  - `Buff`
+  - `Debuff`
+  - `Utility`
+  - `Offensive`
+  - `Defensive`
+  - `Mystic`
+  - `Cleansing`
+  - `FactionSpecific`
+
+- `IngredientStage`
+  - `Raw`
+  - `Processed`
+  - `Refined`
+  - `Enchanted`
+
+- `ContractFaction`
+  - `VillageResidents`
+  - `TravelingMerchants`
+  - `ApothecaryGuild`
+  - `ForestCoven`
+  - `ScholarsConsortium`
+  - `MoonMarket`
+  - `RoyalKitchen`
+  - `OdditiesCollector`
 
 This keeps content planning, balancing, and implementation in one lane instead of splitting
 design language from data language.

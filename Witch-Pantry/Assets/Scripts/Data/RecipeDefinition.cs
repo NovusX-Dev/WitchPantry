@@ -7,7 +7,7 @@ namespace WitchPantry.Data
     {
         [field: Header("Recipe Properties")]
         [field: SerializeField] public IngredientAmount[] Inputs { get; private set; }
-        [field: SerializeField] public PotionAmount PotionAmount { get; private set; }
+        [field: SerializeField] public OutputAmount[] Outputs { get; private set; }
         [field: SerializeField] public float CraftTime { get; private set; }
     }
 }

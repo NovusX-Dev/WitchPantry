@@ -4,6 +4,8 @@
 - Genre: Cozy Automation / Incremental / Desktop Idle
 - Progression Model: Spatial pantry factory with customer demand
 
+For the concrete asset creation checklist that implements this progression, use [ScriptableObject-Authoring-Checklist.md](C:/Unity/Repos/WitchPantry/Docs/ScriptableObject-Authoring-Checklist.md).
+
 ## 1. Design Goals
 
 - clear ingredient discovery
@@ -27,6 +29,51 @@ Recommended data interpretation:
 - raw vs processed state maps to `IngredientStage`
 - ingredient families map to `IngredientCategory`
 - potion role maps to `PotionCategory`
+- unlock gating maps to `UnlockSource.Type` and `UnlockSource.SourceId`
+
+Current authoring rules that should be followed when creating assets:
+
+- every authored content asset inherits base fields from `ContentDefinition`
+  - `Icon`
+  - `Id`
+  - `ContentType`
+  - `DisplayName`
+- ingredient assets use:
+  - `BaseValue`
+  - `Tier`
+  - `IngredientCategory`
+  - `Stage`
+  - `UnlockSource`
+- potion assets use:
+  - `SellValue`
+  - `Tier`
+  - `PotionCategory`
+  - `UnlockSource`
+- recipe assets use:
+  - `IngredientAmount[] Inputs`
+  - `OutputAmount[] Outputs`
+  - `CraftTime`
+- machine assets use:
+  - `PurchaseCost`
+  - `UpgradeCost`
+  - `ProcessingSpeed`
+  - `QueueCapacity`
+  - `EnergyCost`
+  - `Footprint`
+  - `SupportedRecipes`
+  - `MachineCategory`
+  - `CanRunOffline`
+
+`UnlockSource` authoring grammar:
+
+- `StartingContent` keeps `SourceId` empty
+- biome-gated content uses `SourceId = biome.<slug>`
+- machine-gated content uses `SourceId = machine.<slug>`
+- recipe-gated content uses `SourceId = recipe.<slug>`
+- contract reward content uses `SourceId = contract.<slug>`
+- research-gated content uses `SourceId = research.<slug>`
+- prestige-gated content uses `SourceId = prestige.<slug>`
+- event reward content uses `SourceId = event.<slug>`
 
 The goal is for this document to describe what content exists, while the authored asset layer
 describes exactly how that content is represented in Unity.

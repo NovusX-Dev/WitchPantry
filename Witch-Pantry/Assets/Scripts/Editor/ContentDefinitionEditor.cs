@@ -121,6 +121,9 @@ namespace WitchPantry.Editor
         public static readonly string UnlockSourceBackingFieldName = GetAutoPropertyBackingFieldName(nameof(IngredientDefinition.UnlockSource));
         public static readonly string UnlockSourceTypeFieldName = nameof(UnlockSource.Type);
         public static readonly string UnlockSourceIdFieldName = nameof(UnlockSource.SourceId);
+        public static readonly string RecipeOutputsBackingFieldName = GetAutoPropertyBackingFieldName(nameof(RecipeDefinition.Outputs));
+        public static readonly string OutputAmountDefinitionFieldName = nameof(OutputAmount.output);
+        public static readonly string OutputAmountValueFieldName = nameof(OutputAmount.amount);
 
         private static readonly string IdBackingField = GetAutoPropertyBackingFieldName(nameof(ContentDefinition.Id));
         private static readonly string ContentTypeBackingField = GetAutoPropertyBackingFieldName(nameof(ContentDefinition.ContentType));
@@ -367,6 +370,7 @@ namespace WitchPantry.Editor
             }
 
             issues.AddRange(ValidateUnlockSource(definition));
+            issues.AddRange(ValidateRecipeOutputs(definition));
 
             return issues;
         }
@@ -423,6 +427,46 @@ namespace WitchPantry.Editor
             return UnlockSourcePrefixes.TryGetValue(unlockSourceType, out var prefix)
                 ? prefix
                 : string.Empty;
+        }
+
+        private static IEnumerable<string> ValidateRecipeOutputs(ContentDefinition definition)
+        {
+            if (!(definition is RecipeDefinition recipeDefinition))
+            {
+                yield break;
+            }
+
+            var outputs = recipeDefinition.Outputs;
+            if (outputs == null || outputs.Length == 0)
+            {
+                yield return "RecipeDefinition must define at least one output.";
+                yield break;
+            }
+
+            for (var index = 0; index < outputs.Length; index++)
+            {
+                var outputAmount = outputs[index];
+                if (outputAmount.output == null)
+                {
+                    yield return $"RecipeDefinition.Outputs[{index}] is missing an output reference.";
+                    continue;
+                }
+
+                if (!IsAllowedRecipeOutputType(outputAmount.output))
+                {
+                    yield return $"RecipeDefinition.Outputs[{index}] uses invalid output type `{outputAmount.output.GetType().Name}`. Recipes may only output IngredientDefinition or PotionDefinition assets.";
+                }
+
+                if (outputAmount.amount <= 0)
+                {
+                    yield return $"RecipeDefinition.Outputs[{index}] must have an amount greater than 0.";
+                }
+            }
+        }
+
+        private static bool IsAllowedRecipeOutputType(ContentDefinition outputDefinition)
+        {
+            return outputDefinition is IngredientDefinition || outputDefinition is PotionDefinition;
         }
 
         private static bool NormalizeUnlockSource(SerializedObject serializedObject)

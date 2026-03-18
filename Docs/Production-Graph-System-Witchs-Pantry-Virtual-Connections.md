@@ -196,9 +196,16 @@ public struct IngredientAmount
 }
 
 [Serializable]
-public struct PotionAmount
+public struct UnlockSource
 {
-    public PotionDefinition potion;
+    public UnlockSourceType Type;
+    public string SourceId;
+}
+
+[Serializable]
+public struct OutputAmount
+{
+    public ContentDefinition output;
     public int amount;
 }
 ```
@@ -214,17 +221,22 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "WitchPantry/Machine Definition")]
 public class MachineDefinition : ContentDefinition
 {
-    public float PurchaseCost;
-    public float UpgradeCost;
-    public float ProcessingSpeed;
-    public int QueueCapacity;
-    public float EnergyCost;
-    public Vector2Int Footprint;
-    public RecipeDefinition[] SupportedRecipes;
-    public MachineCategory MachineCategory;
-    public bool CanRunOffline;
+    public float PurchaseCost { get; private set; }
+    public float UpgradeCost { get; private set; }
+    public float ProcessingSpeed { get; private set; }
+    public int QueueCapacity { get; private set; }
+    public float EnergyCost { get; private set; }
+    public Vector2Int Footprint { get; private set; }
+    public RecipeDefinition[] SupportedRecipes { get; private set; }
+    public MachineCategory MachineCategory { get; private set; }
+    public bool CanRunOffline { get; private set; }
 }
 ```
+
+Authoring note:
+
+- the current editor tooling auto-seeds `UnlockSource.SourceId` prefixes based on `UnlockSource.Type`
+- `StartingContent` keeps `SourceId` empty and disables editing in the inspector
 
 ## 11. Machine Runtime Instance
 
@@ -352,9 +364,14 @@ public class ProductionSystem
             _inventory.TryConsume(input.ingredient.Id, input.amount);
     }
 
-    private void ProduceOutputs(PotionAmount output)
+    private void ProduceOutputs(OutputAmount[] outputs)
     {
-        _inventory.Add(output.potion.Id, output.amount);
+        if (outputs == null) return;
+
+        foreach (var output in outputs)
+        {
+            _inventory.Add(output.output.Id, output.amount);
+        }
     }
 }
 ```
