@@ -16,7 +16,7 @@ namespace WitchPantry.Editor
         private static readonly string[] InspectorPropertiesToExclude =
         {
             ContentDefinitionEditorUtility.ScriptPropertyName,
-            ContentDefinitionEditorUtility.UnlockSourceBackingFieldName,
+            ContentDefinitionEditorUtility.UnlockRequirementBackingFieldName,
         };
 
         public override void OnInspectorGUI()
@@ -24,7 +24,7 @@ namespace WitchPantry.Editor
             serializedObject.Update();
 
             DrawPropertiesExcluding(serializedObject, InspectorPropertiesToExclude);
-            DrawUnlockSourceInspector();
+            DrawUnlockRequirementInspector();
             serializedObject.ApplyModifiedProperties();
 
             var definition = (ContentDefinition)target;
@@ -52,19 +52,29 @@ namespace WitchPantry.Editor
             }
         }
 
-        private void DrawUnlockSourceInspector()
+        private void DrawUnlockRequirementInspector()
         {
-            var unlockSourceProperty = ContentDefinitionEditorUtility.GetUnlockSourceProperty(serializedObject);
-            if (unlockSourceProperty == null)
+            var unlockRequirementProperty = ContentDefinitionEditorUtility.GetUnlockRequirementProperty(serializedObject);
+            if (unlockRequirementProperty == null)
             {
                 return;
             }
 
-            var unlockTypeProperty = unlockSourceProperty.FindPropertyRelative(ContentDefinitionEditorUtility.UnlockSourceTypeFieldName);
-            var sourceIdProperty = unlockSourceProperty.FindPropertyRelative(ContentDefinitionEditorUtility.UnlockSourceIdFieldName);
-            if (unlockTypeProperty == null || sourceIdProperty == null)
+            var unlockTypeProperty =
+                unlockRequirementProperty.FindPropertyRelative(ContentDefinitionEditorUtility.UnlockRequirementTypeFieldName);
+            var contentDefinitionProperty =
+                unlockRequirementProperty.FindPropertyRelative(ContentDefinitionEditorUtility.UnlockRequirementContentDefinitionFieldName);
+            var biomeDefinitionProperty =
+                unlockRequirementProperty.FindPropertyRelative(ContentDefinitionEditorUtility.UnlockRequirementBiomeDefinitionFieldName);
+            var sourceContractProperty =
+                unlockRequirementProperty.FindPropertyRelative(ContentDefinitionEditorUtility.UnlockRequirementContractDefinitionFieldName);
+
+            if (unlockTypeProperty == null ||
+                contentDefinitionProperty == null ||
+                biomeDefinitionProperty == null ||
+                sourceContractProperty == null)
             {
-                EditorGUILayout.PropertyField(unlockSourceProperty, includeChildren: true);
+                EditorGUILayout.PropertyField(unlockRequirementProperty, includeChildren: true);
                 return;
             }
 
@@ -72,19 +82,43 @@ namespace WitchPantry.Editor
             EditorGUILayout.PropertyField(unlockTypeProperty);
             if (EditorGUI.EndChangeCheck())
             {
-                ContentDefinitionEditorUtility.ApplyUnlockSourceTypeSelection(unlockTypeProperty, sourceIdProperty);
+                ContentDefinitionEditorUtility.ApplyUnlockRequirementTypeSelection(
+                    unlockTypeProperty,
+                    contentDefinitionProperty,
+                    biomeDefinitionProperty,
+                    sourceContractProperty);
             }
 
-            var selectedUnlockType = (GlobalConstants.UnlockSourceType)unlockTypeProperty.enumValueIndex;
-            var sourceIdShouldBeDisabled = selectedUnlockType == GlobalConstants.UnlockSourceType.StartingContent;
-            if (sourceIdShouldBeDisabled && !string.IsNullOrWhiteSpace(sourceIdProperty.stringValue))
+            var selectedUnlockType = (UnlockRequirementType)unlockTypeProperty.enumValueIndex;
+            switch (selectedUnlockType)
             {
-                sourceIdProperty.stringValue = string.Empty;
-            }
+                case UnlockRequirementType.StartingContent:
+                    EditorGUILayout.HelpBox("Starting content requires no additional unlock reference.", MessageType.Info);
+                    break;
 
-            using (new EditorGUI.DisabledScope(sourceIdShouldBeDisabled))
-            {
-                EditorGUILayout.PropertyField(sourceIdProperty);
+                case UnlockRequirementType.ContentDefinition:
+                    EditorGUILayout.PropertyField(contentDefinitionProperty);
+                    break;
+
+                case UnlockRequirementType.Biome:
+                    EditorGUILayout.PropertyField(biomeDefinitionProperty);
+                    break;
+
+                case UnlockRequirementType.ContractReward:
+                    EditorGUILayout.PropertyField(sourceContractProperty);
+                    break;
+
+                case UnlockRequirementType.Research:
+                case UnlockRequirementType.Prestige:
+                case UnlockRequirementType.EventReward:
+                    EditorGUILayout.HelpBox(
+                        $"{selectedUnlockType} is reserved for later and is not implemented yet. Do not author content with this unlock type yet.",
+                        MessageType.Warning);
+                    break;
+
+                default:
+                    EditorGUILayout.HelpBox($"Unsupported unlock requirement type `{selectedUnlockType}`.", MessageType.Warning);
+                    break;
             }
         }
     }
@@ -117,28 +151,23 @@ namespace WitchPantry.Editor
         private const string DefaultIdPrefix = "content.";
         private const string DefaultSlug = "unnamed";
         private const string IdSeparator = ".";
+
         public const string ScriptPropertyName = "m_Script";
-        public static readonly string UnlockSourceBackingFieldName = GetAutoPropertyBackingFieldName(nameof(IngredientDefinition.UnlockSource));
-        public static readonly string UnlockSourceTypeFieldName = nameof(UnlockSource.Type);
-        public static readonly string UnlockSourceIdFieldName = nameof(UnlockSource.SourceId);
+        public static readonly string UnlockRequirementBackingFieldName =
+            GetAutoPropertyBackingFieldName(nameof(IngredientDefinition.UnlockRequirement));
+        public static readonly string UnlockRequirementTypeFieldName = nameof(UnlockRequirement.Type);
+        public static readonly string UnlockRequirementContentDefinitionFieldName = nameof(UnlockRequirement.ContentDefinition);
+        public static readonly string UnlockRequirementBiomeDefinitionFieldName = nameof(UnlockRequirement.BiomeDefinition);
+        public static readonly string UnlockRequirementContractDefinitionFieldName = nameof(UnlockRequirement.SourceContract);
         public static readonly string RecipeOutputsBackingFieldName = GetAutoPropertyBackingFieldName(nameof(RecipeDefinition.Outputs));
         public static readonly string OutputAmountDefinitionFieldName = nameof(OutputAmount.output);
         public static readonly string OutputAmountValueFieldName = nameof(OutputAmount.amount);
 
         private static readonly string IdBackingField = GetAutoPropertyBackingFieldName(nameof(ContentDefinition.Id));
-        private static readonly string ContentTypeBackingField = GetAutoPropertyBackingFieldName(nameof(ContentDefinition.ContentType));
-        private static readonly string DisplayNameBackingField = GetAutoPropertyBackingFieldName(nameof(ContentDefinition.DisplayName));
-        private static readonly IReadOnlyDictionary<GlobalConstants.UnlockSourceType, string> UnlockSourcePrefixes =
-            new Dictionary<GlobalConstants.UnlockSourceType, string>
-            {
-                { GlobalConstants.UnlockSourceType.Biome, BuildIdPrefix("biome") },
-                { GlobalConstants.UnlockSourceType.Machine, BuildIdPrefix(nameof(GlobalConstants.ContentType.Machine)) },
-                { GlobalConstants.UnlockSourceType.Recipe, BuildIdPrefix(nameof(GlobalConstants.ContentType.Recipe)) },
-                { GlobalConstants.UnlockSourceType.ContractReward, BuildIdPrefix("contract") },
-                { GlobalConstants.UnlockSourceType.Research, BuildIdPrefix("research") },
-                { GlobalConstants.UnlockSourceType.Prestige, BuildIdPrefix("prestige") },
-                { GlobalConstants.UnlockSourceType.EventReward, BuildIdPrefix("event") },
-            };
+        private static readonly string ContentTypeBackingField =
+            GetAutoPropertyBackingFieldName(nameof(ContentDefinition.ContentType));
+        private static readonly string DisplayNameBackingField =
+            GetAutoPropertyBackingFieldName(nameof(ContentDefinition.DisplayName));
 
         [MenuItem(FixMenuItemPath)]
         public static void FixAllContentDefinitions()
@@ -187,7 +216,7 @@ namespace WitchPantry.Editor
             }
 
             changed |= InitializeDisplayName(serializedObject, definition.name);
-            changed |= NormalizeUnlockSource(serializedObject);
+            changed |= NormalizeUnlockRequirement(serializedObject);
             changed |= SetId(serializedObject, GenerateId(definition), forceIdRegeneration);
 
             if (!changed)
@@ -234,6 +263,33 @@ namespace WitchPantry.Editor
             }
 
             return !hasIssues;
+        }
+
+        public static SerializedProperty GetUnlockRequirementProperty(SerializedObject serializedObject)
+        {
+            return serializedObject.FindProperty(UnlockRequirementBackingFieldName);
+        }
+
+        public static void ApplyUnlockRequirementTypeSelection(
+            SerializedProperty unlockTypeProperty,
+            SerializedProperty contentDefinitionProperty,
+            SerializedProperty biomeDefinitionProperty,
+            SerializedProperty sourceContractProperty)
+        {
+            if (unlockTypeProperty == null ||
+                contentDefinitionProperty == null ||
+                biomeDefinitionProperty == null ||
+                sourceContractProperty == null)
+            {
+                return;
+            }
+
+            var selectedUnlockType = (UnlockRequirementType)unlockTypeProperty.enumValueIndex;
+            ClearIrrelevantUnlockRequirementReferences(
+                selectedUnlockType,
+                contentDefinitionProperty,
+                biomeDefinitionProperty,
+                sourceContractProperty);
         }
 
         private static IReadOnlyList<ContentDefinition> LoadAllContentDefinitions()
@@ -292,44 +348,6 @@ namespace WitchPantry.Editor
             return true;
         }
 
-        public static SerializedProperty GetUnlockSourceProperty(SerializedObject serializedObject)
-        {
-            return serializedObject.FindProperty(UnlockSourceBackingFieldName);
-        }
-
-        public static void ApplyUnlockSourceTypeSelection(
-            SerializedProperty unlockTypeProperty,
-            SerializedProperty sourceIdProperty)
-        {
-            if (unlockTypeProperty == null || sourceIdProperty == null)
-            {
-                return;
-            }
-
-            var selectedUnlockType = (GlobalConstants.UnlockSourceType)unlockTypeProperty.enumValueIndex;
-            if (selectedUnlockType == GlobalConstants.UnlockSourceType.StartingContent)
-            {
-                sourceIdProperty.stringValue = string.Empty;
-                return;
-            }
-
-            var expectedPrefix = GetUnlockSourcePrefix(selectedUnlockType);
-            if (string.IsNullOrWhiteSpace(expectedPrefix))
-            {
-                return;
-            }
-
-            var currentSourceId = sourceIdProperty.stringValue ?? string.Empty;
-            if (string.IsNullOrWhiteSpace(currentSourceId))
-            {
-                sourceIdProperty.stringValue = expectedPrefix;
-                return;
-            }
-
-            var suffix = TrimKnownUnlockSourcePrefix(currentSourceId);
-            sourceIdProperty.stringValue = expectedPrefix + suffix;
-        }
-
         private static IReadOnlyList<string> ValidateDefinitionAgainstMap(
             ContentDefinition definition,
             IReadOnlyDictionary<string, List<ContentDefinition>> duplicateMap)
@@ -369,64 +387,148 @@ namespace WitchPantry.Editor
                 issues.Add($"Duplicate Id `{definition.Id}` is used by {duplicates.Count} content assets.");
             }
 
-            issues.AddRange(ValidateUnlockSource(definition));
+            issues.AddRange(ValidateUnlockRequirement(definition));
             issues.AddRange(ValidateRecipeOutputs(definition));
 
             return issues;
         }
 
-        private static IEnumerable<string> ValidateUnlockSource(ContentDefinition definition)
+        private static IEnumerable<string> ValidateUnlockRequirement(ContentDefinition definition)
         {
-            if (!TryGetUnlockSource(definition, out var unlockSource))
+            if (!TryGetUnlockRequirement(definition, out var unlockRequirement))
             {
                 yield break;
             }
 
-            if (unlockSource.Type == GlobalConstants.UnlockSourceType.StartingContent)
+            switch (unlockRequirement.Type)
             {
-                if (!string.IsNullOrWhiteSpace(unlockSource.SourceId))
-                {
-                    yield return "UnlockSource.SourceId must be empty when UnlockSource.Type is StartingContent.";
-                }
+                case UnlockRequirementType.StartingContent:
+                    foreach (var issue in ValidateUnexpectedUnlockReferences(
+                                 unlockRequirement,
+                                 expectContentDefinition: false,
+                                 expectBiomeDefinition: false,
+                                 expectContractDefinition: false))
+                    {
+                        yield return issue;
+                    }
+                    yield break;
 
-                yield break;
-            }
+                case UnlockRequirementType.ContentDefinition:
+                    if (unlockRequirement.ContentDefinition == null)
+                    {
+                        yield return "UnlockRequirement.ContentDefinition is required when UnlockRequirement.Type is ContentDefinition.";
+                    }
+                    else if (string.IsNullOrWhiteSpace(unlockRequirement.ContentDefinition.Id))
+                    {
+                        yield return "UnlockRequirement.ContentDefinition must reference a content asset with a valid Id.";
+                    }
 
-            if (string.IsNullOrWhiteSpace(unlockSource.SourceId))
-            {
-                yield return $"UnlockSource.SourceId is required when UnlockSource.Type is {unlockSource.Type}.";
-                yield break;
-            }
+                    foreach (var issue in ValidateUnexpectedUnlockReferences(
+                                 unlockRequirement,
+                                 expectContentDefinition: true,
+                                 expectBiomeDefinition: false,
+                                 expectContractDefinition: false))
+                    {
+                        yield return issue;
+                    }
+                    yield break;
 
-            var expectedPrefix = GetUnlockSourcePrefix(unlockSource.Type);
-            if (!string.IsNullOrWhiteSpace(expectedPrefix) &&
-                !unlockSource.SourceId.StartsWith(expectedPrefix, StringComparison.Ordinal))
-            {
-                yield return $"UnlockSource.SourceId should start with `{expectedPrefix}` when UnlockSource.Type is {unlockSource.Type}.";
+                case UnlockRequirementType.Biome:
+                    if (unlockRequirement.BiomeDefinition == null)
+                    {
+                        yield return "UnlockRequirement.BiomeDefinition is required when UnlockRequirement.Type is Biome.";
+                    }
+                    else if (string.IsNullOrWhiteSpace(unlockRequirement.BiomeDefinition.Id))
+                    {
+                        yield return "UnlockRequirement.BiomeDefinition must reference a biome asset with a valid Id.";
+                    }
+
+                    foreach (var issue in ValidateUnexpectedUnlockReferences(
+                                 unlockRequirement,
+                                 expectContentDefinition: false,
+                                 expectBiomeDefinition: true,
+                                 expectContractDefinition: false))
+                    {
+                        yield return issue;
+                    }
+                    yield break;
+
+                case UnlockRequirementType.ContractReward:
+                    if (unlockRequirement.SourceContract == null)
+                    {
+                        yield return "UnlockRequirement.SourceContract is required when UnlockRequirement.Type is ContractReward.";
+                    }
+                    else if (string.IsNullOrWhiteSpace(unlockRequirement.SourceContract.Id))
+                    {
+                        yield return "UnlockRequirement.SourceContract must reference a contract asset with a valid Id.";
+                    }
+
+                    foreach (var issue in ValidateUnexpectedUnlockReferences(
+                                 unlockRequirement,
+                                 expectContentDefinition: false,
+                                 expectBiomeDefinition: false,
+                                 expectContractDefinition: true))
+                    {
+                        yield return issue;
+                    }
+                    yield break;
+
+                case UnlockRequirementType.Research:
+                case UnlockRequirementType.Prestige:
+                case UnlockRequirementType.EventReward:
+                    yield return $"UnlockRequirement.Type `{unlockRequirement.Type}` is reserved for later and is not implemented yet.";
+                    foreach (var issue in ValidateUnexpectedUnlockReferences(
+                                 unlockRequirement,
+                                 expectContentDefinition: false,
+                                 expectBiomeDefinition: false,
+                                 expectContractDefinition: false))
+                    {
+                        yield return issue;
+                    }
+                    yield break;
+
+                default:
+                    yield return $"UnlockRequirement.Type `{unlockRequirement.Type}` is unsupported.";
+                    yield break;
             }
         }
 
-        private static bool TryGetUnlockSource(ContentDefinition definition, out UnlockSource unlockSource)
+        private static IEnumerable<string> ValidateUnexpectedUnlockReferences(
+            UnlockRequirement unlockRequirement,
+            bool expectContentDefinition,
+            bool expectBiomeDefinition,
+            bool expectContractDefinition)
+        {
+            if (!expectContentDefinition && unlockRequirement.ContentDefinition != null)
+            {
+                yield return "UnlockRequirement.ContentDefinition must be empty for the selected unlock type.";
+            }
+
+            if (!expectBiomeDefinition && unlockRequirement.BiomeDefinition != null)
+            {
+                yield return "UnlockRequirement.BiomeDefinition must be empty for the selected unlock type.";
+            }
+
+            if (!expectContractDefinition && unlockRequirement.SourceContract != null)
+            {
+                yield return "UnlockRequirement.SourceContract must be empty for the selected unlock type.";
+            }
+        }
+
+        private static bool TryGetUnlockRequirement(ContentDefinition definition, out UnlockRequirement unlockRequirement)
         {
             switch (definition)
             {
                 case IngredientDefinition ingredientDefinition:
-                    unlockSource = ingredientDefinition.UnlockSource;
+                    unlockRequirement = ingredientDefinition.UnlockRequirement;
                     return true;
                 case PotionDefinition potionDefinition:
-                    unlockSource = potionDefinition.UnlockSource;
+                    unlockRequirement = potionDefinition.UnlockRequirement;
                     return true;
                 default:
-                    unlockSource = default;
+                    unlockRequirement = default;
                     return false;
             }
-        }
-
-        private static string GetUnlockSourcePrefix(GlobalConstants.UnlockSourceType unlockSourceType)
-        {
-            return UnlockSourcePrefixes.TryGetValue(unlockSourceType, out var prefix)
-                ? prefix
-                : string.Empty;
         }
 
         private static IEnumerable<string> ValidateRecipeOutputs(ContentDefinition definition)
@@ -469,64 +571,74 @@ namespace WitchPantry.Editor
             return outputDefinition is IngredientDefinition || outputDefinition is PotionDefinition;
         }
 
-        private static bool NormalizeUnlockSource(SerializedObject serializedObject)
+        private static bool NormalizeUnlockRequirement(SerializedObject serializedObject)
         {
-            var unlockSourceProperty = GetUnlockSourceProperty(serializedObject);
-            if (unlockSourceProperty == null)
+            var unlockRequirementProperty = GetUnlockRequirementProperty(serializedObject);
+            if (unlockRequirementProperty == null)
             {
                 return false;
             }
 
-            var unlockTypeProperty = unlockSourceProperty.FindPropertyRelative(UnlockSourceTypeFieldName);
-            var sourceIdProperty = unlockSourceProperty.FindPropertyRelative(UnlockSourceIdFieldName);
-            if (unlockTypeProperty == null || sourceIdProperty == null)
+            var unlockTypeProperty =
+                unlockRequirementProperty.FindPropertyRelative(UnlockRequirementTypeFieldName);
+            var contentDefinitionProperty =
+                unlockRequirementProperty.FindPropertyRelative(UnlockRequirementContentDefinitionFieldName);
+            var biomeDefinitionProperty =
+                unlockRequirementProperty.FindPropertyRelative(UnlockRequirementBiomeDefinitionFieldName);
+            var sourceContractProperty =
+                unlockRequirementProperty.FindPropertyRelative(UnlockRequirementContractDefinitionFieldName);
+
+            if (unlockTypeProperty == null ||
+                contentDefinitionProperty == null ||
+                biomeDefinitionProperty == null ||
+                sourceContractProperty == null)
             {
                 return false;
             }
 
-            var selectedUnlockType = (GlobalConstants.UnlockSourceType)unlockTypeProperty.enumValueIndex;
-            if (selectedUnlockType != GlobalConstants.UnlockSourceType.StartingContent)
-            {
-                var expectedPrefix = GetUnlockSourcePrefix(selectedUnlockType);
-                if (string.IsNullOrWhiteSpace(expectedPrefix))
-                {
-                    return false;
-                }
-
-                if (string.IsNullOrWhiteSpace(sourceIdProperty.stringValue))
-                {
-                    sourceIdProperty.stringValue = expectedPrefix;
-                    return true;
-                }
-
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(sourceIdProperty.stringValue))
-            {
-                return false;
-            }
-
-            sourceIdProperty.stringValue = string.Empty;
-            return true;
+            var selectedUnlockType = (UnlockRequirementType)unlockTypeProperty.enumValueIndex;
+            return ClearIrrelevantUnlockRequirementReferences(
+                selectedUnlockType,
+                contentDefinitionProperty,
+                biomeDefinitionProperty,
+                sourceContractProperty);
         }
 
-        private static string TrimKnownUnlockSourcePrefix(string sourceId)
+        private static bool ClearIrrelevantUnlockRequirementReferences(
+            UnlockRequirementType selectedUnlockType,
+            SerializedProperty contentDefinitionProperty,
+            SerializedProperty biomeDefinitionProperty,
+            SerializedProperty sourceContractProperty)
         {
-            if (string.IsNullOrWhiteSpace(sourceId))
+            var changed = false;
+
+            if (selectedUnlockType != UnlockRequirementType.ContentDefinition)
             {
-                return string.Empty;
+                changed |= ClearObjectReference(contentDefinitionProperty);
             }
 
-            foreach (var prefix in UnlockSourcePrefixes.Values)
+            if (selectedUnlockType != UnlockRequirementType.Biome)
             {
-                if (sourceId.StartsWith(prefix, StringComparison.Ordinal))
-                {
-                    return sourceId.Substring(prefix.Length);
-                }
+                changed |= ClearObjectReference(biomeDefinitionProperty);
             }
 
-            return sourceId;
+            if (selectedUnlockType != UnlockRequirementType.ContractReward)
+            {
+                changed |= ClearObjectReference(sourceContractProperty);
+            }
+
+            return changed;
+        }
+
+        private static bool ClearObjectReference(SerializedProperty property)
+        {
+            if (property == null || property.objectReferenceValue == null)
+            {
+                return false;
+            }
+
+            property.objectReferenceValue = null;
+            return true;
         }
 
         private static Dictionary<string, List<ContentDefinition>> FindDuplicateIds()

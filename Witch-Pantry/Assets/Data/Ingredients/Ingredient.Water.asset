@@ -20,6 +20,8 @@ MonoBehaviour:
   <Tier>k__BackingField: 0
   <IngredientCategory>k__BackingField: 4
   <Stage>k__BackingField: 0
-  <UnlockSource>k__BackingField:
-    Type: 2
-    SourceId: machine.machine.well
+  <UnlockRequirement>k__BackingField:
+    Type: 1
+    ContentDefinition: {fileID: 11400000, guid: d6b7a1fa8ef155b4ea7bad4e4f9b95e8, type: 2}
+    BiomeDefinition: {fileID: 0}
+    SourceContract: {fileID: 0}

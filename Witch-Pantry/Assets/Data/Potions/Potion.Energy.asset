@@ -19,6 +19,8 @@ MonoBehaviour:
   <SellValue>k__BackingField: 35
   <Tier>k__BackingField: 0
   <PotionCategory>k__BackingField: 3
-  <UnlockSource>k__BackingField:
-    Type: 3
-    SourceId: recipe.energy_potion
+  <UnlockRequirement>k__BackingField:
+    Type: 1
+    ContentDefinition: {fileID: 11400000, guid: 396281b1ac85c974b9bedc17fb57fc28, type: 2}
+    BiomeDefinition: {fileID: 0}
+    SourceContract: {fileID: 0}

@@ -120,6 +120,8 @@ Rules for the base type:
 - `DisplayName` is the player-facing name
 - `DisplayName` should not be treated as a duplicate of the asset file name
 - runtime systems reference definitions by `Id`, not by scene object references
+- current exception: `BiomeDefinition` inherits `ContentDefinition`, but `GlobalConstants.ContentType` does not yet define `Biome`
+- because of that exception, current biome assets are not fully normalized by the same `ContentType` rules and currently generate `content.<slug>` ids such as `content.crystal_cavern`
 
 Recommended supporting value types:
 
@@ -139,11 +141,11 @@ with implied quantity = 1" pattern while keeping recipe outputs explicit and ser
 - `IngredientDefinition`
   - inherits `ContentDefinition`
   - current concrete structure:
-    - `float BaseValue`
+    - `float EconomicValue`
     - `Tiers Tier`
     - `IngredientCategory IngredientCategory`
     - `IngredientStage Stage`
-    - `UnlockSource UnlockSource`
+    - `UnlockRequirement UnlockRequirement`
 
 - `PotionDefinition`
   - inherits `ContentDefinition`
@@ -151,7 +153,7 @@ with implied quantity = 1" pattern while keeping recipe outputs explicit and ser
     - `float SellValue`
     - `Tiers Tier`
     - `PotionCategory PotionCategory`
-    - `UnlockSource UnlockSource`
+    - `UnlockRequirement UnlockRequirement`
 
 - `RecipeDefinition`
   - inherits `ContentDefinition`
@@ -256,39 +258,39 @@ with implied quantity = 1" pattern while keeping recipe outputs explicit and ser
     - `Refined`
     - `Enchanted`
 
-- `UnlockSourceType`
+- `UnlockRequirementType`
   - high-level classification for how content becomes available
-  - examples:
+  - current values:
     - `StartingContent`
+    - `ContentDefinition`
     - `Biome`
-    - `Machine`
-    - `Recipe`
-    - `ContractReward`
     - `Research`
     - `Prestige`
+    - `ContractReward`
     - `EventReward`
 
-- `UnlockSource`
-  - a small serializable metadata struct
+- `UnlockRequirement`
+  - a serializable unlock metadata struct
   - current fields:
-    - `UnlockSourceType Type`
-    - `string SourceId`
+    - `UnlockRequirementType Type`
+    - `ContentDefinition ContentDefinition`
+    - `BiomeDefinition BiomeDefinition`
+    - `ContractDefinition SourceContract`
+  - current implementation notes:
+    - `Research`, `Prestige`, and `EventReward` are intentionally reserved for later
+    - the current editor only supports concrete authoring for:
+      - `StartingContent`
+      - `ContentDefinition`
+      - `Biome`
+      - `ContractReward`
 
-Authoring rules for `UnlockSource`:
+Authoring rules for `UnlockRequirement`:
 
-- if `Type == StartingContent`, `SourceId` must stay empty
-- otherwise `SourceId` should be explicitly authored with a type-matching prefix:
-  - `biome.*`
-  - `machine.*`
-  - `recipe.*`
-  - `contract.*`
-  - `research.*`
-  - `prestige.*`
-  - `event.*`
-
-`UnlockSourceType` should be an enum, but the enum alone is too vague for real progression
-tracking. Pairing it with `SourceId` keeps the data model simple while still telling the
-game which biome, machine, research node, contract line, or event actually unlocked the content.
+- if `Type == StartingContent`, no unlock reference should be assigned
+- if `Type == ContentDefinition`, use the `ContentDefinition` reference field
+- if `Type == Biome`, use the `BiomeDefinition` reference field
+- if `Type == ContractReward`, use the `SourceContract` reference field
+- do not author `Research`, `Prestige`, or `EventReward` content yet until those supporting definition types exist
 
 ### Concrete Implementation Target
 
@@ -300,6 +302,12 @@ For this project, the concrete ScriptableObject set should be:
 - `RecipeDefinition`
 - `MachineDefinition`
 - `ContractDefinition`
+- `BiomeDefinition` placeholder asset type for biome-linked unlock dependencies
+
+Current caveat:
+
+- `BiomeDefinition` is a placeholder dependency asset, not yet a fully normalized content type
+- until `ContentType.Biome` exists, biome ids should be treated as the current generated `content.<slug>` values rather than an idealized `biome.<slug>` prefix
 
 New ingredients, machines, potions, recipes, and contracts are added by creating new
 assets from these concrete types rather than inventing ad hoc data containers.

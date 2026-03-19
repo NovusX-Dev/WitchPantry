@@ -20,6 +20,8 @@ MonoBehaviour:
   <Tier>k__BackingField: 1
   <IngredientCategory>k__BackingField: 6
   <Stage>k__BackingField: 1
-  <UnlockSource>k__BackingField:
-    Type: 3
-    SourceId: recipe.crystal_powder
+  <UnlockRequirement>k__BackingField:
+    Type: 1
+    ContentDefinition: {fileID: 11400000, guid: 92310f95aef7d3a4c9cb916d21f89a36, type: 2}
+    BiomeDefinition: {fileID: 0}
+    SourceContract: {fileID: 0}

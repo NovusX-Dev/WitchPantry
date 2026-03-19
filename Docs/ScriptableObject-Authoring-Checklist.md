@@ -28,20 +28,25 @@ Apply these rules to every authored asset:
 - `ContentType` must match the concrete asset type
 - remove placeholder names like `ingredient.t1`, `potion.healme`, `machine.gathering`, and `contract.luna`
 
-`UnlockSource` rules:
+`UnlockRequirement` rules:
 
-- `StartingContent` keeps `SourceId` empty
-- `Biome` uses `biome.<slug>`
-- `Machine` uses `machine.<slug>`
-- `Recipe` uses `recipe.<slug>`
-- `ContractReward` uses `contract.<slug>`
-- `Research` uses `research.<slug>`
-- `Prestige` uses `prestige.<slug>`
-- `EventReward` uses `event.<slug>`
+- `StartingContent`
+  - no unlock reference should be assigned
+- `ContentDefinition`
+  - assign the `ContentDefinition` reference field
+  - use this for machine-driven or recipe-driven unlocks
+- `Biome`
+  - assign the `BiomeDefinition` reference field
+  - current biome placeholder assets still generate `content.<slug>` ids because `ContentType` does not yet include `Biome`
+- `ContractReward`
+  - assign the `SourceContract` reference field
+- `Research`, `Prestige`, and `EventReward`
+  - reserved for later
+  - do not author content with these types yet
 
 Value fields:
 
-- `IngredientDefinition.BaseValue`
+- `IngredientDefinition.EconomicValue`
   - use as the baseline economic worth of an ingredient
   - this is useful for recipe balance, reward tuning, and future ingredient-selling rules
   - if ingredients are never directly sellable, treat it as internal balance data rather than a player-facing price
@@ -75,47 +80,57 @@ This is the first real authored content set the project should have.
 
 - [ ] `ingredient.herb`
   - `DisplayName`: `Herb`
-  - `BaseValue`: author a starter value
+  - `EconomicValue`: author a starter value
   - `Tier`: `Common`
   - `IngredientCategory`: `Herb`
   - `Stage`: `Raw`
-  - `UnlockSource`: `Machine / machine.herb_garden`
+  - `UnlockRequirement`:
+    - `Type = ContentDefinition`
+    - `ContentDefinition = machine.herb_garden`
   - Notes: core healing-starter ingredient
 
 - [ ] `ingredient.water`
   - `DisplayName`: `Water`
-  - `BaseValue`: author a starter value
+  - `EconomicValue`: author a starter value
   - `Tier`: `Common`
   - `IngredientCategory`: `Liquid`
   - `Stage`: `Raw`
-  - `UnlockSource`: `Machine / machine.well`
+  - `UnlockRequirement`:
+    - `Type = ContentDefinition`
+    - `ContentDefinition = machine.well`
   - Notes: staple brewing input
 
 - [ ] `ingredient.mushroom`
   - `DisplayName`: `Mushroom`
-  - `BaseValue`: author a starter value
+  - `EconomicValue`: author a starter value
   - `Tier`: `Common`
   - `IngredientCategory`: `Mushroom`
   - `Stage`: `Raw`
-  - `UnlockSource`: `Machine / machine.mushroom_cave`
+  - `UnlockRequirement`:
+    - `Type = ContentDefinition`
+    - `ContentDefinition = machine.mushroom_cave`
   - Notes: early branch ingredient
 
 - [ ] `ingredient.ground_herb`
   - `DisplayName`: `Ground Herb`
-  - `BaseValue`: author a starter value
+  - `EconomicValue`: author a starter value
   - `Tier`: `Common`
   - `IngredientCategory`: `Processed`
   - `Stage`: `Processed`
-  - `UnlockSource`: `Recipe / recipe.ground_herb`
+  - `UnlockRequirement`:
+    - `Type = ContentDefinition`
+    - `ContentDefinition = recipe.ground_herb`
   - Notes: intermediate for Healing Potion
 
 - [ ] `ingredient.mushroom_paste`
   - `DisplayName`: `Mushroom Paste`
-  - `BaseValue`: author a starter value
+  - `EconomicValue`: author a starter value
   - `Tier`: `Common`
   - `IngredientCategory`: `Processed`
   - `Stage`: `Processed`
-  - `UnlockSource`: `Recipe / recipe.mushroom_paste`
+  - `UnlockRequirement`:
+    - `Type = ContentDefinition`
+    - `ContentDefinition = recipe.mushroom_paste`
   - Notes: intermediate for Energy Potion
 
 ### Potions
@@ -125,7 +140,9 @@ This is the first real authored content set the project should have.
   - `SellValue`: author a starter value
   - `Tier`: `Common`
   - `PotionCategory`: `Healing`
-  - `UnlockSource`: `Recipe / recipe.healing_potion`
+  - `UnlockRequirement`:
+    - `Type = ContentDefinition`
+    - `ContentDefinition = recipe.healing_potion`
   - Notes: first staple potion
 
 - [ ] `potion.energy_potion`
@@ -133,7 +150,9 @@ This is the first real authored content set the project should have.
   - `SellValue`: author a starter value
   - `Tier`: `Common`
   - `PotionCategory`: `Utility`
-  - `UnlockSource`: `Recipe / recipe.energy_potion`
+  - `UnlockRequirement`:
+    - `Type = ContentDefinition`
+    - `ContentDefinition = recipe.energy_potion`
   - Notes: first branch potion
 
 ### Recipes
@@ -328,19 +347,24 @@ This is the first authored content branch after the starter slice and supports t
 
 - [ ] `ingredient.crystal_dust`
   - `DisplayName`: `Crystal Dust`
-  - `BaseValue`: author a follow-on value
+  - `EconomicValue`: author a follow-on value
   - `Tier`: `Rare`
   - `IngredientCategory`: `Mineral`
   - `Stage`: `Raw`
-  - `UnlockSource`: `Biome / biome.crystal_cavern`
+  - `UnlockRequirement`:
+    - `Type = Biome`
+    - `BiomeDefinition = Biome.CrystalCavern.asset`
+    - current referenced biome id: `content.crystal_cavern`
 
 - [ ] `ingredient.crystal_powder`
   - `DisplayName`: `Crystal Powder`
-  - `BaseValue`: author a follow-on value
+  - `EconomicValue`: author a follow-on value
   - `Tier`: `Rare`
   - `IngredientCategory`: `Processed`
   - `Stage`: `Processed`
-  - `UnlockSource`: `Recipe / recipe.crystal_powder`
+  - `UnlockRequirement`:
+    - `Type = ContentDefinition`
+    - `ContentDefinition = recipe.crystal_powder`
 
 ### Potions
 
@@ -349,7 +373,9 @@ This is the first authored content branch after the starter slice and supports t
   - `SellValue`: author a follow-on value
   - `Tier`: `Rare`
   - `PotionCategory`: `Utility`
-  - `UnlockSource`: `Recipe / recipe.mana_potion`
+  - `UnlockRequirement`:
+    - `Type = ContentDefinition`
+    - `ContentDefinition = recipe.mana_potion`
 
 ### Recipes
 
@@ -419,7 +445,7 @@ Create content in this order:
 Then validate:
 
 1. every `Id` is stable and readable
-2. every `UnlockSource` is valid
+2. every `UnlockRequirement` uses the correct reference field for its type
 3. every recipe input points to a real asset
 4. every potion output points to a real asset
 5. every machine recipe link is valid

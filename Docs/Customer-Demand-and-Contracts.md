@@ -69,7 +69,7 @@ Supporting metadata:
 - `ContractFaction` identifies who is asking
 - `Weight` controls how often a valid contract appears relative to other valid contracts
 - `TargetPotion` should reference `PotionDefinition` directly
-- contracts do not currently use `UnlockSource`; availability is expected to be controlled by runtime generation rules and progression logic
+- contracts do not currently use `UnlockRequirement`; availability is expected to be controlled by runtime generation rules and progression logic
 - `Id` should follow the stable authored format `contract.<slug>`
 
 This keeps demand readable in design terms while still giving runtime systems a concrete,

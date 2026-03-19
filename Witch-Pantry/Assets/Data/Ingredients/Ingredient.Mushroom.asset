@@ -20,6 +20,8 @@ MonoBehaviour:
   <Tier>k__BackingField: 0
   <IngredientCategory>k__BackingField: 3
   <Stage>k__BackingField: 0
-  <UnlockSource>k__BackingField:
-    Type: 2
-    SourceId: machine.mushroom_cave
+  <UnlockRequirement>k__BackingField:
+    Type: 1
+    ContentDefinition: {fileID: 11400000, guid: cafafbb0b2b310344b486a33e056f942, type: 2}
+    BiomeDefinition: {fileID: 0}
+    SourceContract: {fileID: 0}

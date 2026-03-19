@@ -29,7 +29,7 @@ Recommended data interpretation:
 - raw vs processed state maps to `IngredientStage`
 - ingredient families map to `IngredientCategory`
 - potion role maps to `PotionCategory`
-- unlock gating maps to `UnlockSource.Type` and `UnlockSource.SourceId`
+- unlock gating maps to `UnlockRequirement.Type` and the matching reference field for that type
 
 Current authoring rules that should be followed when creating assets:
 
@@ -38,17 +38,20 @@ Current authoring rules that should be followed when creating assets:
   - `Id`
   - `ContentType`
   - `DisplayName`
+- current biome caveat:
+  - `BiomeDefinition` currently inherits `ContentDefinition`, but `ContentType` does not yet include `Biome`
+  - the current placeholder biome asset therefore uses `Id = content.crystal_cavern`, not `biome.crystal_cavern`
 - ingredient assets use:
-  - `BaseValue`
+  - `EconomicValue`
   - `Tier`
   - `IngredientCategory`
   - `Stage`
-  - `UnlockSource`
+  - `UnlockRequirement`
 - potion assets use:
   - `SellValue`
   - `Tier`
   - `PotionCategory`
-  - `UnlockSource`
+  - `UnlockRequirement`
 - recipe assets use:
   - `IngredientAmount[] Inputs`
   - `OutputAmount[] Outputs`
@@ -64,16 +67,20 @@ Current authoring rules that should be followed when creating assets:
   - `MachineCategory`
   - `CanRunOffline`
 
-`UnlockSource` authoring grammar:
+`UnlockRequirement` authoring grammar:
 
-- `StartingContent` keeps `SourceId` empty
-- biome-gated content uses `SourceId = biome.<slug>`
-- machine-gated content uses `SourceId = machine.<slug>`
-- recipe-gated content uses `SourceId = recipe.<slug>`
-- contract reward content uses `SourceId = contract.<slug>`
-- research-gated content uses `SourceId = research.<slug>`
-- prestige-gated content uses `SourceId = prestige.<slug>`
-- event reward content uses `SourceId = event.<slug>`
+- `StartingContent` uses no additional reference
+- biome-gated content uses:
+  - `Type = Biome`
+  - `BiomeDefinition = <BiomeDefinition asset reference>`
+  - current authored example: `Biome.CrystalCavern.asset` with `Id = content.crystal_cavern`
+- machine-driven or recipe-driven content uses:
+  - `Type = ContentDefinition`
+  - `ContentDefinition = <machine or recipe asset>`
+- contract reward content uses:
+  - `Type = ContractReward`
+  - `SourceContract = contract.<slug>`
+- research, prestige, and event reward unlocks are reserved for later and are not yet authorable in the current data model
 
 The goal is for this document to describe what content exists, while the authored asset layer
 describes exactly how that content is represented in Unity.

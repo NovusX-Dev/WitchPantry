@@ -19,6 +19,8 @@ MonoBehaviour:
   <SellValue>k__BackingField: 50
   <Tier>k__BackingField: 1
   <PotionCategory>k__BackingField: 3
-  <UnlockSource>k__BackingField:
-    Type: 3
-    SourceId: recipe.mana_potion
+  <UnlockRequirement>k__BackingField:
+    Type: 1
+    ContentDefinition: {fileID: 11400000, guid: 220a3fcfb56eac3418ac5de880416a1c, type: 2}
+    BiomeDefinition: {fileID: 0}
+    SourceContract: {fileID: 0}

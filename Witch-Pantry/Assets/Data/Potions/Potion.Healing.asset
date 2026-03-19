@@ -19,6 +19,8 @@ MonoBehaviour:
   <SellValue>k__BackingField: 25
   <Tier>k__BackingField: 0
   <PotionCategory>k__BackingField: 0
-  <UnlockSource>k__BackingField:
-    Type: 3
-    SourceId: recipe.healing_potion
+  <UnlockRequirement>k__BackingField:
+    Type: 1
+    ContentDefinition: {fileID: 11400000, guid: 709a1bd5ec0a1124eaacd33b20c00c04, type: 2}
+    BiomeDefinition: {fileID: 0}
+    SourceContract: {fileID: 0}

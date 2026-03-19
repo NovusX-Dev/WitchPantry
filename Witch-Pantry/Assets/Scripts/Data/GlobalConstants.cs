@@ -22,9 +22,6 @@
         
         public enum IngredientStage {Raw, Processed, Refined, Enchanted}
 
-        public enum UnlockSourceType { StartingContent, Biome, Machine, Recipe, ContractReward, 
-            Research, Prestige, EventReward }
-
         public enum ContractFaction
         {
             VillageResidents,

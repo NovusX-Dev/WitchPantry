@@ -20,6 +20,8 @@ MonoBehaviour:
   <Tier>k__BackingField: 0
   <IngredientCategory>k__BackingField: 6
   <Stage>k__BackingField: 1
-  <UnlockSource>k__BackingField:
-    Type: 3
-    SourceId: recipe.ground_herb
+  <UnlockRequirement>k__BackingField:
+    Type: 1
+    ContentDefinition: {fileID: 11400000, guid: dc9c479bb115ae74481d2b99663fe0cc, type: 2}
+    BiomeDefinition: {fileID: 0}
+    SourceContract: {fileID: 0}

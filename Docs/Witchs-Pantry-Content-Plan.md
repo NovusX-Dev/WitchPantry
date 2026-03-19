@@ -50,15 +50,18 @@ The content plan should map directly to the authored ScriptableObject model:
     - `Id` format is `<contentType>.<slug>`
     - `ContentType` is derived from the concrete asset type and editor-validated
     - `DisplayName` is the player-facing name
+  - current caveat:
+    - `BiomeDefinition` currently inherits `ContentDefinition`, but there is no `ContentType.Biome` enum value yet
+    - current biome placeholder assets therefore use generated `content.<slug>` ids, for example `content.crystal_cavern`
 
 - `IngredientDefinition`
   - covers raw and processed ingredient content
   - concrete fields:
-    - `BaseValue`
+    - `EconomicValue`
     - `Tier`
     - `IngredientCategory`
     - `Stage`
-    - `UnlockSource`
+    - `UnlockRequirement`
 
 - `PotionDefinition`
   - covers sellable and fulfillable potion content
@@ -66,7 +69,7 @@ The content plan should map directly to the authored ScriptableObject model:
     - `SellValue`
     - `Tier`
     - `PotionCategory`
-    - `UnlockSource`
+    - `UnlockRequirement`
 
 - `RecipeDefinition`
   - defines ingredient inputs, authored outputs, and craft time
@@ -101,12 +104,20 @@ The content plan should map directly to the authored ScriptableObject model:
 
 Supporting value structs used by the content layer:
 
-- `UnlockSource`
-  - `Type`
-  - `SourceId`
+- `UnlockRequirement`
+  - current fields:
+    - `Type`
+    - `ContentDefinition`
+    - `BiomeDefinition`
+    - `SourceContract`
   - authoring rule:
-    - `StartingContent` must keep `SourceId` empty
-    - all other types should use a prefixed `SourceId` such as `biome.*`, `machine.*`, `recipe.*`, `contract.*`, `research.*`, `prestige.*`, or `event.*`
+    - `StartingContent` uses no reference
+    - `ContentDefinition` uses the `ContentDefinition` reference field
+    - `Biome` uses the `BiomeDefinition` reference field
+    - `ContractReward` uses the `SourceContract` reference field
+    - `Research`, `Prestige`, and `EventReward` are reserved for later and should not be used yet
+  - current caveat:
+    - biome unlocks use object references correctly, but the referenced biome asset ids are still generated with the `content.` prefix until biome content typing is formalized
 
 - `IngredientAmount`
   - `ingredient`

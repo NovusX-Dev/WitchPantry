@@ -4,13 +4,6 @@ using UnityEngine;
 namespace WitchPantry.Data
 {
     [Serializable]
-    public struct UnlockSource
-    {
-        public GlobalConstants.UnlockSourceType Type;
-        public string SourceId;
-    }
-
-    [Serializable]
     public struct IngredientAmount
     {
         public IngredientDefinition ingredient;

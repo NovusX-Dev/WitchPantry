@@ -20,6 +20,8 @@ MonoBehaviour:
   <Tier>k__BackingField: 0
   <IngredientCategory>k__BackingField: 6
   <Stage>k__BackingField: 1
-  <UnlockSource>k__BackingField:
-    Type: 3
-    SourceId: recipe.mushroom_paste
+  <UnlockRequirement>k__BackingField:
+    Type: 1
+    ContentDefinition: {fileID: 11400000, guid: 34c426292b9155740b078e629b208440, type: 2}
+    BiomeDefinition: {fileID: 0}
+    SourceContract: {fileID: 0}

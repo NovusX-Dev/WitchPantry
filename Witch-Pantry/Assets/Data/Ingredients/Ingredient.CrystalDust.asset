@@ -20,6 +20,8 @@ MonoBehaviour:
   <Tier>k__BackingField: 1
   <IngredientCategory>k__BackingField: 1
   <Stage>k__BackingField: 0
-  <UnlockSource>k__BackingField:
-    Type: 1
-    SourceId: biome.crystal_cavern
+  <UnlockRequirement>k__BackingField:
+    Type: 2
+    ContentDefinition: {fileID: 0}
+    BiomeDefinition: {fileID: 11400000, guid: 4ce6f64f2e42434e8864a91ebbf5954d, type: 2}
+    SourceContract: {fileID: 0}

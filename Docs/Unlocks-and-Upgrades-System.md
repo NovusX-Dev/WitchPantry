@@ -48,7 +48,7 @@ Progression currently comes from:
 
 This is spread across:
 
-- `Docs/GDD.md`
+- `Docs/GDD`
 - `Docs/Witchs-Pantry-Content-Plan.md`
 - `Docs/Spatial-Pantry-System.md`
 - `Docs/Ingredients_Biomes_Design.md`

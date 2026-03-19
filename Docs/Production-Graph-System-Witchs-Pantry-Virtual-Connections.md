@@ -196,10 +196,12 @@ public struct IngredientAmount
 }
 
 [Serializable]
-public struct UnlockSource
+public struct UnlockRequirement
 {
-    public UnlockSourceType Type;
-    public string SourceId;
+    public UnlockRequirementType Type;
+    public ContentDefinition ContentDefinition;
+    public BiomeDefinition BiomeDefinition;
+    public ContractDefinition SourceContract;
 }
 
 [Serializable]
@@ -235,8 +237,10 @@ public class MachineDefinition : ContentDefinition
 
 Authoring note:
 
-- the current editor tooling auto-seeds `UnlockSource.SourceId` prefixes based on `UnlockSource.Type`
-- `StartingContent` keeps `SourceId` empty and disables editing in the inspector
+- the current editor tooling draws `UnlockRequirement` conditionally based on `UnlockRequirement.Type`
+- `StartingContent` uses no additional reference
+- `ContentDefinition`, `Biome`, and `ContractReward` each expose only their relevant reference field
+- `Research`, `Prestige`, and `EventReward` are reserved for later and should not be authored yet
 
 ## 11. Machine Runtime Instance
 

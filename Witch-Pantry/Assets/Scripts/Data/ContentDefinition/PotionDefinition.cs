@@ -9,6 +9,8 @@ namespace WitchPantry.Data
         [field: SerializeField] public float SellValue { get; private set; }
         [field: SerializeField] public GlobalConstants.Tiers Tier { get; private set; }
         [field: SerializeField] public GlobalConstants.PotionCategory PotionCategory { get; private set; }
-        [field: SerializeField] public UnlockSource UnlockSource { get; private set; }
+        
+        [field: Header("Unlock Requirement")]
+        [field: SerializeField] public UnlockRequirement UnlockRequirement { get; private set; }
     }
 }

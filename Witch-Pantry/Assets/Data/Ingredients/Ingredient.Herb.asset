@@ -20,6 +20,8 @@ MonoBehaviour:
   <Tier>k__BackingField: 0
   <IngredientCategory>k__BackingField: 0
   <Stage>k__BackingField: 0
-  <UnlockSource>k__BackingField:
-    Type: 0
-    SourceId: 
+  <UnlockRequirement>k__BackingField:
+    Type: 1
+    ContentDefinition: {fileID: 11400000, guid: 6cff084bfc488464db3be1b41b00cc66, type: 2}
+    BiomeDefinition: {fileID: 0}
+    SourceContract: {fileID: 0}
