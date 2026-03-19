@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace WitchPantry.Data
+namespace WitchPantry.Data.ContentDefinition
 {
     public abstract class ContentDefinition : ScriptableObject
     {

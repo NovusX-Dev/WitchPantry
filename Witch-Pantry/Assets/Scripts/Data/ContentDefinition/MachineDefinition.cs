@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace WitchPantry.Data
+namespace WitchPantry.Data.ContentDefinition
 {
     [CreateAssetMenu(fileName = "Machine Definition", menuName = "WitchPantry/Content Def/Machines", order = 0)]
     public class MachineDefinition : ContentDefinition

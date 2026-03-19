@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WitchPantry.Data
+namespace WitchPantry.Data.ContentDefinition
 {
     [CreateAssetMenu(fileName = "Contract Definition", menuName = "WitchPantry/Content Def/Contracts", order = 0)]
     public class ContractDefinition : ContentDefinition

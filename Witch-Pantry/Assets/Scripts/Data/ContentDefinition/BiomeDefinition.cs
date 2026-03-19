@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace WitchPantry.Data
+namespace WitchPantry.Data.ContentDefinition
 {
     [CreateAssetMenu(fileName = "Biome Definition", menuName = "WitchPantry/Content Def/Biome", order = 0)]
     public class BiomeDefinition : ContentDefinition

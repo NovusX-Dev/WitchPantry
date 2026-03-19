@@ -5,6 +5,7 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 using WitchPantry.Data;
+using WitchPantry.Data.ContentDefinition;
 
 namespace WitchPantry.Editor
 {

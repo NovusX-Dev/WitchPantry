@@ -1,5 +1,5 @@
 ﻿using System;
-using UnityEngine;
+using WitchPantry.Data.ContentDefinition;
 
 namespace WitchPantry.Data
 {
@@ -19,10 +19,10 @@ namespace WitchPantry.Data
     [Serializable]
     public struct OutputAmount
     {
-        public ContentDefinition output;
+        public ContentDefinition.ContentDefinition output;
         public int amount;
 
-        public OutputAmount(ContentDefinition output, int amount)
+        public OutputAmount(ContentDefinition.ContentDefinition output, int amount)
         {
             this.output = output;
             this.amount = amount;
