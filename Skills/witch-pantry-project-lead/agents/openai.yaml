@@ -1,0 +1,4 @@
+interface:
+  display_name: "Witch Pantry Project Lead"
+  short_description: "Milestones, scope, and risk rules."
+  default_prompt: "Use -pantry-project-lead to plan milestones, triage scope, manage risk, and keep Witch Pantry moving toward a shippable slice."
