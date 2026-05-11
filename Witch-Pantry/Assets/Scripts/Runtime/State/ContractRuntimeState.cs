@@ -1,4 +1,6 @@
-﻿using WitchPantry.Data.ContentDefinition;
+﻿using System;
+using UnityEngine;
+using WitchPantry.Data.ContentDefinition;
 
 namespace WitchPantry.Runtime.State
 {
@@ -8,16 +10,21 @@ namespace WitchPantry.Runtime.State
     /// </summary>
     public class ContractRuntimeState
     {
-        public string CurrentContractId;
-        public string TargetPotionId;
-        public int AmountRequired;
-        public int CurrentProgress;
-        public int RewardGold;
-        public float RemainingDuration;
+        public string CurrentContractId { get; private set; }
+        public string TargetPotionId { get; private set; }
+        public int AmountRequired { get; private set; }
+        public int CurrentProgress { get; private set; }
+        public int RewardGold { get; private set; }
+        public float RemainingDuration { get; private set; }
+        public bool Active { get; private set; }
         
-        public bool CanBeCompleted => CurrentProgress >= AmountRequired;
-        public bool IsExpired => RemainingDuration <= 0;
-        public bool IsRunning => !CanBeCompleted && !IsExpired;
+        public bool CanBeCompleted => Active && CurrentProgress >= AmountRequired && AmountRequired > 0;
+        public bool IsExpired => Active && RemainingDuration <= 0;
+        public bool IsRunning => Active && !CanBeCompleted && !IsExpired;
+
+        public event Action ContractChanged;
+        public event Action ContractCompleted;
+        public event Action ContractExpired;
 
         /// <summary>
         /// Sets the contract to the new contract.
@@ -25,11 +32,20 @@ namespace WitchPantry.Runtime.State
         /// <param name="contract"></param>
         public void SetNewContract(ContractDefinition contract)
         {
+            if (contract == null) throw new ArgumentNullException(nameof(contract));
+            if (contract.TargetPotion == null) throw new ArgumentException("Contract must define a target potion.", nameof(contract));
+
+            Reset();
             CurrentContractId = contract.Id;
             TargetPotionId = contract.TargetPotion.Id;
             AmountRequired = contract.AmountRequired;
             RewardGold = contract.RewardGold;
             RemainingDuration = contract.DurationHours;
+            Active = true;
+            ContractChanged?.Invoke();
+            
+            Debug.Log($"[Contract State] STARTED Contract ID: {CurrentContractId}, Target Potion: {TargetPotionId}, " +
+                      $"Amount Required: {AmountRequired}, Reward Gold: {RewardGold}, Duration: {RemainingDuration} hours");
         }
 
         /// <summary>
@@ -37,8 +53,10 @@ namespace WitchPantry.Runtime.State
         /// </summary>
         public void CompleteContract()
         {
+            if (!Active) return;
+            Debug.Log($"[Contract State] COMPLETED Contract ID {CurrentContractId}");
             Reset();
-            //TODO: Action to add gold to player
+            ContractCompleted?.Invoke();
         }
         
         /// <summary>
@@ -46,8 +64,10 @@ namespace WitchPantry.Runtime.State
         /// </summary>
         public void ExpireContract()
         {
+            if (!Active) return;
+            Debug.Log($"[Contract State] EXPIRED Contract ID {CurrentContractId}");
             Reset();
-            //TODO: Action to notify player of expired contract
+            ContractExpired?.Invoke();
         }
 
         /// <summary>
@@ -56,7 +76,14 @@ namespace WitchPantry.Runtime.State
         /// <param name="progress"></param>
         public void UpdateContractProgress(int progress)
         {
-            CurrentProgress = progress;
+            if (!Active || CanBeCompleted) return;
+
+            var clampedProgress = Math.Clamp(progress, 0, AmountRequired);
+            if (CurrentProgress == clampedProgress) return;
+            
+            Debug.Log($"[Contract State] Updated progress for Contract ID {CurrentContractId} to {clampedProgress}/{AmountRequired}");
+            CurrentProgress = clampedProgress;
+            ContractChanged?.Invoke();
         }
         
         /// <summary>
@@ -70,6 +97,7 @@ namespace WitchPantry.Runtime.State
             CurrentProgress = 0;
             RewardGold = 0;
             RemainingDuration = 0;
+            Active = false;
         }
         
 

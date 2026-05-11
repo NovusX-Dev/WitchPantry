@@ -333,65 +333,15 @@ PrepLab stalls due to missing bottles
 
 Use ScriptableObject event channels for important gameplay notifications that need loose coupling.
 
-Recommended event assets:
+The detailed guidance now lives in:
 
-- `VoidEventChannelSO`
-- `StringEventChannelSO`
-- `RoomEventChannelSO`
-- `MachineEventChannelSO`
-- `ContractEventChannelSO`
+- [Event-Channel-Recommendations.md](C:/Unity/Repos/WitchPantry/Docs/Event-Channel-Recommendations.md)
 
-Suggested game events:
+Short version:
 
-- `RoomActivated`
-- `ContractCompleted`
-- `FeaturedDemandChanged`
-- `CompactModeChanged`
-- `GlobalAlertRaised`
-- `MachineSelected`
-
-### Example ScriptableObject Event Channel
-
-```csharp
-using System;
-using UnityEngine;
-
-[CreateAssetMenu(menuName = "Events/String Event Channel")]
-public sealed class StringEventChannelSO : ScriptableObject
-{
-    public event Action<string> Raised;
-
-    public void Raise(string value)
-    {
-        Raised?.Invoke(value);
-    }
-}
-```
-
-### Example Listener Usage
-
-```csharp
-public sealed class RoomActivationAudioBridge : MonoBehaviour
-{
-    [SerializeField] private StringEventChannelSO roomActivated;
-    [SerializeField] private AudioManager audioManager;
-
-    private void OnEnable()
-    {
-        roomActivated.Raised += OnRoomActivated;
-    }
-
-    private void OnDisable()
-    {
-        roomActivated.Raised -= OnRoomActivated;
-    }
-
-    private void OnRoomActivated(string roomId)
-    {
-        audioManager.HandleRoomActivated(roomId);
-    }
-}
-```
+- runtime state holds current truth
+- normal C# events are preferred inside runtime state classes
+- ScriptableObject event channels are best for cross-scene notifications such as `RoomActivated`, `ContractCompleted`, and `MachineSelected`
 
 ## Audio Architecture
 

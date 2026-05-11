@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WitchPantry.Data;
 
 namespace WitchPantry.Runtime.State
@@ -6,6 +7,11 @@ namespace WitchPantry.Runtime.State
     public class MachineOwnershipState
     {
         private readonly Dictionary<string, MachineEntry> _ownedMachines = new();
+        public IReadOnlyDictionary<string, MachineEntry> OwnedMachines => _ownedMachines;
+        
+        public event Action MachinesChanged;
+        public event Action<string> MachineChanged;
+        public event Action<string> OnMachineOwnershipChanged;
 
         /// <summary>
         /// Adds a machine to the owned machines.
@@ -14,10 +20,14 @@ namespace WitchPantry.Runtime.State
         /// <param name="upgradeLevel"></param>
         /// <param name="count"></param>
         /// <param name="isOwned"></param>
-        public void AddMachine(string machineId, int upgradeLevel, int count, bool isOwned)
+        public bool AddMachine(string machineId, int upgradeLevel, int count, bool isOwned)
         {
+            if (string.IsNullOrEmpty(machineId)) return false;
+            if (_ownedMachines.ContainsKey(machineId)) return false;
             var machineEntry = new MachineEntry(machineId, count, upgradeLevel, isOwned);
             _ownedMachines.TryAdd(machineId, machineEntry);
+            RaiseMachineChanged(machineId);
+            return true;
         }
 
         /// <summary>
@@ -26,22 +36,24 @@ namespace WitchPantry.Runtime.State
         /// <param name="machineId"></param>
         /// <param name="upgradeLevel"></param>
         /// <param name="count"></param>
-        public void UpdateMachine(string machineId, int upgradeLevel, int count)
+        public bool UpdateMachine(string machineId, int upgradeLevel, int count)
         {
-            var machineEntry = _ownedMachines[machineId];
+            if (!_ownedMachines.TryGetValue(machineId, out var machineEntry)) return false;
+            var updatedEntry = new MachineEntry(machineId, count, upgradeLevel, machineEntry.isOwned);
+            if (machineEntry.Equals(updatedEntry)) return true;
+            
             machineEntry.upgradeLevel = upgradeLevel;
             machineEntry.count = count;
             _ownedMachines[machineId] = machineEntry;
-        }
-        
-        /// <summary>
-        /// Gets all owned machines.
-        /// </summary>
-        /// <param name="ownedMachines"></param>
-        public void GetAllOwnedMachines(out Dictionary<string, MachineEntry> ownedMachines)
-        {
-            ownedMachines = _ownedMachines;
+            RaiseMachineChanged(machineId);
+            return true;
         }
 
+        private void RaiseMachineChanged(string machineId)
+        {
+            MachinesChanged?.Invoke();
+            MachineChanged?.Invoke(machineId);
+            OnMachineOwnershipChanged?.Invoke(machineId);
+        }
     }
 }

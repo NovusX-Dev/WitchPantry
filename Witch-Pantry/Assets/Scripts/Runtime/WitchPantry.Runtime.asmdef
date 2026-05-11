@@ -1,0 +1,16 @@
+{
+    "name": "WitchPantry.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "WitchPantry.Data"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

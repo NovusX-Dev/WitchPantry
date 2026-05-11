@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WitchPantry.Runtime.State
 {
     public class PantryInventoryState
     {
         private readonly Dictionary<string, int> _resources = new();
+        public IReadOnlyDictionary<string, int> Resources => _resources;
 
-        //TODO: Add actions if necessary
+        public event Action InventoryChanged;
+        public event Action<string, int> ResourceChanged;
+        public event Action<string, int> OnInventoryUpdated;
         
         /// <summary>
         /// Adds a resource to the inventory.
@@ -15,13 +19,14 @@ namespace WitchPantry.Runtime.State
         /// <param name="amount"></param>
         public void AddResource(string resourceId, int amount)
         {
-            if(amount <= 0) return; //TODO: possible UI/UX for player
+            if (string.IsNullOrEmpty(resourceId) || amount <= 0) return;
 
-            //Check if a resource already exists
             if (!_resources.TryAdd(resourceId, amount))
             {
                 _resources[resourceId] += amount;
             }
+
+            RaiseResourceChanged(resourceId);
         }
         
         /// <summary>
@@ -54,24 +59,25 @@ namespace WitchPantry.Runtime.State
         /// <returns></returns>
         public bool TryConsume(string resourceId, int amount)
         {
+            if (string.IsNullOrEmpty(resourceId) || amount <= 0) return false;
             if (!HasResource(resourceId))
             {
-                return false; //TODO: possible UI/UX
+                return false;
             }
-            
+
+            if(_resources[resourceId] < amount) return false;
+            if (_resources[resourceId] == 0) return false;
             _resources[resourceId] -= amount;
-            if(_resources[resourceId] < 0) _resources[resourceId] = 0; 
-            
+            RaiseResourceChanged(resourceId);
             return true;
         }
-        
-        /// <summary>
-        /// Gets all resources in the inventory.
-        /// </summary>
-        /// <param name="resources"></param>
-        public void GetAllResources(out Dictionary<string, int> resources)
+
+        private void RaiseResourceChanged(string resourceId)
         {
-            resources = _resources;
+            var amount = GetResourceAmount(resourceId);
+            InventoryChanged?.Invoke();
+            ResourceChanged?.Invoke(resourceId, amount);
+            OnInventoryUpdated?.Invoke(resourceId, amount);
         }
     }
 }
