@@ -1,7 +1,7 @@
 # Unity Scene Architecture
 
 - Project: Witch's Pantry
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Purpose: Define the recommended Unity scene structure for a cozy automation / incremental game built around a spatial pantry.
 
 ## Summary
@@ -236,6 +236,9 @@ Use a combination of:
 
 Shared runtime state is the safest way to keep the UI, room scenes, and audio aligned.
 
+The first plain C# runtime-state layer now exists under `Assets/Scripts/Runtime/State/`.
+Future scene services should read and mutate that kind of state, then bridge only meaningful scene-facing notifications through event channels.
+
 Examples:
 
 - pantry inventory
@@ -249,6 +252,8 @@ The key rule is:
 
 - room scenes write to runtime state
 - UI scenes read from runtime state
+- runtime C# events notify local state listeners
+- ScriptableObject event channels are reserved for cross-scene notifications
 
 That means `Shell_UI` should not care whether a production update came from `MainPantry` or `GreenhouseWing`.
 

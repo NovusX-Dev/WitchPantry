@@ -1,6 +1,6 @@
 # Witch's Pantry Delivery Roadmap
 
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Platform: Steam (Windows)
 - Planning Frame: phased delivery, not fixed-date wishful thinking
 

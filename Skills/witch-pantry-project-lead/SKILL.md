@@ -37,17 +37,20 @@ Use this skill to keep decisions shippable, sequenced, and honest about risk.
    - split
    - re-scope
 6. End with a concrete next sequence, not a mood board.
+7. Define the proof signal: what the player, screenshot, test, or demo metric must show before the work counts as done.
 
 ## Leadership Rules
 
 - Protect the product goal over local feature enthusiasm.
 - Use prototypes to answer design questions; use vertical slices to test the production pipeline.
+- Do not confuse prototype, vertical slice, demo, and Early Access scope; each phase answers a different risk.
 - Lock core verbs before expanding content breadth.
 - Prefer one finished, representative slice over five half-systems.
 - Treat hidden dependencies as schedule threats, not trivia.
 - Use reviews as adaptation points, not ceremonial status theater.
 - Cut scope before quality when the choice is between a shippable promise and a broken larger promise.
 - Marketing timing follows clarity: the clearer the game, the easier honest messaging becomes.
+- If the work does not improve the spatial pantry hook, demo proof, or production pipeline, make it justify its existence.
 
 ## Risk Triage
 
@@ -65,3 +68,4 @@ End with:
 - dependencies/blockers
 - cut list or defer list
 - immediate next 3 to 5 actions
+- proof signal and main risk

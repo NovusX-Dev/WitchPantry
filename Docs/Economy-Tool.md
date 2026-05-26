@@ -2,7 +2,7 @@
 
 For *Witch's Pantry Automation*.
 
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Language: C#
 
 ## 1. Overview

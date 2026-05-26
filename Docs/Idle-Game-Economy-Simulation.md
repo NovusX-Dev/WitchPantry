@@ -1,82 +1,91 @@
-﻿# Incremental Economy Simulation Guide
+# Witch Pantry Economy Simulation Guide
 
-## Real Economy Numbers
+## Purpose
 
-Typical cost growth:
+Use this as a lightweight reference for simulating Witch Pantry's early economy.
 
-- `1.07` to `1.15`
+The goal is not to copy a generic idle curve. The goal is to check whether machines, potions, contracts, and upgrades create a readable pantry pace.
 
-Production:
+## Core Simulation Inputs
 
-- Linear scaling
+Minimum inputs:
 
-## Cost Formula
+- machine purchase cost
+- machine upgrade cost
+- recipe craft time
+- recipe input and output amounts
+- potion sell value or contract reward
+- active contract requirements
+- offline duration
 
-```text
-cost = baseCost * growthRate^owned
-```
+Read authored values from content definitions where possible. Do not create a parallel economy universe unless the tool is explicitly testing hypothetical balance.
 
-Example:
+## Useful Formulas
 
-```text
-cost = 50 * 1.15^20
-```
-
-## Production Formula
-
-```text
-production = baseProduction * owned * multipliers
-```
-
-## Example Generator Data
-
-Machine:
-
-- `baseCost = 50`
-- `growthRate = 1.15`
-- `baseProduction = 2/sec`
-
-## Simulation Loop
-
-Tick: `1 second`
+Machine purchase cost:
 
 ```text
-gold += production * tick
-
-if gold >= machineCost
-    buy machine
-    increase production
+nextCost = baseCost * growthRate^owned
 ```
 
-## Simulation Targets
+Machine upgrade cost:
 
-- First automation: 2 minutes
-- First prestige: 2 hours
-- Late-game prestige: 10 hours
+```text
+upgradeCost = baseUpgradeCost * upgradeGrowth^currentLevel
+```
 
-## Balanced Curve
+Production output:
 
-- Upgrade 1: 10 seconds
-- Upgrade 2: 20 seconds
-- Upgrade 3: 40 seconds
-- Upgrade 4: 80 seconds
-- Upgrade 5: 3 minutes
-- Upgrade 6: 10 minutes
-- Upgrade 7: 30 minutes
-- Prestige: 2 hours
+```text
+outputPerMinute = (60 / craftTimeSeconds) * machineCount * speedMultiplier
+```
 
-## Simulation Goals
+Contract completion time:
 
-- Avoid dead zones
-- Ensure constant upgrades
-- Ensure meaningful prestige resets
+```text
+minutesToComplete = amountRequired / outputPerMinute
+```
 
-## Recommended Parameters
+Offline output:
 
-- `growthRate = 1.13`
-- `upgradeMultiplier = 2`
-- `prestigeMultiplier = sqrt(totalGold)`
+```text
+offlineOutput = outputPerMinute * offlineMinutes * offlineEfficiency
+```
 
-## End
+## Early Pacing Targets
 
-End of document.
+Use these as starting checks, not permanent laws:
+
+- first visible production line: under 2 minutes
+- first bottleneck fix: 5 to 10 minutes
+- first contract completion: 5 to 12 minutes
+- first meaningful upgrade choice: 10 to 20 minutes
+- first room-pressure discussion: after the starter loop is understood
+
+## Pantry-Specific Checks
+
+The curve is weak if:
+
+- the best action is always "buy the cheapest machine"
+- contracts do not change production priorities
+- upgrades only increase invisible numbers
+- compact mode cannot explain why production slowed
+- a player waits without understanding what would improve throughput
+
+The curve is strong if:
+
+- the player sees a machine become the bottleneck
+- the next upgrade has a visible or contract-relevant reason
+- demand changes which potion chain matters
+- idle returns create a clear "claim, fix, improve" loop
+
+## Simulation Output
+
+A useful simulation report should show:
+
+- gold over time
+- potion output over time
+- contract completion time
+- bottleneck machine or ingredient
+- suggested next upgrade
+- compact-mode summary text for the same state

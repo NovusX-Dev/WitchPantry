@@ -22,6 +22,8 @@ Use this skill for content design so new ingredients, machines, potions, and fac
 - Prefer a few memorable machines and ingredients over large flat lists.
 - Content should strengthen screenshot readability and pantry identity.
 - Do not add content that only inflates scope without changing the decision space.
+- Content should create at least one of: layout pressure, a visible production moment, a faction/customer reason, or a compact-mode signal.
+- If a machine, potion, or ingredient only increases a number, reframe it around fantasy, flow, demand, or cut it.
 
 ## Machine Design Checklist
 
@@ -33,6 +35,7 @@ When adding a machine, define:
 - adjacency tags
 - visual silhouette
 - demand or recipe relevance
+- what the player can infer from its animation or placement without opening a panel
 
 ## Ingredient and Potion Checklist
 
@@ -43,6 +46,7 @@ When adding ingredients or potions, define:
 - visual distinctiveness
 - demand or faction relevance
 - why the player should care beyond bigger numbers
+- how it changes room pressure, contract choices, or production readability
 
 ## Demand and Faction Rules
 
@@ -50,6 +54,7 @@ When adding ingredients or potions, define:
 - each faction or customer group should have a recognizable identity
 - rewards should reinforce progression, room growth, or special content
 - featured demand should stay readable in UI and compact mode
+- faction demand should create recognizable pantry priorities, not anonymous order churn
 
 ## Biome and Room Progression Rules
 
@@ -66,3 +71,4 @@ Use this skill when producing:
 - faction definitions
 - biome unlock recommendations
 - backlog slices for content implementation
+- explicit keep/cut/defer calls for content that does not strengthen the hook

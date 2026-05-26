@@ -1,4 +1,4 @@
 interface:
   display_name: "Witch Pantry Level Design"
   short_description: "Spatial layout and flow rules for rooms."
-  default_prompt: "Use -pantry-level-design to design or review room layout, machine placement, player routing, and spatial readability in Witch Pantry."
+  default_prompt: "Use $witch-pantry-level-design to design or review room layout, machine placement, player routing, and spatial readability in Witch Pantry."

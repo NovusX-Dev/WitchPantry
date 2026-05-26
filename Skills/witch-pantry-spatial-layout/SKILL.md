@@ -24,6 +24,8 @@ Read these docs first:
 - Add connected specialty rooms later, not isolated production screens.
 - Avoid giant unreadable mega-rooms.
 - Keep shared inventory if it helps implementation, but preserve spatial meaning through room roles and adjacency.
+- Make the focal machine, input source, bottleneck, and output/reward read clear before adding decorative density.
+- Compact mode must preserve whole-pantry meaning; do not make the player babysit room tabs.
 
 ## Room Progression Model
 
@@ -52,6 +54,7 @@ For any proposed room or scene, check:
 - are bottlenecks readable without opening deep panels
 - is there enough negative space
 - does the room look like a magical workplace instead of a clutter pile
+- does the layout produce a strong store-page screenshot or GIF
 
 ## Second Room Trigger
 
@@ -89,3 +92,4 @@ Use this skill when producing:
 - placement rules
 - adjacency proposals
 - implementation tickets for room or layout systems
+- room-readability pass/fail calls with concrete fixes

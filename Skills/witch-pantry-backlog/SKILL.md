@@ -72,6 +72,9 @@ Do not add labels just because they are available.
 - Keep issue scope compatible with milestone and release target.
 - When the product direction changes, update the affected issue bodies, not only the titles.
 - Avoid leaving stale assumptions in acceptance criteria.
+- Treat issue `#2` runtime-state foundation as complete unless current source or tests prove otherwise; future work should build on it rather than re-open it casually.
+- Every new gameplay issue should name the player-facing value: pantry readability, production flow, demand pressure, compact-mode utility, or demo validation.
+- Reject backlog wording that sounds like generic idle-game scaffolding without a Witch Pantry reason.
 
 ## Good Output Shapes
 
@@ -81,3 +84,4 @@ When using this skill, produce:
 - minimal, justified new issues
 - updated board field values
 - a short summary of what moved and why
+- explicit release target and dependency notes when the work affects the critical path

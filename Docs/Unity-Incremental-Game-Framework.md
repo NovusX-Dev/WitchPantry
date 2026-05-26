@@ -1,382 +1,150 @@
-﻿# Unity Incremental Game Framework
+# Unity Incremental Game Framework
 
-For *Witch's Pantry Automation*.
+For *Witch's Pantry*.
 
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Language: C#
 
-## 1. Overview
+## 1. Purpose
 
-This framework provides a complete foundation for building incremental games.
+This document defines the Unity framework shape for Witch Pantry's incremental systems.
 
-Included systems:
+It is not a generic idle-game framework. Every system should support the visible spatial pantry, customer demand, compact desktop-idler play, or the demo path.
 
-- Production Graph Engine
-- Economy Simulator
-- Auto-Balancing Tool
-- Save System
-- UI Architecture
-- Event System
+## 2. Source Of Truth Rules
 
-The architecture is modular and data-driven.
+- ScriptableObjects define authored content:
+  - ingredients
+  - potions
+  - recipes
+  - machines
+  - contracts
+  - biomes and future unlock metadata
+- Plain C# runtime state stores mutable play truth:
+  - inventory totals
+  - owned machines
+  - active contracts
+  - gold
+  - active room
+- MonoBehaviours present and adapt:
+  - room visuals
+  - machine animation
+  - UI panels
+  - input
+  - audio/VFX triggers
 
-## 2. Core Architecture
+Do not store mutable player progress in authored content assets.
 
-Game layers:
+## 3. Core Runtime Loop
+
+Recommended first loop:
 
 ```text
-UI Layer
+tick simulation
   ->
-Gameplay Systems
+run active machines from authored definitions and runtime ownership
   ->
-Data Layer
+consume and produce shared pantry inventory
   ->
-Save System
-```
-
-All gameplay values are defined in ScriptableObjects.
-
-## 3. Folder Structure
-
-```text
-Assets/
-  Scripts/
-    Core/
-      GameLoop/
-      EventBus/
-    Systems/
-      Production/
-      Economy/
-      Prestige/
-      Contracts/
-    Tools/
-      EconomySimulator/
-      AutoBalance/
-    UI/
-      Panels/
-      Views/
-    Save/
-      Serialization/
-      OfflineSimulation/
-    ScriptableObjects/
-      Ingredients/
-      Recipes/
-      Machines/
-      EconomySettings/
-```
-
-## 4. Core Game Loop
-
-Tick-based simulation.
-
-- Tick = 1 second
-
-Flow:
-
-```text
-GameLoopManager.Update()
+update contract progress
   ->
-TickSimulation()
+raise plain C# runtime-state events
   ->
-ProductionSystem
-  ->
-EconomySystem
-  ->
-UI Update
+refresh UI / compact summaries / scene presenters
 ```
 
-## 5. Production Graph Engine
+Use a predictable tick cadence for simulation. The first implementation can be simple; the important rule is that production logic stays testable outside scene hierarchies.
 
-Machines are nodes. Resources flow between nodes.
+## 4. Folder Direction
 
-Example chain:
+Current and near-term code should converge around:
 
 ```text
-Herb Farm
-  ->
-Grinder
-  ->
-Cauldron
-  ->
-Bottle Station
-  ->
-Potion Storage
+Assets/Scripts/
+  Data/
+    ContentDefinition/
+  Runtime/
+    State/
+    Simulation/
+    Services/
+  Gameplay/
+    Rooms/
+    Machines/
+    Contracts/
+  UI/
+    HUD/
+    CompactMode/
+  Editor/
 ```
 
-Each machine has:
+Avoid rebuilding old generic global-event folders just because they appear in idle-game tutorials.
 
-- Inputs
-- Outputs
-- Processing time
-- Buffers
+## 5. Production Graph Shape
 
-## 6. Machine Definition
+Witch Pantry uses virtual connections through shared pantry inventory, not belts, pipes, or direct scene-object links.
 
-Use a ScriptableObject called `MachineDefinition` with fields such as:
+Machine runtime instances should know:
 
-- `Id`
-- `DisplayName`
-- `ProcessingSpeed`
-- `SupportedRecipes`
-- `PurchaseCost`
+- machine definition id
+- room id or placement context
+- assigned recipe id when relevant
+- progress
+- upgrade level
+- current operating status
 
-Example machine:
+They should not own the whole inventory, UI, contract system, or room navigation.
 
-- Name: `MortarGolem`
-- Inputs: `Mushroom`
-- Outputs: `Powder`
+## 6. Economy And Progression
 
-## 7. Resource System
+The economy should be tuned around pantry readability:
 
-Generic resource model:
+- early upgrades should create visible production changes
+- costs can grow exponentially, but player feedback must stay concrete
+- contracts should guide what the player builds next
+- room growth should happen when the starter room becomes meaningfully crowded or strategically constrained
+- prestige and research belong after the core pantry loop is proven
 
-```csharp
-class ResourceStack
-{
-    ResourceType type;
-    double amount;
-}
-```
+## 7. Communication Pattern
 
-Resources include:
+Use the smallest communication layer that fits the boundary:
 
-- Ingredients
-- Potions
-- Currency
+- direct method calls inside one cohesive runtime service
+- plain C# events from runtime state for testable state changes
+- ScriptableObject event channels later for cross-scene notifications such as room activation, contract completion feedback, or machine selection
 
-## 8. Production Simulation
+Do not fire global channels for every inventory add or consume.
 
-Each tick:
+## 8. Save And Offline Boundaries
 
-1. Update machines.
-2. Consume resources.
-3. Produce outputs.
-4. Move resources along the graph.
+Save data should serialize stable ids and runtime values:
 
-Pseudo-code:
+- inventory counts
+- machine ownership and upgrade levels
+- active room id
+- active contract progress
+- gold
+- offline timestamp
 
-```text
-for node in machines
-    node.Tick()
+Save data should not serialize scene references, transient UI state, or mutable ScriptableObject instances.
 
-for connection in edges
-    transfer resources
-```
+## 9. Testing Strategy
 
-## 9. Economy System
+Prioritize tests around:
 
-Handles gold generation.
+- runtime state mutation and event firing
+- production consumption/output math
+- contract progress and completion
+- offline simulation results
+- economy pacing checkpoints
 
-Example formula:
+The first proof should be a small pantry loop that can run without a scene, then a scene presentation that reads the same truth.
 
-```text
-gold += potionValue * potionsProduced
-```
+## 10. Good Framework Test
 
-Potion value:
+Ask:
 
-```text
-value = baseValue * rarityMultiplier
-```
+- Can this system be explained through the starter pantry room?
+- Can it be tested without clicking Unity scene objects?
+- Does it make the pantry more readable, more satisfying, or more useful in compact mode?
 
-## 10. Cost Curve
-
-```text
-cost = baseCost * growthRate^owned
-```
-
-Example:
-
-- `baseCost = 10`
-- `growthRate = 1.15`
-
-## 11. Production Curve
-
-```text
-production = baseProduction * machines * multipliers
-```
-
-Example:
-
-- `baseProduction = 2`
-- `machines = 20`
-- `multiplier = 1.5`
-- `production = 60/sec`
-
-## 12. Prestige System
-
-Prestige resets progress but grants a multiplier.
-
-```text
-prestigeMultiplier = 1 + sqrt(totalGold)
-```
-
-Example:
-
-- `totalGold = 1e6`
-- `multiplier = 101`
-
-## 13. Economy Simulator Tool
-
-Editor tool for testing the economy.
-
-Features:
-
-- Production graph simulation
-- Upgrade purchases
-- Graph visualization
-
-## 14. Simulator Algorithm
-
-```text
-for tick in simulation
-    gold += production
-
-    if gold >= nextMachineCost
-        buy machine
-        increase production
-
-record data
-```
-
-## 15. Data Recorder
-
-Tracks simulation metrics.
-
-```text
-SimulationData
-  time[]
-  gold[]
-  machines[]
-  production[]
-```
-
-## 16. Graph Visualization
-
-Graph types:
-
-- Gold vs. Time
-- Production vs. Time
-- Machines vs. Time
-- Upgrade Cost vs. Time
-
-Graphs help identify economy problems.
-
-## 17. Auto-Balancing Tool
-
-Automatically searches for good economy parameters.
-
-Algorithm:
-
-1. Randomize economy values.
-2. Run simulation.
-3. Score the progression curve.
-4. Repeat 1000 times.
-5. Keep the best parameters.
-
-## 18. Curve Quality Metrics
-
-Score factors:
-
-- Upgrade pacing
-- Prestige timing
-- Inflation rate
-- Player reward frequency
-
-Example:
-
-```text
-score = rewardFrequency - stallPenalty
-```
-
-## 19. Save System
-
-Save structure:
-
-```text
-SaveData
-  playerState
-  productionState
-  economyState
-  prestigeState
-```
-
-Use JSON serialization.
-
-Save events:
-
-- Auto-save every 30 seconds
-- On quit
-- On major purchase
-
-## 20. Offline Simulation
-
-When the player returns:
-
-```text
-offlineTime = now - lastSave
-offlineGold = production * offlineTime
-```
-
-## 21. UI Architecture
-
-Use an MVVM pattern.
-
-- Views: Unity UI objects
-- ViewModels: bind UI to gameplay systems
-
-Example panels:
-
-- Inventory Panel
-- Machine Panel
-- Contracts Panel
-- Prestige Panel
-
-## 22. Debug Tools
-
-Developer console should allow:
-
-- Spawn resources
-- Add gold
-- Simulate ticks
-- Force prestige
-
-## 23. Performance Strategy
-
-Use tick simulation and avoid frame-based logic.
-
-Example:
-
-- `1 update per second`
-
-This keeps large factories performant.
-
-## 24. Content Pipeline
-
-Adding new content:
-
-```text
-Create ingredient ScriptableObject
-  ->
-Create recipe ScriptableObject
-  ->
-Create machine definition
-  ->
-Connect production graph
-```
-
-No code changes required.
-
-## 25. Future Expansion
-
-Possible features:
-
-- Node graph editor
-- Automation AI helpers
-- Random events
-- Rare ingredients
-- Seasonal content
-
-## End
-
-End of framework.
+If not, it is probably framework theater.

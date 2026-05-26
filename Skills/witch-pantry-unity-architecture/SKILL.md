@@ -31,17 +31,20 @@ Use this skill to keep Unity implementation scalable, editor-friendly, and align
 3. Choose the lightest pattern that solves the problem cleanly.
 4. Explain the coupling and testing impact before writing code.
 5. Prefer architecture that supports prototype speed now without sabotaging demo and Early Access scale.
+6. Check whether the existing plain C# runtime state and events already solve the problem before adding ScriptableObject event channels or scene services.
 
 ## Architecture Rules
 
 - Prefer additive scenes with a persistent shell over one giant scene.
 - Keep authored content in ScriptableObject definitions with stable IDs.
 - Keep mutable gameplay state in runtime services or state models, not in authored assets.
-- Prefer event channels, explicit service references, or registries over hidden global lookups.
+- Prefer normal C# events inside runtime state first; use ScriptableObject event channels only for scene/service boundaries that need loose coupling.
+- Prefer explicit service references, event channels, or registries over hidden global lookups.
 - Use singletons sparingly and only when the lifecycle is obvious, stable, and worth the trade.
 - Separate simulation logic from view/controller MonoBehaviours whenever the logic needs tests, saves, or offline progression.
 - Make inspector workflows safe for designers; if authoring can drift, add validation or custom editor support.
 - Optimize for debuggability before cleverness.
+- Do not add architecture that cannot be explained through the prototype pantry flow.
 
 ## Pattern Selection
 
@@ -82,3 +85,4 @@ End with:
 - recommended communication path
 - migration or implementation order
 - main technical risks
+- what should remain plain C#, what should be ScriptableObject-authored, and what belongs in scene presentation

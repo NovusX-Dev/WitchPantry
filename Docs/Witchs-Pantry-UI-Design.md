@@ -1,6 +1,6 @@
 # Witch's Pantry UI and UX Design
 
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Platform: Steam (Windows)
 - Interaction Modes: Full game view and compact desktop-idler view
 

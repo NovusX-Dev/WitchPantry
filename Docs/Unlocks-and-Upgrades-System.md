@@ -1,7 +1,7 @@
 # Unlocks and Upgrades System
 
 - Project: Witch's Pantry
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Purpose: Extract the implied progression model from the current docs and formalize a clean system for unlocks, upgrades, rooms, prestige, and research.
 
 ## Summary
@@ -48,7 +48,7 @@ Progression currently comes from:
 
 This is spread across:
 
-- `Docs/GDD`
+- `Docs/GDD.md`
 - `Docs/Witchs-Pantry-Content-Plan.md`
 - `Docs/Spatial-Pantry-System.md`
 - `Docs/Ingredients_Biomes_Design.md`

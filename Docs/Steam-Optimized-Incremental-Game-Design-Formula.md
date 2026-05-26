@@ -1,250 +1,127 @@
-﻿# Steam-Optimized Incremental Game Design Formula
+# Steam-Oriented Incremental Design Notes For Witch Pantry
 
-This document describes the design structure commonly used by successful incremental and idle games on Steam.
+## Purpose
 
-Goals:
+This document translates Steam incremental and desktop-idler patterns into Witch Pantry-specific guidance.
 
-- Player retention
-- Wishlists
-- Long playtime
-- Viral progression loops
+It is a reference, not a mandate. The project should not chase every idle-game convention if doing so weakens the spatial pantry hook.
 
-## 1. Core Gameplay Loop
+## 1. Steam-Friendly Hook
 
-The main loop of successful incremental games is extremely simple.
-
-Example loop:
+The store-page promise should be:
 
 ```text
-earn resources
-  ->
-buy generators
-  ->
-increase production
-  ->
-unlock automation
-  ->
-prestige reset
-  ->
-repeat
+Build a magical pantry factory you can watch, optimize, and leave running.
 ```
 
-This loop creates constant progression.
+The strongest screenshots and GIFs should show:
 
-## 2. The Growth Equation
+- a compact enchanted room
+- readable machine motion
+- a visible production chain
+- customer or faction demand
+- compact desktop presence
 
-The core math behind incremental games is a balance between two curves:
+## 2. Core Loop
 
-- Production grows linearly.
-- Costs grow exponentially.
-
-Production formula:
+Recommended loop:
 
 ```text
-production_total = (production_base * owned) * multipliers
+produce ingredients
+  ->
+process and brew through visible machines
+  ->
+fulfill customer or faction demand
+  ->
+buy upgrades and improve layout
+  ->
+unlock new content or room pressure
+  ->
+return later to claim, fix, and optimize
 ```
 
-Cost formula:
+This is more specific than the generic idle loop of "earn resources, buy generators, prestige."
+
+## 3. Growth Equation
+
+Useful baseline:
 
 ```text
-cost_next = base_cost * growth_rate^owned
+nextCost = baseCost * growthRate^owned
+outputPerMinute = (60 / craftTimeSeconds) * machineCount * speedMultiplier
 ```
 
-Example:
+Witch Pantry-specific constraint:
 
-- `base_cost = 4`
-- `growth_rate = 1.07`
-- `owned = 10`
-- `cost = 4 * 1.07^10`
-- `production = 1.67 * 10`
+- the slowest ingredient or machine in a recipe chain should become a readable bottleneck
+- contract demand should change which chain the player cares about
+- upgrades should improve visible flow, not only hidden multipliers
 
-## 3. Upgrade Pacing Formula
+## 4. Desktop-Idler Standard
 
-Good incremental pacing follows a logarithmic reward structure.
+Desktop mode is a real differentiator only if it is useful.
 
-Example timing:
+Required signals:
 
-- Upgrade 1: 10 seconds
-- Upgrade 2: 20 seconds
-- Upgrade 3: 40 seconds
-- Upgrade 4: 80 seconds
-- Upgrade 5: 3 minutes
-- Upgrade 6: 10 minutes
-- Upgrade 7: 30 minutes
-- Prestige: 2 hours
+- current demand
+- pantry health
+- worst bottleneck
+- reward claim status
+- one to three quick actions
 
-## 4. Generator Tier Structure
+Avoid treating desktop mode as a resized HUD. It should be intentionally glanceable.
 
-Successful incremental games use multiple generator tiers.
+## 5. Retention Layers
 
-Example:
+Use retention layers in this order:
 
-- Tier 1: Farm, `1/sec`
-- Tier 2: Factory, `10/sec`
-- Tier 3: Laboratory, `100/sec`
+1. readable starter production
+2. contract goals
+3. upgrades with visible impact
+4. offline return summary
+5. room pressure and expansion
+6. faction variety
+7. scoped research or prestige
 
-Each tier costs roughly 10 times the previous one.
+Do not lead with prestige before the pantry loop proves itself.
 
-## 5. Automation Curve
+## 6. Wishlist And Demo Readability
 
-Automation unlocks gradually:
+The demo should generate wishlists by making the product legible fast:
 
-- Phase 1: Manual clicking
-- Phase 2: Automated generators
-- Phase 3: Automation chains
-- Phase 4: Self-expanding production systems
+- first minute: player understands the pantry fantasy
+- first 10 minutes: player completes or nearly completes a production goal
+- first 30 minutes: player sees a bottleneck, fixes it, and wants more content
 
-## 6. Prestige System
+If a feature cannot help one of those moments, it is probably not demo-critical.
 
-Prestige resets progression but grants permanent bonuses.
+## 7. Common Traps
 
-Formula:
+Avoid:
+
+- generic generator tier lists
+- progression that only adds bigger numbers
+- prestige as a substitute for content
+- UI that hides the room
+- desktop mode with no meaningful actions
+- screenshots that look like clutter instead of a magical workplace
+
+## 8. Success Pattern
+
+Witch Pantry should follow this pattern:
 
 ```text
-prestige_bonus = 1 + sqrt(total_currency)
+clear fantasy
+  ->
+readable production
+  ->
+useful idle return
+  ->
+contract-driven goals
+  ->
+room and content expansion
+  ->
+longer-term progression
 ```
 
-Example:
-
-- `total_currency = 1,000,000`
-- `bonus = 1001`
-
-Prestige allows the player to replay the game faster.
-
-## 7. Retention Mechanics
-
-Successful Steam idle games often include:
-
-- Achievements
-- Research trees
-- Unlockable machines
-- Meta progression
-- Rare resources
-
-## 8. Idle Progression
-
-Steam idle players expect offline progression.
-
-```text
-offline_rewards = production_rate * offline_time
-```
-
-Example:
-
-- `production = 20/sec`
-- `offline_time = 3600 seconds`
-- `reward = 72,000 resources`
-
-## 9. Scaling Numbers
-
-Incremental games eventually reach huge numbers.
-
-Use scientific notation:
-
-- `1e6 = 1 million`
-- `1e12 = 1 trillion`
-- `1e100 = late-game scale`
-
-## 10. Engagement Design
-
-Successful idle games maintain engagement through:
-
-- Frequent upgrades
-- New unlocks
-- Visible production growth
-- Rewarding resets
-
-## 11. Content Layers
-
-The best incremental games introduce layers of systems:
-
-- Layer 1: Basic production
-- Layer 2: Automation chains
-- Layer 3: Prestige
-- Layer 4: Meta upgrades
-- Layer 5: Late-game mechanics
-
-## 12. Steam-Friendly Features
-
-Idle games that succeed on Steam usually include:
-
-- Visible progress bars
-- Relaxing gameplay
-- Achievements
-- Long playtime
-- Optional active play
-
-## 13. Player Motivation Loop
-
-```text
-progress feels fast
-  ->
-progress slows
-  ->
-prestige unlocks
-  ->
-progress becomes fast again
-```
-
-This loop drives retention.
-
-## 14. Example Balanced Parameters
-
-- `growth_rate = 1.07 to 1.15`
-- `production_multiplier = 2x per upgrade`
-- `prestige_multiplier = sqrt(total_currency)`
-- `upgrade_cost_growth = exponential`
-
-## 15. Simulation Requirement
-
-All incremental economies must be simulated.
-
-Typical loop:
-
-```text
-for tick in simulation
-    gold += production
-
-    if gold >= next_upgrade
-        buy upgrade
-        increase production
-```
-
-## 16. Long-Term Player Goals
-
-Idle games succeed when players always have goals.
-
-Examples:
-
-- Unlock new machines
-- Complete achievements
-- Reach prestige milestones
-- Build max-efficiency setups
-
-## 17. Steam Success Pattern
-
-Many successful Steam idle games follow this structure:
-
-- Simple initial gameplay
-- Deep automation systems
-- Long progression curves
-- Prestige mechanics
-- Relaxing visuals
-
-## 18. Example Steam Idle Game Loop
-
-```text
-Idle farm
-  ->
-automated workers
-  ->
-factory production
-  ->
-prestige upgrades
-  ->
-new automation layer
-```
-
-## End
-
-End of document.
+Steam incremental conventions are useful only when they serve that pattern.

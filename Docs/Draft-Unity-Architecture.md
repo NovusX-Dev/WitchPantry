@@ -1,6 +1,6 @@
 ﻿# Witch's Pantry Automation Architecture
 
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Architecture Style: Data-Driven Modular Systems
 - Language: C#
 
@@ -448,11 +448,13 @@ Examples:
 - `MachineBuiltEvent`
 - `ContractCompletedEvent`
 
-Example publish call:
+Example runtime notification flow:
 
 ```csharp
-EventBus.Publish(new PotionBrewedEvent());
+contractState.ContractCompleted += HandleContractCompleted;
 ```
+
+Use plain C# events inside runtime state first. Reserve ScriptableObject event channels for scene-facing notifications such as room activation, contract-completion feedback, or machine selection.
 
 ## 12. Save System
 

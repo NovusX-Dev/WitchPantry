@@ -1,6 +1,6 @@
 ﻿# Witch's Pantry Automation Asset Production Plan
 
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Style: Stylized Fantasy 2D
 
 Goal: define all art assets required to ship the game.

@@ -1,229 +1,174 @@
-﻿# Witch's Pantry Automation Incremental Economy Model
+# Witch Pantry Incremental Economy Model
 
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 
-## 1. Economy Design Philosophy
+## 1. Economy Philosophy
 
-Incremental economies are built on a balance between production growth and upgrade cost growth.
+Witch Pantry uses incremental pacing to support a visible production fantasy.
 
-General rule:
+Numbers should grow, but the player should still understand why the pantry is improving:
 
-- Production grows linearly or polynomially.
-- Costs grow exponentially.
-
-This ensures early progress feels fast but gradually slows.
+- a machine runs faster
+- a recipe chain clears a bottleneck
+- a contract becomes reachable
+- a room layout gets more efficient
+- compact mode reports a healthier workshop
 
 ## 2. Core Currency
 
 Primary currency:
 
-- Gold
+- gold
 
-Used for:
+Gold is used for:
 
-- Machines
-- Ingredient unlocks
-- Upgrades
+- machine purchases
+- machine upgrades
+- room improvements
+- selected unlock costs
+
+Gold should not be the only success signal. Contracts, faction hooks, room pressure, and production readability should matter too.
 
 ## 3. Production Formula
 
+Basic output:
+
 ```text
-production = baseProduction * machineCount * multipliers
+outputPerMinute = (60 / craftTimeSeconds) * machineCount * speedMultiplier
 ```
 
-Example:
+With upgrade level:
 
-- `baseProduction = 1 potion/sec`
-- `machines = 10`
-- `multiplier = 2`
+```text
+effectiveSpeed = baseSpeed * upgradeMultiplier^upgradeLevel
+```
 
-Result:
+For chained recipes, the real output is constrained by the slowest required input.
 
-- `production = 20 potions/sec`
+```text
+chainOutput = min(inputSupplyRates) converted through recipe ratios
+```
+
+This matters more than raw machine count because Witch Pantry is about visible bottlenecks.
 
 ## 4. Machine Cost Formula
 
-Classic idle formula:
+Classic idle cost growth is still useful:
 
 ```text
-cost_next = baseCost * growthRate^owned
+nextCost = baseCost * growthRate^owned
 ```
 
-Example:
+Starting range:
 
-- `baseCost = 10`
-- `growthRate = 1.15`
-- `owned = 5`
-- `cost ~= 20`
+- `growthRate = 1.10` to `1.18`
+- lower for required starter machines
+- higher for optional capacity expansion
 
-## 5. Total Production
+Use the formula to shape pacing, not to hide every decision behind exponential math.
+
+## 5. Upgrade Formula
+
+Upgrade costs should scale with current level:
 
 ```text
-totalProduction = baseProduction * owned * globalMultiplier
+upgradeCost = baseUpgradeCost * upgradeGrowth^currentLevel
 ```
 
-Example:
+Upgrade value should be readable:
 
-- `baseProduction = 2`
-- `owned = 20`
-- `globalMultiplier = 1.5`
-- `totalProduction = 60/sec`
+- faster animation
+- larger queue
+- better recipe fit
+- stronger adjacency payoff
+- improved contract throughput
 
-## 6. Potion Value
+Avoid generic `+10% production` upgrades unless they are wrapped in a clear pantry behavior.
 
-Potion sale value:
+## 6. Potion And Contract Value
+
+Potion value comes from authored content and balance tuning:
 
 ```text
-value = baseValue * rarityMultiplier
+potionValue = baseSellValue * tierMultiplier * demandMultiplier
 ```
 
-Examples:
+Contract reward should account for:
 
-- Healing Potion: `10 * 1 = 10 gold`
-- Rare Potion: `10 * 5 = 50 gold`
-
-## 7. Return on Investment (ROI)
-
-ROI determines upgrade pacing.
+- target potion difficulty
+- amount required
+- time pressure
+- faction importance
+- unlock or special reward value
 
 ```text
-ROI = cost / productionIncrease
+contractReward = potionValue * amountRequired * rewardMultiplier
 ```
 
-Example:
+Contract value should create goals, not opaque churn.
 
-- Upgrade cost: `100 gold`
-- Production increase: `5 gold/sec`
-- ROI: `20 seconds`
+## 7. Offline Progression
 
-Ideal ranges:
-
-- Early game: 3 to 10 seconds
-- Mid game: 30 to 90 seconds
-- Late game: 5 to 20 minutes
-
-## 8. Upgrade Multipliers
+Offline progression should preserve the pantry fantasy:
 
 ```text
-multiplier = base * (1.2^level)
+offlineOutput = simulatedOutput * offlineEfficiency
 ```
 
-Example:
+Recommended rule:
 
-- `level = 5`
-- `multiplier ~= 2.49`
+- generous enough to reward return visits
+- capped enough to avoid breaking contract pacing
+- summarized clearly when the player returns
 
-## 9. Machine Efficiency Scaling
+Return summary should answer:
+
+- what was produced
+- what was completed
+- what blocked progress
+- what action is recommended next
+
+## 8. Prestige And Research
+
+Prestige and research should not appear before the starter pantry loop is proven.
+
+When added, they should unlock capability and specialization:
+
+- new room roles
+- machine behavior variants
+- stronger contract options
+- layout tools
+
+Avoid prestige that only says:
 
 ```text
-production = base * (1.1^level)
+gain permanent +X% production
 ```
 
-Example:
+That is useful math, but weak fantasy.
 
-- `base = 10`
-- `level = 10`
-- `production ~= 25.9`
+## 9. Balance Targets
 
-## 10. Bulk Purchase Formula
+Early targets:
+
+- first machine purchase: 1 to 3 minutes
+- first contract completion: 5 to 12 minutes
+- first bottleneck fix: 5 to 10 minutes
+- first meaningful upgrade choice: 10 to 20 minutes
+- first session return value: visible after a short idle break
+
+## 10. Design Test
+
+An economy change is good when it creates a player sentence like:
 
 ```text
-totalCost = baseCost * (growthRate^n - 1) / (growthRate - 1)
+I need more ground herb because the healing contract is waiting, so upgrading the Mortar Golem matters now.
 ```
 
-This is required for buy-max buttons.
-
-## 11. Prestige System
-
-Prestige resets production but adds a multiplier.
-
-Example:
+If the sentence is only:
 
 ```text
-prestigeMultiplier = 1 + (prestigePoints * 0.1)
+I need more gold because the next number is bigger.
 ```
 
-If `prestigePoints = 5`, then `multiplier = 1.5`.
-
-## 12. Offline Progression
-
-```text
-offlineProduction = productionRate * offlineTime
-```
-
-Example:
-
-- `production = 20/sec`
-- `offlineTime = 3600 seconds`
-- `offlineGold = 72000`
-
-## 13. Late-Game Scaling
-
-Eventually numbers reach huge sizes.
-
-Use scientific notation:
-
-- `1e6 = 1,000,000`
-- `1e12 = 1 trillion`
-
-## 14. Economy Curve
-
-Typical progression:
-
-- Early game: fast purchases
-- Mid game: strategic upgrades
-- Late game: long waits and prestige
-
-## 15. Example Economy Table
-
-| Machines Owned | Cost Next | Production/sec |
-| ---: | ---: | ---: |
-| 1 | 10 | 1 |
-| 5 | 20 | 5 |
-| 10 | 40 | 10 |
-| 20 | 160 | 20 |
-| 50 | 1080 | 50 |
-
-## 16. Balance Targets
-
-- First automation machine: 2 minutes
-- First production chain: 10 minutes
-- Prestige unlock: 2 hours
-- Second prestige: 10 hours
-
-## 17. Economy Debug Tool
-
-Create a debug window that allows:
-
-- Adding gold
-- Adding machines
-- Simulating ticks
-- Forcing prestige
-
-## 18. Testing Strategy
-
-Simulate the economy over `100,000` ticks and check:
-
-- Progress speed
-- Upgrade pacing
-- Prestige timing
-
-## 19. Anti-Stall Mechanisms
-
-Avoid deadlocks with:
-
-- Temporary boosts
-- Special events
-- Free resources
-
-## 20. Long-Term Retention
-
-Introduce:
-
-- Rare ingredients
-- Special potion contracts
-- New production chains
-
-## End
-
-End of document.
+the economy is too generic.

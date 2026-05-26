@@ -1,7 +1,7 @@
 # Event Channel Recommendations
 
 - Project: Witch Pantry
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Purpose: Define where ScriptableObject event channels fit into the architecture without overbuilding the prototype.
 
 ## Summary
@@ -15,6 +15,7 @@ For the current project state:
 - shared mutable values should live in runtime state classes under `Assets/Scripts/Runtime/State/`
 - UI and future scene presenters should read from runtime state
 - event channels should be used only when one part of the game needs to notify another part without creating a direct scene reference
+- the first runtime-state layer already has plain C# state-change events and EditMode coverage; build scene-facing bridges on that foundation instead of replacing it
 
 In short:
 
@@ -105,11 +106,18 @@ The runtime layer currently exists under:
 - `Assets/Scripts/Runtime/State/ContractRuntimeState.cs`
 - `Assets/Scripts/Runtime/State/GameSessionState.cs`
 
+Current status:
+
+- pantry inventory, machine ownership, contract runtime state, and session state are plain C# models
+- runtime C# events are available for inventory, machine, contract, gold, room, and contract-list changes
+- EditMode tests cover the current runtime-state behavior
+- ScriptableObject event channels are still future scene/service boundary tools, not the source of truth
+
 Recommended division of responsibility:
 
 - `PantryInventoryState`
   - stores inventory totals by content definition id
-  - raises normal C# events such as `InventoryChanged`
+  - raises normal C# events such as `InventoryChanged` and `ResourceChanged`
 - `GameSessionState`
   - owns inventory, machine ownership, contracts, gold, active room
   - raises normal C# events such as `GoldChanged`, `ActiveRoomChanged`, and `ContractsChanged`
@@ -283,9 +291,9 @@ If the event list starts looking like a stock-market feed, you built too much to
 For the current implementation order:
 
 1. keep state changes inside plain runtime classes
-2. add normal C# events to the runtime state classes
-3. add only one ScriptableObject channel for `RoomActivated`
-4. add `ContractCompleted` when there is actual contract fulfillment feedback
+2. use the existing normal C# runtime-state events for UI and simulation-facing state changes
+3. add only one ScriptableObject channel for `RoomActivated` when scene activation exists
+4. add `ContractCompleted` when there is actual cross-scene contract fulfillment feedback
 5. add `MachineSelected` when the shell UI needs cross-scene selection handling
 
 This matches the current project maturity much better than building a full event-bus zoo now.

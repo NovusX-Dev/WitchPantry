@@ -1,4 +1,4 @@
 interface:
   display_name: "Witch Pantry Unity Architecture"
   short_description: "Unity architecture rules for Witch Pantry."
-  default_prompt: "Use -pantry-unity-architecture to plan or review Unity architecture, scene flow, runtime state, and gameplay code patterns for Witch Pantry."
+  default_prompt: "Use $witch-pantry-unity-architecture to plan or review Unity architecture, scene flow, runtime state, and gameplay code patterns for Witch Pantry."

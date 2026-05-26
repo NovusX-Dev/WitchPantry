@@ -1,6 +1,6 @@
 # Witch's Pantry Production Blueprint
 
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Genre: Cozy Automation / Incremental
 - Presentation Model: Spatial pantry layout with shared inventory simulation support
 

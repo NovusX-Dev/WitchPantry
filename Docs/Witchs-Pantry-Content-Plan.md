@@ -1,6 +1,6 @@
 # Witch's Pantry Content Plan
 
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Platform: Steam
 - Genre: Cozy Automation / Incremental / Desktop Idle
 

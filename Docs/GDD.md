@@ -1,7 +1,7 @@
 # Witch's Pantry Design Overview
 
 - Version: 2.1
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Platform: Steam (Windows)
 - Genre: Cozy Automation / Incremental / Desktop Idle
 - Release Framing: Demo-first, Early Access-friendly premium PC game

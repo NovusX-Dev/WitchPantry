@@ -1,6 +1,6 @@
 # Witch's Pantry Ingredient and Biome Progression
 
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Genre: Cozy Automation / Incremental / Desktop Idle
 - Progression Model: Spatial pantry factory with customer demand
 

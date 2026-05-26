@@ -22,7 +22,7 @@ Current north star:
 1. Read the current design docs before proposing changes:
    - `Docs/Product-Strategy.md`
    - `Docs/Experience-Pillars.md`
-   - `Docs/GDD`
+   - `Docs/GDD.md`
 2. Restate the feature or idea in one sentence.
 3. Test it against the product direction:
    - does it strengthen spatial pantry play
@@ -44,6 +44,8 @@ Current north star:
 - Prefer room and layout pressure over menu sprawl.
 - Prefer controllable demand loops over broad simulated economy claims.
 - Prefer soft friction over punishment-first randomness.
+- Prefer features that can be understood from a screenshot, a short GIF, or a five-second compact-mode glance.
+- Anchor market-facing claims in the pantry fantasy: enchanted machines, readable production motion, and a desktop-friendly workshop presence.
 
 ## Reject Features That
 
@@ -52,6 +54,7 @@ Current north star:
 - require too many screens for one production chain
 - add hostile friction that breaks the cozy promise
 - sound marketable in text but are hard to show in screenshots
+- could be pasted into a generic idle-game pitch without changing a word
 
 ## Good Output Shapes
 
@@ -68,3 +71,4 @@ Outputs should end with:
 - what changes
 - why it helps the product
 - what release target it belongs to
+- what evidence or player-facing signal makes the recommendation credible

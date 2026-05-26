@@ -1,7 +1,7 @@
 # Unity Scene Communication Architecture
 
 - Project: Witch's Pantry
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Purpose: Translate the scene architecture decision into a practical Unity implementation model for runtime state, event flow, UI updates, room registration, and audio coordination.
 
 ## Summary
@@ -106,6 +106,7 @@ Suggested responsibilities:
 Purpose:
 
 - act as the whole-pantry runtime state model
+- build on the existing plain C# runtime-state classes under `Assets/Scripts/Runtime/State/`
 
 Suggested responsibilities:
 
@@ -340,8 +341,9 @@ The detailed guidance now lives in:
 Short version:
 
 - runtime state holds current truth
-- normal C# events are preferred inside runtime state classes
+- normal C# events are already the first runtime-state notification layer
 - ScriptableObject event channels are best for cross-scene notifications such as `RoomActivated`, `ContractCompleted`, and `MachineSelected`
+- do not replace existing runtime-state events with ScriptableObject channels for inventory, gold, machine ownership, or active contract list changes
 
 ## Audio Architecture
 

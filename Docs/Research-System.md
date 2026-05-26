@@ -1,7 +1,7 @@
 # Research System
 
 - Project: Witch's Pantry
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Purpose: Define whether research belongs in Witch Pantry and, if so, how to implement it without damaging readability, cozy tone, or compact-mode usability.
 
 ## Summary

@@ -1,7 +1,7 @@
 # First 2 to 3 Hours Progression Path
 
 - Project: Witch's Pantry
-- Engine: Unity 6000.3
+- Engine: Unity 6; current project version: `Witch-Pantry/ProjectSettings/ProjectVersion.txt`
 - Purpose: Turn the current unlock and upgrade model into a concrete early-game progression path for the first 2 to 3 hours of play.
 
 ## Summary

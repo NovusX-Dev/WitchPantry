@@ -12,7 +12,7 @@ Use this skill to keep Witch Pantry's spaces readable, productive, and marketabl
 1. Read:
    - `Docs/Spatial-Pantry-System.md`
    - `Docs/Experience-Pillars.md`
-   - `Docs/GDD`
+   - `Docs/GDD.md`
 2. If the task is about rooms or navigation, also read `Skills/witch-pantry-spatial-layout/SKILL.md`.
 3. Read `references/sources.md` when you need supporting theory.
 
@@ -38,6 +38,7 @@ Use this skill to keep Witch Pantry's spaces readable, productive, and marketabl
    - active play
    - idle glance
    - screenshot/store-readability
+6. Identify the focal machine, the first bottleneck read, and the one element that sells the room in a screenshot.
 
 ## Level Design Rules
 
@@ -57,6 +58,7 @@ Use this skill to keep Witch Pantry's spaces readable, productive, and marketabl
 - Special rooms should justify their existence with a different decision pattern, not just more floor area.
 - Navigation between rooms must feel like progression, not menu tax.
 - Compact desktop-idler mode must preserve the room's key signals without requiring hover archaeology.
+- A room is not ready if the player cannot tell what is producing, what is blocked, and what changed after an upgrade.
 
 ## Smells To Call Out
 
@@ -76,3 +78,4 @@ End with:
 - guidance/readability plan
 - unlock or expansion hooks
 - key risks to pacing or readability
+- screenshot and compact-mode readability verdict
