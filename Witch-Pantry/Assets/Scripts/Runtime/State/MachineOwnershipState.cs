@@ -11,7 +11,6 @@ namespace WitchPantry.Runtime.State
         
         public event Action MachinesChanged;
         public event Action<string> MachineChanged;
-        public event Action<string> OnMachineOwnershipChanged;
 
         /// <summary>
         /// Adds a machine to the owned machines.
@@ -53,7 +52,6 @@ namespace WitchPantry.Runtime.State
         {
             MachinesChanged?.Invoke();
             MachineChanged?.Invoke(machineId);
-            OnMachineOwnershipChanged?.Invoke(machineId);
         }
     }
 }

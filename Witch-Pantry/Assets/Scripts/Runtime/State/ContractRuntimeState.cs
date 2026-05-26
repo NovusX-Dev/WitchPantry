@@ -10,6 +10,7 @@ namespace WitchPantry.Runtime.State
     /// </summary>
     public class ContractRuntimeState
     {
+        #region Properties
         public string CurrentContractId { get; private set; }
         public string TargetPotionId { get; private set; }
         public int AmountRequired { get; private set; }
@@ -21,10 +22,16 @@ namespace WitchPantry.Runtime.State
         public bool CanBeCompleted => Active && CurrentProgress >= AmountRequired && AmountRequired > 0;
         public bool IsExpired => Active && RemainingDuration <= 0;
         public bool IsRunning => Active && !CanBeCompleted && !IsExpired;
+        
+        #endregion
+
+        #region Actions
 
         public event Action ContractChanged;
         public event Action ContractCompleted;
         public event Action ContractExpired;
+
+        #endregion
 
         /// <summary>
         /// Sets the contract to the new contract.

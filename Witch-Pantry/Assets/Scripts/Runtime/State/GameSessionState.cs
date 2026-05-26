@@ -64,6 +64,7 @@ namespace WitchPantry.Runtime.State
             return true;
         }
 
+        //TODO: Allow automatic removal of contract if necessary later
         public bool RemoveContract(ContractRuntimeState contract)
         {
             if (contract == null) return false;

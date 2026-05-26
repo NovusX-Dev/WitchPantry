@@ -10,7 +10,6 @@ namespace WitchPantry.Runtime.State
 
         public event Action InventoryChanged;
         public event Action<string, int> ResourceChanged;
-        public event Action<string, int> OnInventoryUpdated;
         
         /// <summary>
         /// Adds a resource to the inventory.
@@ -77,7 +76,6 @@ namespace WitchPantry.Runtime.State
             var amount = GetResourceAmount(resourceId);
             InventoryChanged?.Invoke();
             ResourceChanged?.Invoke(resourceId, amount);
-            OnInventoryUpdated?.Invoke(resourceId, amount);
         }
     }
 }
