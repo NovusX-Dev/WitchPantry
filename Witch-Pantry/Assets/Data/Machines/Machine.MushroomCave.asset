@@ -19,7 +19,7 @@ MonoBehaviour:
   <PurchaseCost>k__BackingField: 15
   <UpgradeCost>k__BackingField: 30
   <ProcessingSpeed>k__BackingField: 0.9
-  <QueueCapacity>k__BackingField: 0
+  <QueueCapacity>k__BackingField: 2
   <EnergyCost>k__BackingField: 0
   <Footprint>k__BackingField: {x: 2, y: 2}
   <SupportedRecipes>k__BackingField:
